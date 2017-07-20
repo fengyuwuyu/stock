@@ -39,7 +39,6 @@ public class StockAnalyseJobImpl implements StockAnalyseJobI {
 	/**
 	 * 每天五点后分析现有数据，找出已经跌到底部且将要上涨的股票，并插入到数据库中
 	 */
-	@Override
 	public void findStock() {
 		log.info("开始分析当天股票。。。");
 		List<StockMainAnalyse> stocks = this.stockMainMapper.findStock();

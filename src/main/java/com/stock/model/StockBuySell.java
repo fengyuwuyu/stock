@@ -99,7 +99,7 @@ public class StockBuySell {
 	private long convertLong(LinkedHashMap<String, Object> o, String column) {
 		long l = 0;
 		try {
-			l = (long) o.get(column);
+			l = (Long) o.get(column);
 		} catch (Exception e) {
 			l = 0;
 		}
@@ -109,7 +109,7 @@ public class StockBuySell {
 	private int convertInt(LinkedHashMap<String, Object> o,String column){
 		int i = 0;
 		try {
-			i = (int) o.get(column);
+			i = (Integer) o.get(column);
 		} catch (Exception e) {
 			i=0;
 		}
@@ -119,7 +119,7 @@ public class StockBuySell {
 	private double convertDouble(LinkedHashMap<String, Object> o,String column){
 		double d = 0;
 		try {
-			d = (double) o.get(column);
+			d = (Double) o.get(column);
 		} catch (Exception e) {
 			d = 0;
 		}

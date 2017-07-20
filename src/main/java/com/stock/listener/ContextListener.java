@@ -24,12 +24,12 @@ public class ContextListener implements ServletContextListener {
 
 	private Logger log = Logger.getLogger(ContextListener.class);
 
-	@Override
+	
 	public void contextDestroyed(ServletContextEvent arg0) {
 
 	}
 
-	@Override
+	
 	public void contextInitialized(ServletContextEvent arg0) {
 		ServletContext context = arg0.getServletContext();
 		ApplicationContext ac = WebApplicationContextUtils

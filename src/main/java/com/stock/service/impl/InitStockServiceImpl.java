@@ -77,7 +77,7 @@ public class InitStockServiceImpl implements InitStockServiceI {
 	 * %2Fquotes.money.163.com%2Fhs%2Fservice%2Fmarketradar_ajax
 	 * .php&page=0&query=STYPE%3AEQA&types=&count=28&type=query&order=desc
 	 */
-	@Override
+	
 	public Map<String, Object> initStock() {
 		log.info("下载股票数据，每分钟执行一次。。。"
 				+ (CommonsUtil.formatDateToString3(new Date())));
@@ -131,7 +131,7 @@ public class InitStockServiceImpl implements InitStockServiceI {
 		// 异步更新StockCache的prePrices对象
 		ThreadPool.execute(new Runnable() {
 
-			@Override
+			
 			public void run() {
 				StockCache.initByInternet(list);
 			}
@@ -353,7 +353,6 @@ public class InitStockServiceImpl implements InitStockServiceI {
 	 */
 
 	@SuppressWarnings("unchecked")
-	@Override
 	public void insertCJL() {
 		// TODO Auto-generated method stub
 		List<String> symbols = this.stockMainMapper.selectAll();

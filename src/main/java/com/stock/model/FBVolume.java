@@ -30,8 +30,8 @@ public class FBVolume {
 	public FBVolume() {}
 	
 	public FBVolume(LinkedHashMap<String,Object> o) {
-		this.TRADE_TYPE = (int) o.get("TRADE_TYPE");
-		this.VOLUME_INC = (int) o.get("VOLUME_INC");
+		this.TRADE_TYPE = (Integer) o.get("TRADE_TYPE");
+		this.VOLUME_INC = (Integer) o.get("VOLUME_INC");
 		try {
 			this.PRICE = Double.valueOf(o.get("PRICE")+"");
 		} catch (Exception e) {

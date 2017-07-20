@@ -46,7 +46,7 @@ public class SearchMachineImpl implements SearchMachineI {
 		}
 		// Collections.sort(list, new Comparator<StockMainAnalyse>() {
 		//
-		// @Override
+		// 
 		// public int compare(StockMainAnalyse o1, StockMainAnalyse o2) {
 		// if(o1.getLastIncrease()-o2.getLastIncrease()>0){
 		// return 1;
@@ -94,7 +94,7 @@ public class SearchMachineImpl implements SearchMachineI {
 		return list;
 	}
 
-	@Override
+	
 	public List<StockAnalyseBase> findHighVolume(StockQuery query,
 			List<StockAnalyseBase> list) {
 		if (list != null) {
@@ -105,7 +105,7 @@ public class SearchMachineImpl implements SearchMachineI {
 		return null;
 	}
 
-	@Override
+	
 	public Map<String, Object> query(StockQuery query) {
 		if (query.getBegin() == null) {
 			return MapUtils.createSuccessMap("rows",new ArrayList<StockMainAnalyse>(),"total",0);
@@ -131,14 +131,14 @@ public class SearchMachineImpl implements SearchMachineI {
 		
 	}
 
-	@Override
+	
 	public Map<String, Object> queryCur(Date end) {
 		List<String> days = this.stockMainMapper.selectByDay(end);
 		if(days == null || days.size() == 0){
 			return MapUtils.createFailedMap("msg", "数据库中无数据或程序异常！");
 		}
 		List<CurStock> curStocks = this.stockMainMapper.selectCurStock(days);
-		List<CurStock> list = new ArrayList<>();
+		List<CurStock> list = new ArrayList<CurStock>();
 		for (CurStock curStock : curStocks) {
 			Stock[] res =  getMaxMin(curStock.getStock());
 			

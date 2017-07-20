@@ -45,7 +45,6 @@ public class DaemonThread extends Thread {
 			}else{
 				new Thread(new Runnable() {
 					
-					@Override
 					public void run() {
 						daemonJobI.execute();
 					}

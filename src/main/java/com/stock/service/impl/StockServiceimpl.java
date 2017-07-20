@@ -98,7 +98,7 @@ public class StockServiceimpl implements StockServiceI {
 				Configuration.CYB_TYPE);
 		List<LinkedHashMap<String, Object>> list4 = insert(Configuration.ZXB,
 				Configuration.ZXB_TYPE);
-		Map<String, LinkedHashMap<String, Object>> mmp = new HashMap<>();
+		Map<String, LinkedHashMap<String, Object>> mmp = new HashMap<String, LinkedHashMap<String, Object>>();
 		for (LinkedHashMap<String, Object> l : list1) {
 			if (check(l)) {
 				mmp.put((String) l.get("SYMBOL"), l);
@@ -167,7 +167,7 @@ public class StockServiceimpl implements StockServiceI {
 		return null;
 	}
 
-	@Override
+	
 	public void getVolData() throws Exception {
 		HttpClientUtil
 				.get("http://quotes.money.163.com/service/chddata.html?"
@@ -195,7 +195,7 @@ public class StockServiceimpl implements StockServiceI {
 	 */
 	public Map<String, Object> priceDownVolUp(Date date) throws Exception {
 		List<StockVol> list = this.detailMapper.dataList1(date);
-		List<StockVol> result = new ArrayList<>();
+		List<StockVol> result = new ArrayList<StockVol>();
 		if (list != null && list.size() > 0) {
 			for (StockVol vol : list) {
 				vol.priceDownVolUp();
@@ -222,7 +222,7 @@ public class StockServiceimpl implements StockServiceI {
 		return MapUtils.createSuccessMap();
 	}
 
-	@Override
+	
 	public Map<String, Object> maxDown(String maxDay, String minDay) {
 
 		return null;

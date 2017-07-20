@@ -38,7 +38,6 @@ public class StockTop100 implements Comparable<StockTop100> {
 				+ ", incre=" + incre + "]";
 	}
 
-	@Override
 	public int compareTo(StockTop100 o) {
 		return this.incre<=o.getIncre()?1:-1;
 	}

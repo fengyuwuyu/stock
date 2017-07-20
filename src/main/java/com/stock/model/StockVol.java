@@ -130,7 +130,6 @@ public class StockVol extends PageModel implements Comparable<StockVol> {
 				+ isPriceDownVolUp + "]";
 	}
 
-	@Override
 	public int compareTo(StockVol o) {
 		Integer l = o.getIncreaseVol() - this.getIncreaseVol();
 		return l;

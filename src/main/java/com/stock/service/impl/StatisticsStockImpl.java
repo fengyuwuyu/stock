@@ -7,7 +7,6 @@ import com.stock.service.StatisticsStockI;
 
 public class StatisticsStockImpl implements StatisticsStockI {
 
-	@Override
 	public Map<String, Object> statistics(StockQuery query) {
 		
 		return null;

@@ -44,12 +44,11 @@ public class MybatisPageInterceptor implements Interceptor {
 		this.databaseType = databaseType;
 	}
 
-	@Override
 	public Object plugin(Object target) {
 		return Plugin.wrap(target, this);
 	}
 
-	@Override
+	
 	public void setProperties(Properties properties) {
 		String databaseType = properties.getProperty("databaseType");
 		if (databaseType != null) {
@@ -57,7 +56,7 @@ public class MybatisPageInterceptor implements Interceptor {
 		}
 	}
 
-	@Override
+	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public Object intercept(Invocation invocation) throws Throwable {
 		if (invocation.getTarget() instanceof StatementHandler) { // 控制SQL和查询总数的地方

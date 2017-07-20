@@ -13,11 +13,11 @@ public class Testt {
 
 	@Test
 	public void test1() throws Exception{
-		EETemplate<People> template = new EETemplate<>();
+		EETemplate<People> template = new EETemplate<People>();
 		
 		String[] headers = {"用户名", "密码"};
 		String[] fields = {"username", "passwd"};
-		List<People> dataset = new ArrayList<>();
+		List<People> dataset = new ArrayList<People>();
 		dataset.add(new People("张三", "123456"));
 		dataset.add(new People("李四", "123456"));
 		OutputStream out = new FileOutputStream("D:/test.xls");

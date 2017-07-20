@@ -60,7 +60,7 @@ public class HolidayController {
 	@RequestMapping(value = "test.do")
 	@ResponseBody
 	public Map<String, Object> test() {
-		List<Holiday> list = new ArrayList<>();
+		List<Holiday> list = new ArrayList<Holiday>();
 		Holiday holiday = new Holiday(1, "asfd");
 		Holiday holiday1 = new Holiday(3, "asfd");
 		list.add(holiday1);

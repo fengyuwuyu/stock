@@ -21,7 +21,7 @@ public class UtilsServiceImpl implements UtilsServiceI {
 
 
 
-	@Override
+	
 	public Map<String, Object> getDays() {
 		List<String> days = stockBuySellMapper.selectDays();
 		String maxHoliday = stockBuySellMapper.selectMaxHoliday();
