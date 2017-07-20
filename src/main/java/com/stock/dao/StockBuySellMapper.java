@@ -20,4 +20,6 @@ public interface StockBuySellMapper {
     List<String> selectDays();
 
 	String selectMaxHoliday();
+
+	List<StockBuySell> selectByDay(String day);
 }

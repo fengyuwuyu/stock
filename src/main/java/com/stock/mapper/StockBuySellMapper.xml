@@ -435,7 +435,11 @@
   </select>
   
   <select id="selectMaxHoliday" resultType="string">
-  	select max(holiday_time from holiday
+  	select max(holiday_time) from holiday
+  </select>
+  
+  <select id="selectByDay" parameterType="string" resultMap="BaseResultMap">
+  	select * from stock_buy_sell where day &gt; #{day}
   </select>
   
 </mapper>

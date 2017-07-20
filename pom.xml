@@ -302,4 +302,44 @@
 			<version>7.0</version>
 		</dependency>
 	</dependencies>
+	
+		<build>
+		<finalName>stock</finalName>
+		<sourceDirectory>src/main/java</sourceDirectory>
+
+		<resources>
+			<!-- 控制资源文件的拷贝 -->
+			<resource>
+				<directory>src/main/resources</directory>
+				<!-- <targetPath>${project.build.directory}</targetPath> -->
+				<!-- 包含的文件，支持通配符 -->
+				<includes>
+					<include>*.properties</include>
+					<include>*.xml</include>
+				</includes>
+			</resource>
+		</resources>
+
+		<plugins>
+			<!-- 设置源文件编码方式 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<defaultLibBundleDir>lib</defaultLibBundleDir>
+					<source>1.8</source>
+					<target>1.8</target>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<configuration>
+					<descriptorRefs>
+						<descriptorRef>jar-with-dependencies</descriptorRef>
+					</descriptorRefs>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>

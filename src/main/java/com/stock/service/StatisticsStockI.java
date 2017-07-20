@@ -2,8 +2,6 @@ package com.stock.service;
 
 import java.util.Map;
 
-import com.stock.model.StockQuery;
-
 public interface StatisticsStockI {
 	/**
 	 * 统计各个因素对股票涨幅的影响
@@ -13,5 +11,5 @@ public interface StatisticsStockI {
 	 * @param query
 	 * @return
 	 */
-	Map<String,Object> statistics(StockQuery query);
+	Map<String,Object> statistics();
 }

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.stock.dao.LastStatisticsDayMapper" >
+  <resultMap id="BaseResultMap" type="com.stock.model.LastStatisticsDay" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="day" property="day" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, day
+  </sql>
+  <select id="selectByPrimaryKey" resultType="string" >
+    select day from last_statistics_day where id=1
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from last_statistics_day
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.stock.model.LastStatisticsDay" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="BEFORE" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into last_statistics_day (id, day)
+    values (#{id,jdbcType=INTEGER}, #{day,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.stock.model.LastStatisticsDay" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="BEFORE" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into last_statistics_day
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      id,
+      <if test="day != null" >
+        day,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{id,jdbcType=INTEGER},
+      <if test="day != null" >
+        #{day,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.stock.model.LastStatisticsDay" >
+    update last_statistics_day
+    <set >
+      <if test="day != null" >
+        day = #{day,jdbcType=CHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="string" >
+    update last_statistics_day
+    set day = #{day,jdbcType=CHAR}
+    where id = 1
+  </update>
+</mapper>

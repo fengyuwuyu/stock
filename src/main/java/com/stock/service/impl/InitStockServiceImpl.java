@@ -49,7 +49,7 @@ public class InitStockServiceImpl implements InitStockServiceI {
 	private String timeBak = "";
 	private Logger log = Logger.getLogger(InitStockServiceImpl.class);
 	private DataSourceTransactionManager transactionManager;
-	
+
 	@Autowired
 	public void setTransactionManager(DataSourceTransactionManager transactionManager) {
 		this.transactionManager = transactionManager;
@@ -64,7 +64,7 @@ public class InitStockServiceImpl implements InitStockServiceI {
 	public void setStockMainMapper(StockMainMapper stockMainMapper) {
 		this.stockMainMapper = stockMainMapper;
 	}
-	
+
 	@Autowired
 	public void setHolidayMapper(HolidayMapper holidayMapper) {
 		this.holidayMapper = holidayMapper;
@@ -77,10 +77,9 @@ public class InitStockServiceImpl implements InitStockServiceI {
 	 * %2Fquotes.money.163.com%2Fhs%2Fservice%2Fmarketradar_ajax
 	 * .php&page=0&query=STYPE%3AEQA&types=&count=28&type=query&order=desc
 	 */
-	
+
 	public Map<String, Object> initStock() {
-		log.info("下载股票数据，每分钟执行一次。。。"
-				+ (CommonsUtil.formatDateToString3(new Date())));
+		log.info("下载股票数据，每分钟执行一次。。。" + (CommonsUtil.formatDateToString3(new Date())));
 		String url = "http://quotes.money.163.com/hs/service/diyrank.php?"
 				+ "host=http%3A%2F%2Fquotes.money.163.com%2Fhs%2Fservice%2Fdiyrank.php&"
 				+ "page=0&query=STYPE%3AEQA&fields=NO%2CSYMBOL%2CNAME%2CPRICE%2CPERCENT%2CUPDOWN%2CFIVE_MINUTE%2COPEN%"
@@ -113,15 +112,15 @@ public class InitStockServiceImpl implements InitStockServiceI {
 
 	@SuppressWarnings({ "unchecked" })
 	private void download(HttpEntity entity) throws Exception {
-		LinkedHashMap<String, Object> detail = mapper.readValue(EntityUtils.toString(entity, "utf-8"), LinkedHashMap.class);
+		LinkedHashMap<String, Object> detail = mapper.readValue(EntityUtils.toString(entity, "utf-8"),
+				LinkedHashMap.class);
 		String time = (String) detail.get("time");
 		log.info("本次下载的时间是：" + time + "  上次下载的时间是： " + timeBak);
 		if (!checkTime(time)) {
 			return;
 		}
 		timeBak = time;
-		final List<LinkedHashMap<String, Object>> list = (List<LinkedHashMap<String, Object>>) detail
-				.get("list");
+		final List<LinkedHashMap<String, Object>> list = (List<LinkedHashMap<String, Object>>) detail.get("list");
 		log.info("下载的数据是： " + list.size());
 		for (LinkedHashMap<String, Object> map : list) {
 			map.put("TIME", time);
@@ -131,7 +130,6 @@ public class InitStockServiceImpl implements InitStockServiceI {
 		// 异步更新StockCache的prePrices对象
 		ThreadPool.execute(new Runnable() {
 
-			
 			public void run() {
 				StockCache.initByInternet(list);
 			}
@@ -162,27 +160,22 @@ public class InitStockServiceImpl implements InitStockServiceI {
 		String year = CommonsUtil.formatDateToString5(new Date());
 		for (String code : codes) {
 			HttpEntity entity = HttpClientUtil
-					.get("http://img1.money.126.net/data/hs/kline/day/history/"
-							+ year + "/" + code + ".json");
+					.get("http://img1.money.126.net/data/hs/kline/day/history/" + year + "/" + code + ".json");
 			if (entity != null) {
-//				log.info("解析json数据。。。");
+				// log.info("解析json数据。。。");
 				LinkedHashMap<String, Object> detail = null;
 				try {
 					String content = EntityUtils.toString(entity, "utf-8");
-					detail = mapper.readValue(
-							content,
-							LinkedHashMap.class);
+					detail = mapper.readValue(content, LinkedHashMap.class);
 				} catch (Exception e) {
-					log.info("解析json数据失败"+code);
+					log.info("解析json数据失败" + code);
 				}
 				if (detail != null) {
-//					log.info("开始判断数据正确性");
-					List<List<Object>> list = (List<List<Object>>) detail
-							.get("data");
+					// log.info("开始判断数据正确性");
+					List<List<Object>> list = (List<List<Object>>) detail.get("data");
 					if (list != null && list.size() > 0) {
 						String symbol = code.substring(1);
-						String lastDay = this.stockDetailMapper
-								.selectLastDay(symbol);
+						String lastDay = this.stockDetailMapper.selectLastDay(symbol);
 						if (lastDay != null) {
 							lastDay = lastDay.replaceAll("-", "");
 							List<List<Object>> inserts = new ArrayList<List<Object>>();
@@ -193,14 +186,13 @@ public class InitStockServiceImpl implements InitStockServiceI {
 								inserts.add(list.get(i));
 							}
 							if (inserts.size() > 0) {
-								this.stockMainMapper.insert(MapUtils.createMap(
-										"list", inserts, "symbol", symbol));
-//								log.info("更新数据成功！插入的数据时 ： " + inserts.size());
+								this.stockMainMapper.insert(MapUtils.createMap("list", inserts, "symbol", symbol));
+								// log.info("更新数据成功！插入的数据时 ： " +
+								// inserts.size());
 							}
 						} else {
-//							log.info("发现新的股票数据，开始插入，  " + list.size());
-							this.stockMainMapper.insert(MapUtils.createMap(
-									"list", list, "symbol", symbol));
+							// log.info("发现新的股票数据，开始插入， " + list.size());
+							this.stockMainMapper.insert(MapUtils.createMap("list", list, "symbol", symbol));
 						}
 					}
 				}
@@ -213,18 +205,17 @@ public class InitStockServiceImpl implements InitStockServiceI {
 		List<String> codes = this.stockMainMapper.selectAllCodes();
 		int length = codes.size();
 		int count = 1000;
-		int begin = 0, end = (begin + count) <= length ? (begin + count)
-				: length;
+		int begin = 0, end = (begin + count) <= length ? (begin + count) : length;
 		List<String> subList = null;
 		while (end <= length) {
 			subList = codes.subList(begin, end);
-			downloadBuyAndSell(subList,day);
+			downloadBuyAndSell(subList, day);
 			begin = end;
 			end += count;
 		}
 		if (end > length && begin < length) {
 			subList = codes.subList(begin, length);
-			downloadBuyAndSell(subList,day);
+			downloadBuyAndSell(subList, day);
 		}
 		return MapUtils.createSuccessMap();
 	}
@@ -235,9 +226,8 @@ public class InitStockServiceImpl implements InitStockServiceI {
 	private void downloadBuyAndSell(List<String> subList, String day) {
 		HttpEntity entity;
 		try {
-			String url = "http://api.money.126.net/data/feed/"
-					+ CommonsUtil.listToString(subList) + ",money.api";
-//			log.info(url);
+			String url = "http://api.money.126.net/data/feed/" + CommonsUtil.listToString(subList) + ",money.api";
+			// log.info(url);
 			entity = HttpClientUtil.get(url);
 			String temp = EntityUtils.toString(entity, "utf-8");
 			String content = temp.substring(21, temp.length() - 2);
@@ -257,8 +247,7 @@ public class InitStockServiceImpl implements InitStockServiceI {
 							}
 						}
 					}
-					this.stockMainMapper.insertStockBuySell(MapUtils.createMap(
-							"list", list,"day",day));
+					this.stockMainMapper.insertStockBuySell(MapUtils.createMap("list", list, "day", day));
 					log.info("插入委买委卖数据的数量是 ： " + list.size());
 				}
 			}
@@ -289,8 +278,7 @@ public class InitStockServiceImpl implements InitStockServiceI {
 		HttpEntity entity = HttpClientUtil.get(url);
 		if (entity != null) {
 			InputStream in = entity.getContent();
-			OutputStream output = new FileOutputStream(
-					"D:/stock_download/cjmx/1002486/1002486.xls");
+			OutputStream output = new FileOutputStream("D:/stock_download/cjmx/1002486/1002486.xls");
 			IOUtils.copy(in, output);
 			// LinkedHashMap<String, Object> detail = mapper.readValue(
 			// EntityUtils.toString(entity, "utf-8"),
@@ -316,8 +304,7 @@ public class InitStockServiceImpl implements InitStockServiceI {
 		for (String code : codes) {
 			try {
 				File file = new File(direct + "/" + code + ".xls");
-				String url = "http://quotes.money.163.com/cjmx/" + year + "/"
-						+ day + "/" + code + ".xls";
+				String url = "http://quotes.money.163.com/cjmx/" + year + "/" + day + "/" + code + ".xls";
 				HttpEntity entity = HttpClientUtil.get(url);
 				if (entity != null) {
 					InputStream in = entity.getContent();
@@ -334,63 +321,59 @@ public class InitStockServiceImpl implements InitStockServiceI {
 		}
 		return MapUtils.createSuccessMap();
 	}
-	
+
 	/**
 	 * 实时下载逐笔成交量
-	 * url：http://quotes.money.163.com/service/zhubi_ajax.html?symbol=600868&end=09%3A52%3A00
+	 * url：http://quotes.money.163.com/service/zhubi_ajax.html?symbol=600868&end
+	 * =09%3A52%3A00
 	 * 
-	 *  _id---{$id=582177fd0cf279f0882d18f7}
-		TRADE_TYPE---1
-		PRICE_PRE---9.14
-		VOLUME_INC---1304200
-		PRICE---9.15
-		TURNOVER_INC---11933430
-		DATE---{sec=1478588406, usec=0}
-		PRICE_INC---0.0099999999999998
-		DATE_STR---15:00:06
-		TRADE_TYPE_STR---买盘
-		
+	 * _id---{$id=582177fd0cf279f0882d18f7} TRADE_TYPE---1 PRICE_PRE---9.14
+	 * VOLUME_INC---1304200 PRICE---9.15 TURNOVER_INC---11933430
+	 * DATE---{sec=1478588406, usec=0} PRICE_INC---0.0099999999999998
+	 * DATE_STR---15:00:06 TRADE_TYPE_STR---买盘
+	 * 
 	 */
 
 	@SuppressWarnings("unchecked")
 	public void insertCJL() {
 		// TODO Auto-generated method stub
 		List<String> symbols = this.stockMainMapper.selectAll();
-		while(CommonsUtil.checkTime(this.holidayMapper)){
+		while (CommonsUtil.checkTime(this.holidayMapper)) {
 			long begin = System.currentTimeMillis();
 			String time = CommonsUtil.formatDateToString4(new Date());
 			String encodeTime = null;
 			try {
-				encodeTime = URLEncoder.encode(time,"utf-8");
+				encodeTime = URLEncoder.encode(time, "utf-8");
 			} catch (UnsupportedEncodingException e) {
 				log.info("编码失败！");
 			}
 			String url = "";
-			if(symbols!=null){
+			if (symbols != null) {
 				List<FBVolume> fbVolumes = new ArrayList<FBVolume>();
 				for (String symbol : symbols) {
 					fbVolumes.clear();
-					url = "http://quotes.money.163.com/service/zhubi_ajax.html?symbol="+symbol+"&end="+encodeTime;
+					url = "http://quotes.money.163.com/service/zhubi_ajax.html?symbol=" + symbol + "&end=" + encodeTime;
 					HttpEntity entity = HttpClientUtil.get(url);
-					if(entity!=null){
+					if (entity != null) {
 						try {
 							String content = EntityUtils.toString(entity, "utf-8");
-							LinkedHashMap<String,Object> detail = mapper.readValue(content, LinkedHashMap.class);
+							LinkedHashMap<String, Object> detail = mapper.readValue(content, LinkedHashMap.class);
 							ArrayList<Object> list = (ArrayList<Object>) detail.get("zhubi_list");
-							if(list!=null&&list.size()>0){
+							if (list != null && list.size() > 0) {
 								for (Object object : list) {
-									LinkedHashMap<String,Object> o = (LinkedHashMap<String, Object>) object;
+									LinkedHashMap<String, Object> o = (LinkedHashMap<String, Object>) object;
 									FBVolume volume = new FBVolume(o);
 									fbVolumes.add(volume);
 								}
 							}
-							if(fbVolumes.size()>0){
-								List<FBVolume> inserts = getInsertList("fbVolumes"+symbol, fbVolumes);
-								this.stockMainMapper.insertFBVolume(MapUtils.createMap("list",inserts,"symbol",symbol));
-								putFbVolumes("fbVolumes"+symbol, fbVolumes);
-								log.info("插入数据库成功！---"+symbol);
-							}else{
-								log.info("该股票此时间段内无成交量---"+symbol);
+							if (fbVolumes.size() > 0) {
+								List<FBVolume> inserts = getInsertList("fbVolumes" + symbol, fbVolumes);
+								this.stockMainMapper
+										.insertFBVolume(MapUtils.createMap("list", inserts, "symbol", symbol));
+								putFbVolumes("fbVolumes" + symbol, fbVolumes);
+								log.info("插入数据库成功！---" + symbol);
+							} else {
+								log.info("该股票此时间段内无成交量---" + symbol);
 							}
 						} catch (Exception e) {
 							e.printStackTrace();
@@ -398,9 +381,9 @@ public class InitStockServiceImpl implements InitStockServiceI {
 					}
 				}
 			}
-			long remain = System.currentTimeMillis()-begin;
+			long remain = System.currentTimeMillis() - begin;
 			long sleep = StockConstant.INIT_STOCK_SLEEP_TIME - remain;
-			if(sleep>0){
+			if (sleep > 0) {
 				try {
 					Thread.sleep(sleep);
 				} catch (InterruptedException e) {
@@ -409,128 +392,107 @@ public class InitStockServiceImpl implements InitStockServiceI {
 			}
 		}
 	}
-	
+
 	@SuppressWarnings("unchecked")
-	private void putFbVolumes(String key,List<FBVolume> fbVolumes){
+	private void putFbVolumes(String key, List<FBVolume> fbVolumes) {
 		List<FBVolume> list = (List<FBVolume>) StockCache.getCache(key);
-		if(list==null){
+		if (list == null) {
 			StockCache.putCache(key, fbVolumes);
 			List<List<FBVolume>> fbVolumes_list = new ArrayList<List<FBVolume>>();
 			fbVolumes_list.add(fbVolumes);
-		}else{
+		} else {
 			List<List<FBVolume>> fbVolumes_list = (List<List<FBVolume>>) StockCache.getCache("fbVolumes_list");
-			if(fbVolumes_list.size()==2){
+			if (fbVolumes_list.size() == 2) {
 				List<FBVolume> temp = fbVolumes_list.remove(0);
 				List<FBVolume> list1 = (List<FBVolume>) StockCache.getCache(key);
 				list1.removeAll(temp);
 				list1.addAll(fbVolumes);
 				fbVolumes_list.add(fbVolumes);
-			}else{
+			} else {
 				fbVolumes_list.add(fbVolumes);
 				((List<FBVolume>) StockCache.getCache(key)).addAll(fbVolumes);
 			}
 		}
-		
+
 	}
-	
+
 	@SuppressWarnings("unchecked")
-	private List<FBVolume> getInsertList(String key,List<FBVolume> fbVolumes){
+	private List<FBVolume> getInsertList(String key, List<FBVolume> fbVolumes) {
 		fbVolumes.removeAll((List<FBVolume>) StockCache.getCache(key));
 		return fbVolumes;
 	}
-	
+
 	public static void main(String[] args) {
 		new InitStockServiceImpl().testInsertCJL();
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public void testInsertCJL() {
 		String time = CommonsUtil.formatDateToString4(new Date());
 		String encodeTime = null;
 		try {
-			encodeTime = URLEncoder.encode(time,"utf-8");
+			encodeTime = URLEncoder.encode(time, "utf-8");
 		} catch (UnsupportedEncodingException e) {
 			log.info("编码失败！");
 		}
 		String url = "";
 		String symbol = "000029";
-			List<FBVolume> fbVolumes = new ArrayList<FBVolume>();
-				fbVolumes.clear();
-				url = "http://quotes.money.163.com/service/zhubi_ajax.html?symbol="+symbol+"&end="+encodeTime;
-				log.info(url);
-				HttpEntity entity = HttpClientUtil.get(url);
-				if(entity!=null){
-					try {
-						String content = EntityUtils.toString(entity, "utf-8");
-						System.out.println(content);
-						LinkedHashMap<String,Object> detail = mapper.readValue(content, LinkedHashMap.class);
-						ArrayList<Object> list = (ArrayList<Object>) detail.get("zhubi_list");
-						if(list!=null&&list.size()>0){
-							for (Object object : list) {
-								LinkedHashMap<String,Object> o = (LinkedHashMap<String, Object>) object;
-								FBVolume volume = new FBVolume(o);
-								fbVolumes.add(volume);
-							}
-						}
-						
-					} catch (Exception e) {
-						e.printStackTrace();
+		List<FBVolume> fbVolumes = new ArrayList<FBVolume>();
+		fbVolumes.clear();
+		url = "http://quotes.money.163.com/service/zhubi_ajax.html?symbol=" + symbol + "&end=" + encodeTime;
+		log.info(url);
+		HttpEntity entity = HttpClientUtil.get(url);
+		if (entity != null) {
+			try {
+				String content = EntityUtils.toString(entity, "utf-8");
+				System.out.println(content);
+				LinkedHashMap<String, Object> detail = mapper.readValue(content, LinkedHashMap.class);
+				ArrayList<Object> list = (ArrayList<Object>) detail.get("zhubi_list");
+				if (list != null && list.size() > 0) {
+					for (Object object : list) {
+						LinkedHashMap<String, Object> o = (LinkedHashMap<String, Object>) object;
+						FBVolume volume = new FBVolume(o);
+						fbVolumes.add(volume);
 					}
 				}
-				if(fbVolumes.size()>0){
-//					this.stockMainMapper.insertFBVolume(MapUtils.createMap("list",fbVolumes,"symbol",symbol));
-					log.info("插入数据库成功！---"+symbol);
-				}else{
-					log.info("该股票此时间段内无成交量---"+symbol);
-				}
-	}   
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	public void initJunX(String symbol) throws Exception{
-		StockAnalyseBase analyseBase = stockMainMapper.selectStockAnalyse(MapUtils.createMap("symbol",symbol));
-		if(analyseBase!=null){
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		if (fbVolumes.size() > 0) {
+			// this.stockMainMapper.insertFBVolume(MapUtils.createMap("list",fbVolumes,"symbol",symbol));
+			log.info("插入数据库成功！---" + symbol);
+		} else {
+			log.info("该股票此时间段内无成交量---" + symbol);
+		}
+	}
+
+	public void initJunX(String symbol) throws Exception {
+		StockAnalyseBase analyseBase = stockMainMapper.selectStockAnalyse(MapUtils.createMap("symbol", symbol));
+		if (analyseBase != null) {
 			analyseBase.initJunXian();
-			if(analyseBase.junxians.size()>0){
+			if (analyseBase.junxians.size() > 0) {
 				DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 				def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
 				TransactionStatus status = transactionManager.getTransaction(def);
 				stockMainMapper.insertJunXian(analyseBase);
 				transactionManager.commit(status);
-//				log.info("insert----------"+symbol+"---------------------size------"+analyseBase.junxians.size());
+				// log.info("insert----------"+symbol+"---------------------size------"+analyseBase.junxians.size());
 			}
-			log.info("insert----------"+symbol+"---------------------size------"+analyseBase.junxians.size());
+			log.info("insert----------" + symbol + "---------------------size------" + analyseBase.junxians.size());
 		}
 	}
-	
-	public void initJunXEveryDay(){
-		
+
+	public void initJunXEveryDay() {
+
 	}
-	
+
 	public Map<String, Object> initCjmxPerWeek() throws Exception {
 		List<String> codes = this.stockMainMapper.selectAllCodes();
 		Date date = new Date();
 		String year = CommonsUtil.formatYYYY(date);
-		String[] days = {"2016-12-20","2016-12-21","2016-12-22","2016-12-23"};
+		String[] days = { "2016-12-20", "2016-12-21", "2016-12-22", "2016-12-23" };
 		for (String day : days) {
 			String direct = "D:/stock_download/cjmx/" + year + "/" + day;
 			File directory = new File(direct);
@@ -544,8 +506,7 @@ public class InitStockServiceImpl implements InitStockServiceI {
 			for (String code : codes) {
 				try {
 					File file = new File(direct + "/" + code + ".xls");
-					String url = "http://quotes.money.163.com/cjmx/" + year + "/"
-							+ day + "/" + code + ".xls";
+					String url = "http://quotes.money.163.com/cjmx/" + year + "/" + day + "/" + code + ".xls";
 					HttpEntity entity = HttpClientUtil.get(url);
 					if (entity != null) {
 						InputStream in = entity.getContent();
@@ -561,16 +522,17 @@ public class InitStockServiceImpl implements InitStockServiceI {
 				}
 			}
 		}
-		
+
 		return MapUtils.createSuccessMap();
 	}
-	
+
 	/**
 	 * 
 	 * @param day
 	 */
-	public void initStockAnalyse(String day){
-		List<StockFilterBean> list = this.stockMainMapper.selectAnalyse1(MapUtils.createMap("begin",day,"remainDays",30));
+	public void initStockAnalyse(String day) {
+		List<StockFilterBean> list = this.stockMainMapper
+				.selectAnalyse1(MapUtils.createMap("begin", day, "remainDays", 30));
 		List<StockFilterBean> inserts = new ArrayList<StockFilterBean>();
 		if (list != null && list.size() > 0) {
 			for (StockFilterBean analyse : list) {
@@ -579,5 +541,5 @@ public class InitStockServiceImpl implements InitStockServiceI {
 			}
 		}
 	}
-	
+
 }
