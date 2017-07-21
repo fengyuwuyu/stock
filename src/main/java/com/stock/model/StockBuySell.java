@@ -30,7 +30,7 @@ public class StockBuySell {
 	private int volume;
 
 	/**
-	 *   卖盘价格及数量
+	 * 卖盘价格及数量
 	 */
 	private double ask1;
 	private double ask2;
@@ -61,41 +61,81 @@ public class StockBuySell {
 	public StockBuySell() {
 	}
 
+	public StockBuySell(String code, String symbol, double percent, double high, double price, double open, double low,
+			String time, double yestclose, long turnover, double updown, int volume, double ask1, double ask2,
+			double ask3, double ask4, double ask5, int askvol1, int askvol2, int askvol3, int askvol4, int askvol5,
+			double bid1, double bid2, double bid3, double bid4, double bid5, int bidvol1, int bidvol2, int bidvol3,
+			int bidvol4, int bidvol5, String day) {
+		this.code = code;
+		this.symbol = symbol;
+		this.percent = percent;
+		this.high = high;
+		this.price = price;
+		this.open = open;
+		this.low = low;
+		this.time = time;
+		this.yestclose = yestclose;
+		this.turnover = turnover;
+		this.updown = updown;
+		this.volume = volume;
+		this.ask1 = ask1;
+		this.ask2 = ask2;
+		this.ask3 = ask3;
+		this.ask4 = ask4;
+		this.ask5 = ask5;
+		this.askvol1 = askvol1;
+		this.askvol2 = askvol2;
+		this.askvol3 = askvol3;
+		this.askvol4 = askvol4;
+		this.askvol5 = askvol5;
+		this.bid1 = bid1;
+		this.bid2 = bid2;
+		this.bid3 = bid3;
+		this.bid4 = bid4;
+		this.bid5 = bid5;
+		this.bidvol1 = bidvol1;
+		this.bidvol2 = bidvol2;
+		this.bidvol3 = bidvol3;
+		this.bidvol4 = bidvol4;
+		this.bidvol5 = bidvol5;
+		this.day = day;
+	}
+
 	public StockBuySell(LinkedHashMap<String, Object> o) {
-		this.symbol = convertString(o,"symbol");
+		this.symbol = convertString(o, "symbol");
 		this.percent = convertDouble(o, "percent");
 		this.high = convertDouble(o, "high");
 		this.ask1 = convertDouble(o, "ask1");
 		this.ask2 = convertDouble(o, "ask2");
 		this.ask3 = convertDouble(o, "ask3");
-		this.ask4 =	convertDouble(o, "ask4");
+		this.ask4 = convertDouble(o, "ask4");
 		this.ask5 = convertDouble(o, "ask5");
-		this.askvol1 = convertInt(o,"askvol1");
-		this.askvol2 = convertInt(o,"askvol2");
-		this.askvol3 = convertInt(o,"askvol3");
-		this.askvol4 = convertInt(o,"askvol4");
-		this.askvol5 = convertInt(o,"askvol5");
+		this.askvol1 = convertInt(o, "askvol1");
+		this.askvol2 = convertInt(o, "askvol2");
+		this.askvol3 = convertInt(o, "askvol3");
+		this.askvol4 = convertInt(o, "askvol4");
+		this.askvol5 = convertInt(o, "askvol5");
 		this.bid1 = convertDouble(o, "bid1");
 		this.bid2 = convertDouble(o, "bid2");
 		this.bid3 = convertDouble(o, "bid3");
 		this.bid4 = convertDouble(o, "bid4");
 		this.bid5 = convertDouble(o, "bid5");
-		this.bidvol1 = convertInt(o,"bidvol1");
-		this.bidvol2 = convertInt(o,"bidvol2");
-		this.bidvol3 = convertInt(o,"bidvol3");
-		this.bidvol4 = convertInt(o,"bidvol4");
-		this.bidvol5 = convertInt(o,"bidvol5");
+		this.bidvol1 = convertInt(o, "bidvol1");
+		this.bidvol2 = convertInt(o, "bidvol2");
+		this.bidvol3 = convertInt(o, "bidvol3");
+		this.bidvol4 = convertInt(o, "bidvol4");
+		this.bidvol5 = convertInt(o, "bidvol5");
 		this.price = convertDouble(o, "price");
 		this.open = convertDouble(o, "open");
-		this.time = convertString(o,"time");
+		this.time = convertString(o, "time");
 		this.yestclose = convertDouble(o, "yestclose");
-		this.turnover = convertLong(o,"turnover");
+		this.turnover = convertLong(o, "turnover");
 		this.low = convertDouble(o, "low");
 		this.updown = convertDouble(o, "updown");
-		this.volume = convertInt(o,"volume");
-		this.code = convertString(o,"code");
+		this.volume = convertInt(o, "volume");
+		this.code = convertString(o, "code");
 	}
-	
+
 	private long convertLong(LinkedHashMap<String, Object> o, String column) {
 		long l = 0;
 		try {
@@ -106,17 +146,17 @@ public class StockBuySell {
 		return l;
 	}
 
-	private int convertInt(LinkedHashMap<String, Object> o,String column){
+	private int convertInt(LinkedHashMap<String, Object> o, String column) {
 		int i = 0;
 		try {
 			i = (Integer) o.get(column);
 		} catch (Exception e) {
-			i=0;
+			i = 0;
 		}
 		return i;
 	}
-	
-	private double convertDouble(LinkedHashMap<String, Object> o,String column){
+
+	private double convertDouble(LinkedHashMap<String, Object> o, String column) {
 		double d = 0;
 		try {
 			d = (Double) o.get(column);
@@ -125,11 +165,11 @@ public class StockBuySell {
 		}
 		return d;
 	}
-	
-	private String convertString(LinkedHashMap<String, Object> o,String column){
+
+	private String convertString(LinkedHashMap<String, Object> o, String column) {
 		String s = "";
 		try {
-			s = o.get(column)+"";
+			s = o.get(column) + "";
 		} catch (Exception e) {
 			s = "";
 		}
@@ -391,8 +431,6 @@ public class StockBuySell {
 	public void setTurnover(long turnover) {
 		this.turnover = turnover;
 	}
-	
-	
 
 	public String getDay() {
 		return day;
@@ -404,19 +442,14 @@ public class StockBuySell {
 
 	@Override
 	public String toString() {
-		return "StockBuySell [code=" + code + ", symbol=" + symbol
-				+ ", percent=" + percent + ", high=" + high + ", price="
-				+ price + ", open=" + open + ", low=" + low + ", time=" + time
-				+ ", yestclose=" + yestclose + ", turnover=" + turnover
-				+ ", updown=" + updown + ", volume=" + volume + ", ask1="
-				+ ask1 + ", ask2=" + ask2 + ", ask3=" + ask3 + ", ask4=" + ask4
-				+ ", ask5=" + ask5 + ", askvol1=" + askvol1 + ", askvol2="
-				+ askvol2 + ", askvol3=" + askvol3 + ", askvol4=" + askvol4
-				+ ", askvol5=" + askvol5 + ", bid1=" + bid1 + ", bid2=" + bid2
-				+ ", bid3=" + bid3 + ", bid4=" + bid4 + ", bid5=" + bid5
-				+ ", bidvol1=" + bidvol1 + ", bidvol2=" + bidvol2
-				+ ", bidvol3=" + bidvol3 + ", bidvol4=" + bidvol4
-				+ ", bidvol5=" + bidvol5 + ", day=" + day + "]";
+		return "StockBuySell [code=" + code + ", symbol=" + symbol + ", percent=" + percent + ", high=" + high
+				+ ", price=" + price + ", open=" + open + ", low=" + low + ", time=" + time + ", yestclose=" + yestclose
+				+ ", turnover=" + turnover + ", updown=" + updown + ", volume=" + volume + ", ask1=" + ask1 + ", ask2="
+				+ ask2 + ", ask3=" + ask3 + ", ask4=" + ask4 + ", ask5=" + ask5 + ", askvol1=" + askvol1 + ", askvol2="
+				+ askvol2 + ", askvol3=" + askvol3 + ", askvol4=" + askvol4 + ", askvol5=" + askvol5 + ", bid1=" + bid1
+				+ ", bid2=" + bid2 + ", bid3=" + bid3 + ", bid4=" + bid4 + ", bid5=" + bid5 + ", bidvol1=" + bidvol1
+				+ ", bidvol2=" + bidvol2 + ", bidvol3=" + bidvol3 + ", bidvol4=" + bidvol4 + ", bidvol5=" + bidvol5
+				+ ", day=" + day + "]";
 	}
 
 }
