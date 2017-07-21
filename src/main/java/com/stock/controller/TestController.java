@@ -63,16 +63,7 @@ public class TestController {
 	@RequestMapping("test.do")
 	@ResponseBody
 	public Map<String, Object> test() {
-		try {
-			boolean run = true;
-			for(int i = 20;i>0;i--){
-				while(run){
-//					run = this.stockMainServiceI.analyse1(i);
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		initStockServiceI.initBuyAndSell("2017-07-21");
 		return MapUtils.createFailedMap();
 	}
 

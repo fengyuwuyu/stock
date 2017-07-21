@@ -247,8 +247,10 @@ public class InitStockServiceImpl implements InitStockServiceI {
 							}
 						}
 					}
-					this.stockMainMapper.insertStockBuySell(MapUtils.createMap("list", list, "day", day));
-					log.info("插入委买委卖数据的数量是 ： " + list.size());
+					if(list.size() > 0){
+						this.stockMainMapper.insertStockBuySell(MapUtils.createMap("list", list, "day", day));
+						log.info("插入委买委卖数据的数量是 ： " + list.size());
+					}
 				}
 			}
 		} catch (Exception e) {

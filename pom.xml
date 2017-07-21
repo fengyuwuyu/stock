@@ -235,8 +235,9 @@
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<version>5.1.27</version>
+			<version>5.1.42</version>
 		</dependency>
+
 
 		<!-- spring -->
 		<dependency>
@@ -302,8 +303,8 @@
 			<version>7.0</version>
 		</dependency>
 	</dependencies>
-	
-		<build>
+
+	<build>
 		<finalName>stock</finalName>
 		<sourceDirectory>src/main/java</sourceDirectory>
 
