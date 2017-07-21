@@ -48,6 +48,11 @@
     from stock_buy_sell
     where id = #{id,jdbcType=INTEGER}
   </select>
+  
+  <select id="selectRecord" resultType="com.stock.model.StockBuySellGroup">
+  	select * from stock_buy_sell group by symbol limit 100000
+  </select>
+  
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from stock_buy_sell
     where id = #{id,jdbcType=INTEGER}
@@ -438,8 +443,8 @@
   	select max(holiday_time) from holiday
   </select>
   
-  <select id="selectByDay" parameterType="string" resultMap="BaseResultMap">
-  	select * from stock_buy_sell where day &gt; #{day}
+  <select id="selectByDay" parameterType="map" resultMap="BaseResultMap">
+  	select * from stock_buy_sell symbol = #{symbol} where and day = #{day}
   </select>
   
 </mapper>

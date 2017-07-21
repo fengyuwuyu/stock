@@ -1,8 +1,10 @@
 package com.stock.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import com.stock.model.StockBuySell;
+import com.stock.model.StockBuySellGroup;
 
 public interface StockBuySellMapper {
     int deleteByPrimaryKey(Integer id);
@@ -21,5 +23,7 @@ public interface StockBuySellMapper {
 
 	String selectMaxHoliday();
 
-	List<StockBuySell> selectByDay(String day);
+	List<StockBuySell> selectByDay(Map<String, Object> map);
+	
+	List<StockBuySellGroup> selectRecord();
 }

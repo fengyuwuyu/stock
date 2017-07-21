@@ -18,118 +18,158 @@ public class StockBuySell {
 
 	private String code;
 	private String symbol;
-	private double percent;
-	private double high;
-	private double price;
-	private double open;
-	private double low;
+	private Double percent;
+	private Double high;
+	private Double price;
+	private Double open;
+	private Double low;
 	private String time;
-	private double yestclose;
-	private long turnover;
-	private double updown;
-	private int volume;
+	private Double yestclose;
+	private Long turnover;
+	private Double updown;
+	private Long volume;
 
 	/**
-	 *   卖盘价格及数量
+	 * 卖盘价格及数量
 	 */
-	private double ask1;
-	private double ask2;
-	private double ask3;
-	private double ask4;
-	private double ask5;
-	private int askvol1;
-	private int askvol2;
-	private int askvol3;
-	private int askvol4;
-	private int askvol5;
+	private Double ask1;
+	private Double ask2;
+	private Double ask3;
+	private Double ask4;
+	private Double ask5;
+	private Integer askvol1;
+	private Integer askvol2;
+	private Integer askvol3;
+	private Integer askvol4;
+	private Integer askvol5;
 
 	/**
 	 * 买盘价格及数量
 	 */
-	private double bid1;
-	private double bid2;
-	private double bid3;
-	private double bid4;
-	private double bid5;
-	private int bidvol1;
-	private int bidvol2;
-	private int bidvol3;
-	private int bidvol4;
-	private int bidvol5;
+	private Double bid1;
+	private Double bid2;
+	private Double bid3;
+	private Double bid4;
+	private Double bid5;
+	private Integer bidvol1;
+	private Integer bidvol2;
+	private Integer bidvol3;
+	private Integer bidvol4;
+	private Integer bidvol5;
 	private String day;
 
 	public StockBuySell() {
 	}
 
+	public StockBuySell(String code, String symbol, Double percent, Double high, Double price, Double open, Double low,
+			String time, Double yestclose, Long turnover, Double updown, Long volume, Double ask1, Double ask2,
+			Double ask3, Double ask4, Double ask5, Integer askvol1, Integer askvol2, Integer askvol3, Integer askvol4, Integer askvol5,
+			Double bid1, Double bid2, Double bid3, Double bid4, Double bid5, Integer bidvol1, Integer bidvol2, Integer bidvol3,
+			Integer bidvol4, Integer bidvol5, String day) {
+		this.code = code;
+		this.symbol = symbol;
+		this.percent = percent;
+		this.high = high;
+		this.price = price;
+		this.open = open;
+		this.low = low;
+		this.time = time;
+		this.yestclose = yestclose;
+		this.turnover = turnover;
+		this.updown = updown;
+		this.volume = volume;
+		this.ask1 = ask1;
+		this.ask2 = ask2;
+		this.ask3 = ask3;
+		this.ask4 = ask4;
+		this.ask5 = ask5;
+		this.askvol1 = askvol1;
+		this.askvol2 = askvol2;
+		this.askvol3 = askvol3;
+		this.askvol4 = askvol4;
+		this.askvol5 = askvol5;
+		this.bid1 = bid1;
+		this.bid2 = bid2;
+		this.bid3 = bid3;
+		this.bid4 = bid4;
+		this.bid5 = bid5;
+		this.bidvol1 = bidvol1;
+		this.bidvol2 = bidvol2;
+		this.bidvol3 = bidvol3;
+		this.bidvol4 = bidvol4;
+		this.bidvol5 = bidvol5;
+		this.day = day;
+	}
+
 	public StockBuySell(LinkedHashMap<String, Object> o) {
-		this.symbol = convertString(o,"symbol");
+		this.symbol = convertString(o, "symbol");
 		this.percent = convertDouble(o, "percent");
 		this.high = convertDouble(o, "high");
 		this.ask1 = convertDouble(o, "ask1");
 		this.ask2 = convertDouble(o, "ask2");
 		this.ask3 = convertDouble(o, "ask3");
-		this.ask4 =	convertDouble(o, "ask4");
+		this.ask4 = convertDouble(o, "ask4");
 		this.ask5 = convertDouble(o, "ask5");
-		this.askvol1 = convertInt(o,"askvol1");
-		this.askvol2 = convertInt(o,"askvol2");
-		this.askvol3 = convertInt(o,"askvol3");
-		this.askvol4 = convertInt(o,"askvol4");
-		this.askvol5 = convertInt(o,"askvol5");
+		this.askvol1 = convertInteger(o, "askvol1");
+		this.askvol2 = convertInteger(o, "askvol2");
+		this.askvol3 = convertInteger(o, "askvol3");
+		this.askvol4 = convertInteger(o, "askvol4");
+		this.askvol5 = convertInteger(o, "askvol5");
 		this.bid1 = convertDouble(o, "bid1");
 		this.bid2 = convertDouble(o, "bid2");
 		this.bid3 = convertDouble(o, "bid3");
 		this.bid4 = convertDouble(o, "bid4");
 		this.bid5 = convertDouble(o, "bid5");
-		this.bidvol1 = convertInt(o,"bidvol1");
-		this.bidvol2 = convertInt(o,"bidvol2");
-		this.bidvol3 = convertInt(o,"bidvol3");
-		this.bidvol4 = convertInt(o,"bidvol4");
-		this.bidvol5 = convertInt(o,"bidvol5");
+		this.bidvol1 = convertInteger(o, "bidvol1");
+		this.bidvol2 = convertInteger(o, "bidvol2");
+		this.bidvol3 = convertInteger(o, "bidvol3");
+		this.bidvol4 = convertInteger(o, "bidvol4");
+		this.bidvol5 = convertInteger(o, "bidvol5");
 		this.price = convertDouble(o, "price");
 		this.open = convertDouble(o, "open");
-		this.time = convertString(o,"time");
+		this.time = convertString(o, "time");
 		this.yestclose = convertDouble(o, "yestclose");
-		this.turnover = convertLong(o,"turnover");
+		this.turnover = convertLong(o, "turnover");
 		this.low = convertDouble(o, "low");
 		this.updown = convertDouble(o, "updown");
-		this.volume = convertInt(o,"volume");
-		this.code = convertString(o,"code");
+		this.volume = convertLong(o, "volume");
+		this.code = convertString(o, "code");
 	}
-	
-	private long convertLong(LinkedHashMap<String, Object> o, String column) {
-		long l = 0;
+
+	private Long convertLong(LinkedHashMap<String, Object> o, String column) {
+		Long l = 0L;
 		try {
 			l = (Long) o.get(column);
 		} catch (Exception e) {
-			l = 0;
+			l = 0L;
 		}
 		return l;
 	}
 
-	private int convertInt(LinkedHashMap<String, Object> o,String column){
-		int i = 0;
+	private Integer convertInteger(LinkedHashMap<String, Object> o, String column) {
+		Integer i = 0;
 		try {
 			i = (Integer) o.get(column);
 		} catch (Exception e) {
-			i=0;
+			i = 0;
 		}
 		return i;
 	}
-	
-	private double convertDouble(LinkedHashMap<String, Object> o,String column){
-		double d = 0;
+
+	private Double convertDouble(LinkedHashMap<String, Object> o, String column) {
+		Double d = 0D;
 		try {
 			d = (Double) o.get(column);
 		} catch (Exception e) {
-			d = 0;
+			d = 0D;
 		}
 		return d;
 	}
-	
-	private String convertString(LinkedHashMap<String, Object> o,String column){
+
+	private String convertString(LinkedHashMap<String, Object> o, String column) {
 		String s = "";
 		try {
-			s = o.get(column)+"";
+			s = o.get(column) + "";
 		} catch (Exception e) {
 			s = "";
 		}
@@ -144,27 +184,27 @@ public class StockBuySell {
 		this.code = code;
 	}
 
-	public double getLow() {
+	public Double getLow() {
 		return low;
 	}
 
-	public void setLow(double low) {
+	public void setLow(Double low) {
 		this.low = low;
 	}
 
-	public double getUpdown() {
+	public Double getUpdown() {
 		return updown;
 	}
 
-	public void setUpdown(double updown) {
+	public void setUpdown(Double updown) {
 		this.updown = updown;
 	}
 
-	public int getVolume() {
+	public Long getVolume() {
 		return volume;
 	}
 
-	public void setVolume(int volume) {
+	public void setVolume(Long volume) {
 		this.volume = volume;
 	}
 
@@ -176,195 +216,195 @@ public class StockBuySell {
 		this.symbol = symbol;
 	}
 
-	public double getPercent() {
+	public Double getPercent() {
 		return percent;
 	}
 
-	public void setPercent(double percent) {
+	public void setPercent(Double percent) {
 		this.percent = percent;
 	}
 
-	public double getHigh() {
+	public Double getHigh() {
 		return high;
 	}
 
-	public void setHigh(double high) {
+	public void setHigh(Double high) {
 		this.high = high;
 	}
 
-	public double getAsk1() {
+	public Double getAsk1() {
 		return ask1;
 	}
 
-	public void setAsk1(double ask1) {
+	public void setAsk1(Double ask1) {
 		this.ask1 = ask1;
 	}
 
-	public double getAsk2() {
+	public Double getAsk2() {
 		return ask2;
 	}
 
-	public void setAsk2(double ask2) {
+	public void setAsk2(Double ask2) {
 		this.ask2 = ask2;
 	}
 
-	public double getAsk3() {
+	public Double getAsk3() {
 		return ask3;
 	}
 
-	public void setAsk3(double ask3) {
+	public void setAsk3(Double ask3) {
 		this.ask3 = ask3;
 	}
 
-	public double getAsk4() {
+	public Double getAsk4() {
 		return ask4;
 	}
 
-	public void setAsk4(double ask4) {
+	public void setAsk4(Double ask4) {
 		this.ask4 = ask4;
 	}
 
-	public double getAsk5() {
+	public Double getAsk5() {
 		return ask5;
 	}
 
-	public void setAsk5(double ask5) {
+	public void setAsk5(Double ask5) {
 		this.ask5 = ask5;
 	}
 
-	public int getAskvol1() {
+	public Integer getAskvol1() {
 		return askvol1;
 	}
 
-	public void setAskvol1(int askvol1) {
+	public void setAskvol1(Integer askvol1) {
 		this.askvol1 = askvol1;
 	}
 
-	public int getAskvol2() {
+	public Integer getAskvol2() {
 		return askvol2;
 	}
 
-	public void setAskvol2(int askvol2) {
+	public void setAskvol2(Integer askvol2) {
 		this.askvol2 = askvol2;
 	}
 
-	public int getAskvol3() {
+	public Integer getAskvol3() {
 		return askvol3;
 	}
 
-	public void setAskvol3(int askvol3) {
+	public void setAskvol3(Integer askvol3) {
 		this.askvol3 = askvol3;
 	}
 
-	public int getAskvol4() {
+	public Integer getAskvol4() {
 		return askvol4;
 	}
 
-	public void setAskvol4(int askvol4) {
+	public void setAskvol4(Integer askvol4) {
 		this.askvol4 = askvol4;
 	}
 
-	public int getAskvol5() {
+	public Integer getAskvol5() {
 		return askvol5;
 	}
 
-	public void setAskvol5(int askvol5) {
+	public void setAskvol5(Integer askvol5) {
 		this.askvol5 = askvol5;
 	}
 
-	public double getBid1() {
+	public Double getBid1() {
 		return bid1;
 	}
 
-	public void setBid1(double bid1) {
+	public void setBid1(Double bid1) {
 		this.bid1 = bid1;
 	}
 
-	public double getBid2() {
+	public Double getBid2() {
 		return bid2;
 	}
 
-	public void setBid2(double bid2) {
+	public void setBid2(Double bid2) {
 		this.bid2 = bid2;
 	}
 
-	public double getBid3() {
+	public Double getBid3() {
 		return bid3;
 	}
 
-	public void setBid3(double bid3) {
+	public void setBid3(Double bid3) {
 		this.bid3 = bid3;
 	}
 
-	public double getBid4() {
+	public Double getBid4() {
 		return bid4;
 	}
 
-	public void setBid4(double bid4) {
+	public void setBid4(Double bid4) {
 		this.bid4 = bid4;
 	}
 
-	public double getBid5() {
+	public Double getBid5() {
 		return bid5;
 	}
 
-	public void setBid5(double bid5) {
+	public void setBid5(Double bid5) {
 		this.bid5 = bid5;
 	}
 
-	public int getBidvol1() {
+	public Integer getBidvol1() {
 		return bidvol1;
 	}
 
-	public void setBidvol1(int bidvol1) {
+	public void setBidvol1(Integer bidvol1) {
 		this.bidvol1 = bidvol1;
 	}
 
-	public int getBidvol2() {
+	public Integer getBidvol2() {
 		return bidvol2;
 	}
 
-	public void setBidvol2(int bidvol2) {
+	public void setBidvol2(Integer bidvol2) {
 		this.bidvol2 = bidvol2;
 	}
 
-	public int getBidvol3() {
+	public Integer getBidvol3() {
 		return bidvol3;
 	}
 
-	public void setBidvol3(int bidvol3) {
+	public void setBidvol3(Integer bidvol3) {
 		this.bidvol3 = bidvol3;
 	}
 
-	public int getBidvol4() {
+	public Integer getBidvol4() {
 		return bidvol4;
 	}
 
-	public void setBidvol4(int bidvol4) {
+	public void setBidvol4(Integer bidvol4) {
 		this.bidvol4 = bidvol4;
 	}
 
-	public int getBidvol5() {
+	public Integer getBidvol5() {
 		return bidvol5;
 	}
 
-	public void setBidvol5(int bidvol5) {
+	public void setBidvol5(Integer bidvol5) {
 		this.bidvol5 = bidvol5;
 	}
 
-	public double getPrice() {
+	public Double getPrice() {
 		return price;
 	}
 
-	public void setPrice(double price) {
+	public void setPrice(Double price) {
 		this.price = price;
 	}
 
-	public double getOpen() {
+	public Double getOpen() {
 		return open;
 	}
 
-	public void setOpen(double open) {
+	public void setOpen(Double open) {
 		this.open = open;
 	}
 
@@ -376,23 +416,21 @@ public class StockBuySell {
 		this.time = time;
 	}
 
-	public double getYestclose() {
+	public Double getYestclose() {
 		return yestclose;
 	}
 
-	public void setYestclose(double yestclose) {
+	public void setYestclose(Double yestclose) {
 		this.yestclose = yestclose;
 	}
 
-	public long getTurnover() {
+	public Long getTurnover() {
 		return turnover;
 	}
 
-	public void setTurnover(long turnover) {
+	public void setTurnover(Long turnover) {
 		this.turnover = turnover;
 	}
-	
-	
 
 	public String getDay() {
 		return day;
@@ -404,19 +442,14 @@ public class StockBuySell {
 
 	@Override
 	public String toString() {
-		return "StockBuySell [code=" + code + ", symbol=" + symbol
-				+ ", percent=" + percent + ", high=" + high + ", price="
-				+ price + ", open=" + open + ", low=" + low + ", time=" + time
-				+ ", yestclose=" + yestclose + ", turnover=" + turnover
-				+ ", updown=" + updown + ", volume=" + volume + ", ask1="
-				+ ask1 + ", ask2=" + ask2 + ", ask3=" + ask3 + ", ask4=" + ask4
-				+ ", ask5=" + ask5 + ", askvol1=" + askvol1 + ", askvol2="
-				+ askvol2 + ", askvol3=" + askvol3 + ", askvol4=" + askvol4
-				+ ", askvol5=" + askvol5 + ", bid1=" + bid1 + ", bid2=" + bid2
-				+ ", bid3=" + bid3 + ", bid4=" + bid4 + ", bid5=" + bid5
-				+ ", bidvol1=" + bidvol1 + ", bidvol2=" + bidvol2
-				+ ", bidvol3=" + bidvol3 + ", bidvol4=" + bidvol4
-				+ ", bidvol5=" + bidvol5 + ", day=" + day + "]";
+		return "StockBuySell [code=" + code + ", symbol=" + symbol + ", percent=" + percent + ", high=" + high
+				+ ", price=" + price + ", open=" + open + ", low=" + low + ", time=" + time + ", yestclose=" + yestclose
+				+ ", turnover=" + turnover + ", updown=" + updown + ", volume=" + volume + ", ask1=" + ask1 + ", ask2="
+				+ ask2 + ", ask3=" + ask3 + ", ask4=" + ask4 + ", ask5=" + ask5 + ", askvol1=" + askvol1 + ", askvol2="
+				+ askvol2 + ", askvol3=" + askvol3 + ", askvol4=" + askvol4 + ", askvol5=" + askvol5 + ", bid1=" + bid1
+				+ ", bid2=" + bid2 + ", bid3=" + bid3 + ", bid4=" + bid4 + ", bid5=" + bid5 + ", bidvol1=" + bidvol1
+				+ ", bidvol2=" + bidvol2 + ", bidvol3=" + bidvol3 + ", bidvol4=" + bidvol4 + ", bidvol5=" + bidvol5
+				+ ", day=" + day + "]";
 	}
 
 }
