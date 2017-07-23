@@ -447,4 +447,34 @@
   	select * from stock_buy_sell symbol = #{symbol} where and day = #{day}
   </select>
   
+  <select id="selectByPage" parameterType="map" resultMap="BaseResultMap">
+  	select * from stock_buy_sell limit #{page},#{size}
+  </select>
+  
+  <insert id="insertList" parameterType="map">
+  	insert into stock_buy_sell ( code, symbol, percent, 
+      high, price, open, low, 
+      time, yestclose, turnover, 
+      updown, volume, ask1, 
+      ask2, ask3, ask4, ask5, 
+      askvol1, askvol2, askvol3, 
+      askvol4, askvol5, bid1, 
+      bid2, bid3, bid4, bid5, 
+      bidvol1, bidvol2, bidvol3, 
+      bidvol4, bidvol5, day)
+    values 
+    <foreach collection="list" item="item" separator=",">
+    	(#{item.code,jdbcType=CHAR}, #{item.symbol,jdbcType=CHAR}, #{item.percent,jdbcType=DOUBLE}, 
+      #{item.high,jdbcType=DOUBLE}, #{item.price,jdbcType=DOUBLE}, #{item.open,jdbcType=DOUBLE}, #{item.low,jdbcType=DOUBLE}, 
+      #{item.time,jdbcType=VARCHAR}, #{item.yestclose,jdbcType=DOUBLE}, #{item.turnover,jdbcType=BIGINT}, 
+      #{item.updown,jdbcType=DOUBLE}, #{item.volume,jdbcType=INTEGER}, #{item.ask1,jdbcType=DOUBLE}, 
+      #{item.ask2,jdbcType=DOUBLE}, #{item.ask3,jdbcType=DOUBLE}, #{item.ask4,jdbcType=DOUBLE}, #{item.ask5,jdbcType=DOUBLE}, 
+      #{item.askvol1,jdbcType=INTEGER}, #{item.askvol2,jdbcType=INTEGER}, #{item.askvol3,jdbcType=INTEGER}, 
+      #{item.askvol4,jdbcType=INTEGER}, #{item.askvol5,jdbcType=INTEGER}, #{item.bid1,jdbcType=DOUBLE}, 
+      #{item.bid2,jdbcType=DOUBLE}, #{item.bid3,jdbcType=DOUBLE}, #{item.bid4,jdbcType=DOUBLE}, #{item.bid5,jdbcType=DOUBLE}, 
+      #{item.bidvol1,jdbcType=INTEGER}, #{item.bidvol2,jdbcType=INTEGER}, #{item.bidvol3,jdbcType=INTEGER}, 
+      #{item.bidvol4,jdbcType=INTEGER}, #{item.bidvol5,jdbcType=INTEGER}, #{item.day,jdbcType=CHAR})
+    </foreach>
+    
+  </insert>
 </mapper>

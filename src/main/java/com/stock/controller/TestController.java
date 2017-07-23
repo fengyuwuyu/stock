@@ -16,6 +16,7 @@ import com.stock.service.SearchMachineI;
 import com.stock.service.StockAnalyseJobI;
 import com.stock.service.StockMainServiceI;
 import com.stock.service.StockServiceI;
+import com.stock.service.TestServiceI;
 import com.stock.util.MapUtils;
 
 @Controller
@@ -28,6 +29,8 @@ public class TestController {
 	private StockAnalyseJobI stockAnalyseJobI;
 	private StockMainMapper stockMainMapper;
 	private SearchMachineI searchMachineI;
+	@Autowired
+	private TestServiceI testServiceI;
 	private Logger log = Logger.getLogger(TestController.class);
 	
 	@Autowired
@@ -63,7 +66,12 @@ public class TestController {
 	@RequestMapping("test.do")
 	@ResponseBody
 	public Map<String, Object> test() {
-		initStockServiceI.initBuyAndSell("2017-07-21");
+		for (int i = 0; i < Integer.MAX_VALUE; i++) {
+			boolean success = testServiceI.initStockBuySell(i, 10000);
+			if(!success){
+				break;
+			}
+		}
 		return MapUtils.createFailedMap();
 	}
 

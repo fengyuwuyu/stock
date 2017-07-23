@@ -26,4 +26,8 @@ public interface StockBuySellMapper {
 	List<StockBuySell> selectByDay(Map<String, Object> map);
 	
 	List<StockBuySellGroup> selectRecord();
+	
+	List<StockBuySell> selectByPage(Map<String, Object> map);
+
+	void insertList(Map<String, Object> param);
 }
