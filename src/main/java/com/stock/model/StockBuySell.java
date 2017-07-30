@@ -16,6 +16,7 @@ import java.util.LinkedHashMap;
  */
 public class StockBuySell {
 
+	private Integer id;
 	private String code;
 	private String symbol;
 	private Double percent;
@@ -63,9 +64,50 @@ public class StockBuySell {
 
 	public StockBuySell(String code, String symbol, Double percent, Double high, Double price, Double open, Double low,
 			String time, Double yestclose, Long turnover, Double updown, Long volume, Double ask1, Double ask2,
-			Double ask3, Double ask4, Double ask5, Integer askvol1, Integer askvol2, Integer askvol3, Integer askvol4, Integer askvol5,
-			Double bid1, Double bid2, Double bid3, Double bid4, Double bid5, Integer bidvol1, Integer bidvol2, Integer bidvol3,
-			Integer bidvol4, Integer bidvol5, String day) {
+			Double ask3, Double ask4, Double ask5, Integer askvol1, Integer askvol2, Integer askvol3, Integer askvol4,
+			Integer askvol5, Double bid1, Double bid2, Double bid3, Double bid4, Double bid5, Integer bidvol1,
+			Integer bidvol2, Integer bidvol3, Integer bidvol4, Integer bidvol5, String day) {
+		this.code = code;
+		this.symbol = symbol;
+		this.percent = percent;
+		this.high = high;
+		this.price = price;
+		this.open = open;
+		this.low = low;
+		this.time = time;
+		this.yestclose = yestclose;
+		this.turnover = turnover;
+		this.updown = updown;
+		this.volume = volume;
+		this.ask1 = ask1;
+		this.ask2 = ask2;
+		this.ask3 = ask3;
+		this.ask4 = ask4;
+		this.ask5 = ask5;
+		this.askvol1 = askvol1;
+		this.askvol2 = askvol2;
+		this.askvol3 = askvol3;
+		this.askvol4 = askvol4;
+		this.askvol5 = askvol5;
+		this.bid1 = bid1;
+		this.bid2 = bid2;
+		this.bid3 = bid3;
+		this.bid4 = bid4;
+		this.bid5 = bid5;
+		this.bidvol1 = bidvol1;
+		this.bidvol2 = bidvol2;
+		this.bidvol3 = bidvol3;
+		this.bidvol4 = bidvol4;
+		this.bidvol5 = bidvol5;
+		this.day = day;
+	}
+
+	public StockBuySell(Integer id, String code, String symbol, Double percent, Double high, Double price, Double open,
+			Double low, String time, Double yestclose, Long turnover, Double updown, Long volume, Double ask1,
+			Double ask2, Double ask3, Double ask4, Double ask5, Integer askvol1, Integer askvol2, Integer askvol3,
+			Integer askvol4, Integer askvol5, Double bid1, Double bid2, Double bid3, Double bid4, Double bid5,
+			Integer bidvol1, Integer bidvol2, Integer bidvol3, Integer bidvol4, Integer bidvol5, String day) {
+		this.id = id;
 		this.code = code;
 		this.symbol = symbol;
 		this.percent = percent;
@@ -174,6 +216,14 @@ public class StockBuySell {
 			s = "";
 		}
 		return s;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	public String getCode() {

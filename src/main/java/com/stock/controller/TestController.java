@@ -10,7 +10,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.stock.dao.StockBuySellMapper;
 import com.stock.dao.StockMainMapper;
+import com.stock.model.StockBuySell;
 import com.stock.service.InitStockServiceI;
 import com.stock.service.SearchMachineI;
 import com.stock.service.StockAnalyseJobI;
@@ -29,6 +31,9 @@ public class TestController {
 	private StockAnalyseJobI stockAnalyseJobI;
 	private StockMainMapper stockMainMapper;
 	private SearchMachineI searchMachineI;
+
+	@Autowired
+	StockBuySellMapper buySellMapper;
 	@Autowired
 	private TestServiceI testServiceI;
 	private Logger log = Logger.getLogger(TestController.class);
@@ -66,8 +71,12 @@ public class TestController {
 	@RequestMapping("test.do")
 	@ResponseBody
 	public Map<String, Object> test() {
-		for (int i = 0; i < Integer.MAX_VALUE; i++) {
-			boolean success = testServiceI.initStockBuySell(i, 10000);
+		Integer size = 5000;
+		int i = 0;
+		while (i < 3000) {
+			i++;
+			System.out.println("第 " + i + " 次！");
+			boolean success = testServiceI.initStockBuySell(i, size);
 			if(!success){
 				break;
 			}
@@ -93,10 +102,74 @@ public class TestController {
 	}
 	
 	public static void main(String[] args) {
-		List<String> list = new ArrayList<String>();
-		for (int i = 0; i < 10; i++) {
-			list.add("asf"+i);
+		for (int i = 2016; i <= 2018; i++) {
+			for(int j = 1; j <= 12; j++){
+				for(int k = 1; k <= 31; k++){
+					int t = 0;
+					int v = 0;
+					if(j == 2){
+						if(k > 28){
+							continue;
+						}
+					}
+					if(!nums.contains(j)){
+						if(k > 30){
+							continue;
+						}else if(k == 30){
+							t = i * 10000 + j *100 + k;
+							if(j == 12){
+								v = (i + 1) * 10000 + 1 *100 + 1;
+							}else{
+								v = i * 10000 + (j + 1) *100 + 1;
+							}
+							System.out.println("PARTITION t"+ t +" VALUES LESS THAN ("+ v +"),");
+							continue;
+						}
+					}else if(k == 31){
+						t = i * 10000 + j *100 + k;
+						if(j == 12){
+							v = (i + 1) * 10000 + 1 *100 + 1;
+						}else{
+							v = i * 10000 + (j + 1) *100 + 1;
+						}
+						System.out.println("PARTITION t"+ t +" VALUES LESS THAN ("+ v +"),");
+						continue;
+					}
+					t = i * 10000 + j *100 + k;
+					v = t + 1;
+					System.out.println("PARTITION t"+ t +" VALUES LESS THAN ("+ v +"),");
+				}
+			}
 		}
-		System.out.println(list.toString());
+	}
+	
+	private static List<Integer> nums = new ArrayList<>();
+	static {
+		nums.add(1);
+		nums.add(3);
+		nums.add(5);
+		nums.add(7);
+		nums.add(8);
+		nums.add(10);
+		nums.add(12);
+		
+	}
+
+	private static int chargeDay(int i, int j, int k) {
+		if((i % 100 == 0 && i % 400 ==0) || (i % 100 != 0 && i % 4 == 0)){
+			if(j == 2 && k == 29){
+				return i * 10000 + 300 + 1;
+			}
+		}else if(j == 2 && k == 28){
+			return i * 10000 + 300 + 1;
+		}
+		if(nums.contains(j)){
+			if(k == 31){
+				return i * 10000 + (j + 1) * 100 + 1;
+			}
+		}else if(k == 30){
+			return i * 10000 + (j + 1) * 100 + 1;
+		}
+		return i * 10000 + j * 100 + k + 1;
 	}
 }

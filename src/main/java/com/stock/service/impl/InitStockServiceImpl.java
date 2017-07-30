@@ -242,7 +242,7 @@ public class InitStockServiceImpl implements InitStockServiceI {
 						o = (LinkedHashMap<String, Object>) detail.get(code);
 						s = new StockBuySell(o);
 						if (s.getSymbol() != null) {
-							if (s.getAsk1() != 0 || s.getBid1() != 0) {
+							if (s.getAsk1() != null || s.getBid1() != null) {
 								list.add(s);
 							}
 						}

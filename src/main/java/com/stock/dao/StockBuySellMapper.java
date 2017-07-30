@@ -30,4 +30,6 @@ public interface StockBuySellMapper {
 	List<StockBuySell> selectByPage(Map<String, Object> map);
 
 	void insertList(Map<String, Object> param);
+
+	void deleteById(Map<String, Object> map);
 }

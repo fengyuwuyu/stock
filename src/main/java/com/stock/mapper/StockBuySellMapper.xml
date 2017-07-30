@@ -448,11 +448,15 @@
   </select>
   
   <select id="selectByPage" parameterType="map" resultMap="BaseResultMap">
-  	select * from stock_buy_sell limit #{page},#{size}
+  	select * from stock_buy_sell where id &gt; #{id} ORDER BY id limit 10000
   </select>
   
+  <delete id="deleteById" parameterType="map">
+  	delete from stock_buy_sell where id &lt;= ${id}
+  </delete>
+  
   <insert id="insertList" parameterType="map">
-  	insert into stock_buy_sell ( code, symbol, percent, 
+  	insert into stock_buy_sell1 ( code, symbol, percent, 
       high, price, open, low, 
       time, yestclose, turnover, 
       updown, volume, ask1, 
