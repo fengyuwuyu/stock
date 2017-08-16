@@ -52,7 +52,7 @@
 			<ref bean="downloadBaseDetail1" />
 		</property>
 		<property name="cronExpression">
- 			<value>10 1 13 * * ?</value>
+ 			<value>10 0 13 * * ?</value>
 		</property>
 	</bean>
 	<bean id="downloadDetailTrigger"
@@ -61,7 +61,7 @@
 			<ref bean="downloadDetailDetail" />
 		</property>
 		<property name="cronExpression">
- 			<value>15 30 9 * * ?</value>
+ 			<value>30 30 9 * * ?</value>
 		</property>
 	</bean>
 	<bean id="downloadDetailTrigger1"
@@ -70,7 +70,7 @@
 			<ref bean="downloadDetailDetail1" />
 		</property>
 		<property name="cronExpression">
- 			<value>10 0 13 * * ?</value> 
+ 			<value>30 0 13 * * ?</value> 
 		</property>
 	</bean>
 	<bean id="downloadCjmxTrigger"
