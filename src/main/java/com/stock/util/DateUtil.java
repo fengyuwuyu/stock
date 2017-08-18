@@ -4,11 +4,8 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.ZonedDateTime;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.TimeZone;
 
 public class DateUtil {
 	private static DateFormat stardardFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -36,6 +33,10 @@ public class DateUtil {
 		Date date = new Date(time);
 		return stardardFormat.format(date);
 
+	}
+	
+	public static Date parseToStandardDate(String date) throws ParseException{
+		return stardardFormat.parse(date);
 	}
 
 	/**
