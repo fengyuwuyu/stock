@@ -225,12 +225,13 @@ public class InitStockServiceImpl implements InitStockServiceI {
 	@SuppressWarnings("unchecked")
 	private void downloadBuyAndSell(List<String> subList, String day) {
 		HttpEntity entity;
+		String content = null;
 		try {
 			String url = "http://api.money.126.net/data/feed/" + CommonsUtil.listToString(subList) + ",money.api";
 			// log.info(url);
 			entity = HttpClientUtil.get(url);
 			String temp = EntityUtils.toString(entity, "utf-8");
-			String content = temp.substring(21, temp.length() - 2);
+			content = temp.substring(21, temp.length() - 2);
 			if (entity != null) {
 				LinkedHashMap<String, Object> detail = null;
 				detail = mapper.readValue(content, LinkedHashMap.class);
@@ -255,6 +256,7 @@ public class InitStockServiceImpl implements InitStockServiceI {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			log.info("content == " + content);
 			log.info(CommonsUtil.join(e.getStackTrace(), ","));
 		}
 	}

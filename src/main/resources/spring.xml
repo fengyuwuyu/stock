@@ -27,8 +27,8 @@
 			<list>
 				<!-- <ref bean="downloadBaseTrigger" />
 				<ref bean="downloadBaseTrigger1" /> -->
-				<!-- <ref bean="downloadDetailTrigger" />
-				<ref bean="downloadDetailTrigger1" /> -->
+				 <ref bean="downloadDetailTrigger" />
+				<ref bean="downloadDetailTrigger1" /> 
 				<!-- <ref bean="downloadCjmxTrigger" />
 				<ref bean="downloadCjmxTrigger1" /> -->
 				<!-- <ref bean="downloadPerDayTrigger" /> -->
@@ -61,7 +61,7 @@
 			<ref bean="downloadDetailDetail" />
 		</property>
 		<property name="cronExpression">
- 			<value>15 30 9 * * ?</value>
+ 			<value>15 45 9 * * ?</value>
 		</property>
 	</bean>
 	<bean id="downloadDetailTrigger1"
