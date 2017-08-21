@@ -444,7 +444,7 @@
   </select>
   
   <select id="selectByDay" parameterType="map" resultMap="BaseResultMap">
-  	select * from stock_buy_sell symbol = #{symbol} where and day = #{day}
+  	select * from stock_buy_sell symbol = #{symbol} where and day = #{day} order by time
   </select>
   
   <select id="selectByPage" parameterType="map" resultMap="BaseResultMap">

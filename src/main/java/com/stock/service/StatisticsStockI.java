@@ -1,5 +1,6 @@
 package com.stock.service;
 
+import java.text.ParseException;
 import java.util.Map;
 
 public interface StatisticsStockI {
@@ -11,5 +12,5 @@ public interface StatisticsStockI {
 	 * @param query
 	 * @return
 	 */
-	Map<String,Object> statistics();
+	Map<String,Object> statistics() throws ParseException;
 }

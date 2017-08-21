@@ -359,7 +359,7 @@
   </resultMap>
   
   <select id="initPrePrices" resultMap="CacheItem">
-  	  select symbol,close yestClose,close prePrice,volume yestVol,volume preVol from stock_main where day = (select max(day) from stock_main)
+  	  select symbol,close yestClose,close prePrice,volume yestVol,volume preVol from stock_main where day = (select max(day) from stock_main) and increase != 0
   </select>
   
   <select id="selectByDay" parameterType="java.sql.Date" resultType="string">

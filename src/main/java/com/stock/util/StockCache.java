@@ -36,7 +36,6 @@ public class StockCache {
 	private static SqlSessionFactory sqlSessionFactory = null;
 
 	/**
-	 * 系统第一次启动时调用，根据数据库中数据初始化prePrices对象
 	 * 
 	 * @param stockMainMapper
 	 */
@@ -45,7 +44,7 @@ public class StockCache {
 		for(CacheItem item : list) {
 			prePrices.put(item.getSymbol(), item);
 		}
-		log.info(prePrices);
+		log.info(prePrices.size());
 	}
 
 	public static void initByInternet(List<LinkedHashMap<String, Object>> list) {
@@ -59,7 +58,7 @@ public class StockCache {
 			log.info("maxIncreaseThreeMinute   "+maxIncreaseThreeMinute);
 			if (maxIncreaseStocks.size() > 0) {
 				try {
-					MailUtils.sendMail("当天涨幅", "当天涨幅 : "+maxIncreaseStocks.toString());
+					MailUtils.sendMail("当天涨幅", maxIncreaseStocks.toString());
 				} catch (Exception e) {
 					log.error(CommonsUtil.join(e.getStackTrace(), ","));
 					try {
