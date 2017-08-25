@@ -11,14 +11,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.stock.dao.LastStatisticsDayMapper;
 import com.stock.dao.StockBuySellMapper;
 import com.stock.dao.StockMainMapper;
+import com.stock.model.CacheItem;
 import com.stock.model.StockBuySell;
 import com.stock.model.statistics.StockStatisticsDetail;
 import com.stock.service.StatisticsStockI;
 import com.stock.util.DateUtil;
 import com.stock.util.MapUtils;
+import com.stock.util.StockCache;
 
 public class StatisticsStockImpl implements StatisticsStockI {
-	Map<String, StockStatisticsDetail> cache = new HashMap<String, StockStatisticsDetail>();
+	public Map<String, StockStatisticsDetail> cache = new HashMap<String, StockStatisticsDetail>();
+	public static boolean init = false;
 
 	@Autowired
 	private LastStatisticsDayMapper lastStatisticsDayMapper;
@@ -37,6 +40,7 @@ public class StatisticsStockImpl implements StatisticsStockI {
 			}
 			StockStatisticsDetail detail = getStockStatisticsDetail(symbol);
 			for (StockBuySell stockBuySell : list) {
+				
 				
 			}
 		}
@@ -65,14 +69,41 @@ public class StatisticsStockImpl implements StatisticsStockI {
 		return result;
 	}
 	
-	private void setCache(StockBuySell stockBuySell) throws ParseException{
+	private void setCache(StockBuySell stockBuySell) throws ParseException {
 		StockStatisticsDetail detail = getStockStatisticsDetail(stockBuySell.getSymbol());
-		detail.setTotalVolume(stockBuySell.getVolume());
-		if(detail.getMaxMinuteVolume() == null || detail.getMaxMinuteVolume() < stockBuySell.getVolume() - detail.getLastVolume()){
-			detail.setMaxMinuteVolume(stockBuySell.getVolume() - detail.getLastVolume());
+		//max;
+		detail.setMax(stockBuySell.getPrice());
+		//min;
+		
+		//open;
+		
+		//increase;
+		
+		//volume;
+		
+		//perMinuteVolume;
+		
+		//totalVolume = 0L;
+		
+		//count = 0;
+		
+		//maxMinuteVolume;
+		
+		//maxMinuteVolumeDate;
+		
+		//maxMinutePrice;
+		
+		//maxMinutePriceDate;
+		
+		//volumes = new StringBuilder();
+		
+		
+		if(detail.getMaxMinuteVolume() == null || detail.getMaxMinuteVolume() < stockBuySell.getVolume() - detail.getVolume()){
+			detail.setMaxMinuteVolume(stockBuySell.getVolume() - detail.getVolume());
 			detail.setMaxMinuteVolumeDate(DateUtil.parseToStandardDate(stockBuySell.getTime()));
 		}
 		
+		detail.setTotalVolume(stockBuySell.getVolume());
 	}
 	
 	private Double computeSell(StockBuySell stockBuySell){
@@ -88,6 +119,13 @@ public class StatisticsStockImpl implements StatisticsStockI {
 	private Double computeBuy(StockBuySell stockBuySell){
 		return compute(stockBuySell.getBid1(), stockBuySell.getBid2(), stockBuySell.getBid3(), stockBuySell.getBid4(), stockBuySell.getBid5(),
 				stockBuySell.getBidvol1(), stockBuySell.getBidvol2(), stockBuySell.getBidvol3(), stockBuySell.getBidvol4(), stockBuySell.getBidvol5());
+	}
+	
+	public void initCache(){
+		for(CacheItem item : StockCache.prePrices.values()){
+			StockStatisticsDetail detail = getStockStatisticsDetail(item.getSymbol());
+			detail.setSymbol(item.getSymbol());
+		}
 	}
 	
 }

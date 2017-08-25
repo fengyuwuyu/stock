@@ -7,22 +7,24 @@ public class StockStatisticsDetail {
 	// base information
 	private String symbol;
 	private String day;
-	private Long volume;
-	private Float increase;
-	private Float max;
-	private Float min;
-	private Float open;
-	private Float close;
+	private Long yesterdayVolume;
+	private Double yesterdayIncrease;
+	private Double yesterdayClose;
 
 	// statistics information
+	private Double max;
+	private Double min;
+	private Double open;
+	private Double increase;
+	private Long volume;
 	private Long perMinuteVolume;
 	private Long totalVolume = 0L;
 	private Integer count = 0;
 	private Long maxMinuteVolume;
 	private Date maxMinuteVolumeDate;
-	private Float maxMinutePrice;
+	private Double maxMinutePrice;
 	private Date maxMinutePriceDate;
-	private Long lastVolume;
+	private StringBuilder volumes = new StringBuilder();
 
 	public String getSymbol() {
 		return symbol;
@@ -40,52 +42,49 @@ public class StockStatisticsDetail {
 		this.day = day;
 	}
 
-	public Long getVolume() {
-		return volume;
-	}
-
-	public void setVolume(Long volume) {
-		this.volume = volume;
-	}
-
-	public Float getIncrease() {
+	public Double getIncrease() {
 		return increase;
 	}
 
-	public void setIncrease(Float increase) {
+	public void setIncrease(Double increase) {
 		this.increase = increase;
 	}
 
-	public Float getMax() {
+	public Double getMax() {
 		return max;
 	}
 
-	public void setMax(Float max) {
-		this.max = max;
+	public void setMax(Double max) {
+		if(this.max == null){
+			this.max = max;
+		}else{
+			if(this.max < max){
+				this.max = max;
+			}
+		}
+		
 	}
 
-	public Float getMin() {
+	public Double getMin() {
 		return min;
 	}
 
-	public void setMin(Float min) {
-		this.min = min;
+	public void setMin(Double min) {
+		if(this.min == null){
+			this.min = min;
+		}else{
+			if(this.min > min){
+				this.min = min;
+			}
+		}
 	}
 
-	public Float getOpen() {
+	public Double getOpen() {
 		return open;
 	}
 
-	public void setOpen(Float open) {
+	public void setOpen(Double open) {
 		this.open = open;
-	}
-
-	public Float getClose() {
-		return close;
-	}
-
-	public void setClose(Float close) {
-		this.close = close;
 	}
 
 	public Long getPerMinuteVolume() {
@@ -104,11 +103,11 @@ public class StockStatisticsDetail {
 		this.maxMinuteVolume = maxMinuteVolume;
 	}
 
-	public Float getMaxMinutePrice() {
+	public Double getMaxMinutePrice() {
 		return maxMinutePrice;
 	}
 
-	public void setMaxMinutePrice(Float maxMinutePrice) {
+	public void setMaxMinutePrice(Double maxMinutePrice) {
 		this.maxMinutePrice = maxMinutePrice;
 	}
 
@@ -137,22 +136,55 @@ public class StockStatisticsDetail {
 		this.count++;
 	}
 
-	public Long getLastVolume() {
-		return lastVolume;
+	public Long getYesterdayVolume() {
+		return yesterdayVolume;
 	}
 
-	public void setLastVolume(Long lastVolume) {
-		this.lastVolume = lastVolume;
+	public void setYesterdayVolume(Long yesterdayVolume) {
+		this.yesterdayVolume = yesterdayVolume;
+	}
+
+	public Double getYesterdayIncrease() {
+		return yesterdayIncrease;
+	}
+
+	public void setYesterdayIncrease(Double yesterdayIncrease) {
+		this.yesterdayIncrease = yesterdayIncrease;
+	}
+
+	public Double getYesterdayClose() {
+		return yesterdayClose;
+	}
+
+	public void setYesterdayClose(Double yesterdayClose) {
+		this.yesterdayClose = yesterdayClose;
+	}
+
+	public String getVolumes() {
+		return volumes.toString().trim();
+	}
+
+	public void setVolumes(String volume) {
+		this.volumes.append(volume + ", ");
+	}
+
+	public Long getVolume() {
+		return volume;
+	}
+
+	public void setVolume(Long volume) {
+		this.volume = volume;
 	}
 
 	@Override
 	public String toString() {
-		return "StockStatisticsDetail [symbol=" + symbol + ", day=" + day + ", volume=" + volume + ", increase="
-				+ increase + ", max=" + max + ", min=" + min + ", open=" + open + ", close=" + close
+		return "StockStatisticsDetail [symbol=" + symbol + ", day=" + day + ", yesterdayVolume=" + yesterdayVolume
+				+ ", yesterdayIncrease=" + yesterdayIncrease + ", yesterdayClose=" + yesterdayClose + ", max=" + max
+				+ ", min=" + min + ", open=" + open + ", increase=" + increase + ", volume=" + volume
 				+ ", perMinuteVolume=" + perMinuteVolume + ", totalVolume=" + totalVolume + ", count=" + count
 				+ ", maxMinuteVolume=" + maxMinuteVolume + ", maxMinuteVolumeDate=" + maxMinuteVolumeDate
-				+ ", maxMinutePrice=" + maxMinutePrice + ", maxMinutePriceDate=" + maxMinutePriceDate + ", lastVolume="
-				+ lastVolume + "]";
+				+ ", maxMinutePrice=" + maxMinutePrice + ", maxMinutePriceDate=" + maxMinutePriceDate + ", volumes="
+				+ volumes + "]";
 	}
 
 }
