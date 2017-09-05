@@ -28,6 +28,9 @@ public class StatisticsStockImpl implements StatisticsStockI {
 	private StockBuySellMapper stockBuySellMapper;
 
 	public Map<String, Object> statistics() throws ParseException {
+		List<String> codes = this.mainMapper.selectAllCodes();
+		
+		
 		List<String> symbols = mainMapper.selectAll();
 		String day = lastStatisticsDayMapper.selectByPrimaryKey();
 		for (String symbol : symbols) {

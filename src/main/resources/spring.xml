@@ -27,11 +27,11 @@
 			<list>
 				<!-- <ref bean="downloadBaseTrigger" />
 				<ref bean="downloadBaseTrigger1" /> -->
-				<!-- <ref bean="downloadDetailTrigger" />
-				<ref bean="downloadDetailTrigger1" /> -->
+				<ref bean="downloadDetailTrigger" />
+				<ref bean="downloadDetailTrigger1" />
 				<!-- <ref bean="downloadCjmxTrigger" />
 				<ref bean="downloadCjmxTrigger1" /> -->
-				<!-- <ref bean="downloadPerDayTrigger" /> -->
+				<ref bean="downloadPerDayTrigger" />
 			</list>
 		</property>
 	</bean>

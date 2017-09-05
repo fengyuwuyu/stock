@@ -2,6 +2,7 @@ package com.stock.service.impl;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
@@ -14,6 +15,7 @@ import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
+import org.apache.http.ParseException;
 import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
 import org.junit.Test;
@@ -204,7 +206,7 @@ public class InitStockServiceImpl implements InitStockServiceI {
 	public Map<String, Object> initBuyAndSell(String day) {
 		List<String> codes = this.stockMainMapper.selectAllCodes();
 		int length = codes.size();
-		int count = 1000;
+		int count = 500;
 		int begin = 0, end = (begin + count) <= length ? (begin + count) : length;
 		List<String> subList = null;
 		while (end <= length) {
@@ -222,42 +224,51 @@ public class InitStockServiceImpl implements InitStockServiceI {
 
 	// http://api.money.126.net/data/feed/0000001,0600137,1002485,1002291,1002763,1002486,money.api?callback=_ntes_quote_callback50000858
 	// http://api.money.126.net/data/feed/0000001,1000573,0600275,1000553,0603777,0603313,0603816,0600321,0603006,0603887,0603016,1200413,1000755,1000002,0600589,0600137,1002485,1002291,1002763,1002486,money.api?callback=_ntes_quote_callback95430716
-	@SuppressWarnings("unchecked")
 	private void downloadBuyAndSell(List<String> subList, String day) {
-		HttpEntity entity;
-		String content = null;
+		String url = "http://api.money.126.net/data/feed/" + CommonsUtil.listToString(subList) + ",money.api";
+		int count = 0;
 		try {
-			String url = "http://api.money.126.net/data/feed/" + CommonsUtil.listToString(subList) + ",money.api";
-			// log.info(url);
-			entity = HttpClientUtil.get(url);
-			String temp = EntityUtils.toString(entity, "utf-8");
-			content = temp.substring(21, temp.length() - 2);
-			if (entity != null) {
-				LinkedHashMap<String, Object> detail = null;
-				detail = mapper.readValue(content, LinkedHashMap.class);
-				if (detail != null) {
-					LinkedHashMap<String, Object> o = null;
-					StockBuySell s = null;
-					List<StockBuySell> list = new ArrayList<StockBuySell>();
-					for (String code : subList) {
-						o = (LinkedHashMap<String, Object>) detail.get(code);
-						s = new StockBuySell(o);
-						if (s.getSymbol() != null) {
-							if (s.getAsk1() != null || s.getBid1() != null) {
-								list.add(s);
-							}
-						}
-					}
-					if(list.size() > 0){
-						this.stockMainMapper.insertStockBuySell(MapUtils.createMap("list", list, "day", day));
-						log.info("插入委买委卖数据的数量是 ： " + list.size());
-					}
+			getData(url, subList, day);
+		} catch (Exception e) {
+			log.error("第 " + (++count) + "次尝试", e);
+			if(count < 4){
+				try {
+					getData(url, subList, day);
+				} catch (Exception e1) {
+					e1.printStackTrace();
+					log.error("第 " + (count+1) + "次尝试又失败了", e);
 				}
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			log.info("content == " + content);
-			log.info(CommonsUtil.join(e.getStackTrace(), ","));
+		}
+			
+	}
+
+	@SuppressWarnings("unchecked")
+	private void getData(String url, List<String> subList, String day) throws Exception {
+		HttpEntity entity = HttpClientUtil.get(url);
+		String temp = null;
+		temp = EntityUtils.toString(entity, "utf-8");
+		String content = temp.substring(21, temp.length() - 2);
+		if (entity != null) {
+			LinkedHashMap<String, Object> detail = mapper.readValue(content, LinkedHashMap.class);
+			if (detail != null) {
+				LinkedHashMap<String, Object> o = null;
+				StockBuySell s = null;
+				List<StockBuySell> list = new ArrayList<StockBuySell>();
+				for (String code : subList) {
+					o = (LinkedHashMap<String, Object>) detail.get(code);
+					s = new StockBuySell(o);
+					if (s.getSymbol() != null) {
+						if (s.getAsk1() != null || s.getBid1() != null) {
+							list.add(s);
+						}
+					}
+				}
+				if(list.size() > 0){
+					this.stockMainMapper.insertStockBuySell(MapUtils.createMap("list", list, "day", day));
+					log.info("插入委买委卖数据的数量是 ： " + list.size());
+				}
+			}
 		}
 	}
 
