@@ -145,7 +145,9 @@ public class CacheItem {
 
 	@Override
 	public String toString() {
-		return "CacheItem [symbol=" + symbol +"]";
+		return "CacheItem [symbol=" + symbol + ", yestClose=" + yestClose + ", prePrice=" + prePrice + ", nowPrice="
+				+ nowPrice + ", yestVol=" + yestVol + ", preVol=" + preVol + ", nowVol=" + nowVol + ", buyVol=" + buyVol
+				+ ", sellVol=" + sellVol + "]";
 	}
 	
 	
