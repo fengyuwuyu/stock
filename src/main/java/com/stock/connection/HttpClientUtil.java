@@ -31,8 +31,7 @@ public class HttpClientUtil {
 			entity = response.getEntity();
 		} catch (Exception e) {
 			hasException = true;
-			log.info("http请求失败");
-			log.info(CommonsUtil.join(e.getStackTrace(), ",\r\n"));
+			log.error(e.getMessage(), e);
 			return null;
 		}
 		return entity;

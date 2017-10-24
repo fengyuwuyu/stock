@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
 <generatorConfiguration>
-    <classPathEntry location="F:/ll_stock/stock/target/stock/WEB-INF/lib/mysql-connector-java-5.1.27.jar" />
+    <classPathEntry location="D:/soft/develop/workspace/stock/stock/target/stock/WEB-INF/lib/mysql-connector-java-5.1.42.jar" />
     <context id="context" targetRuntime="MyBatis3">
     	<!-- 注释  -->    
     	<commentGenerator>  
@@ -9,22 +9,22 @@
             <property name="suppressDate" value="true" /> 
     	</commentGenerator>  
        	<jdbcConnection driverClass="com.mysql.jdbc.Driver"
-            connectionURL="jdbc:mysql://localhost:3306/stock"
+            connectionURL="jdbc:mysql://localhost:3306/stock1"
             userId="root" password="root" />
        	<!-- 生成实体类 -->  
-        <javaModelGenerator targetPackage="com.stock.model" targetProject="F:/ll_stock/stock/src/main/java">  
+        <javaModelGenerator targetPackage="com.stock.model" targetProject="D:/soft/develop/workspace/stock/stock/src/main/java">  
             <property name="enableSubPackages" value="false" />  
             <property name="trimStrings" value="true" />  
         </javaModelGenerator>  
         <!-- 生成映射文件 -->  
-        <sqlMapGenerator targetPackage="com.stock.mapper" targetProject="F:/ll_stock/stock/src/main/java">  
+        <sqlMapGenerator targetPackage="com.stock.mapper" targetProject="D:/soft/develop/workspace/stock/stock/src/main/java">  
             <property name="enableSubPackages" value="false" />  
         </sqlMapGenerator>  
         <!-- 生成DAO -->  
-        <javaClientGenerator type="XMLMAPPER" targetPackage="com.stock.dao" targetProject="F:/ll_stock/stock/src/main/java">  
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.stock.dao" targetProject="D:/soft/develop/workspace/stock/stock/src/main/java">  
             <property name="enableSubPackages" value="false" />  
         </javaClientGenerator>  
-	   	<table tableName="last_statistics_day" domainObjectName="LastStatisticsDay" 
+	   	<table tableName="stock_table_info" domainObjectName="StockTableInfo" 
 	   		enableCountByExample="false" 
 	   		enableUpdateByExample="false" enableDeleteByExample="false" 
 	   		enableSelectByExample="false" selectByExampleQueryId="false" 

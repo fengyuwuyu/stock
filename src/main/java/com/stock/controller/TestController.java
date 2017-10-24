@@ -19,6 +19,7 @@ import com.stock.service.StockAnalyseJobI;
 import com.stock.service.StockMainServiceI;
 import com.stock.service.StockServiceI;
 import com.stock.service.TestServiceI;
+import com.stock.task.DownloadDetail;
 import com.stock.util.MapUtils;
 
 @Controller
@@ -67,28 +68,24 @@ public class TestController {
 	public void setDetailSaveServiceI(StockServiceI detailSaveServiceI) {
 		this.detailSaveServiceI = detailSaveServiceI;
 	}
+	
+	@Autowired
+	private DownloadDetail downloadDetail;
 
 	@RequestMapping("test.do")
 	@ResponseBody
-	public Map<String, Object> test() {
-		Integer size = 5000;
-		int i = 0;
-		while (i < 3000) {
-			i++;
-			System.out.println("第 " + i + " 次！");
-			boolean success = testServiceI.initStockBuySell(i, size);
-			if(!success){
-				break;
-			}
-		}
-		return MapUtils.createFailedMap();
+	public Map<String, Object> test() throws Exception {
+//		log.info("test");
+//		initStockServiceI.initStockEveryDay();
+		downloadDetail.execute();
+		return MapUtils.createSuccessMap();
 	}
 
 	@RequestMapping("test1.do")
 	@ResponseBody
 	public Map<String, Object> test1() throws Exception {
 		initStockServiceI.initCjmxPerWeek();
-//		stockAnalyseJobI.initStockAnalyse();
+		stockAnalyseJobI.initStockAnalyse();
 //		List<String> symbols = stockMainMapper.selectAll();
 //		int index = 0;
 //		if(symbols!=null&&symbols.size()>0){

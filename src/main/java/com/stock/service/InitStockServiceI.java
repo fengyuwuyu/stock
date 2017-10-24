@@ -14,7 +14,7 @@ public interface InitStockServiceI {
 	
 	/**下载包含五档委买卖信息的数据
 	 * @param day */
-	Map<String,Object> initBuyAndSell(String day);
+	Map<String,Object> initBuyAndSell(String day, String tableName);
 	
 	/**下载成交明细*/
 	Map<String,Object> initCjmx() throws Exception;

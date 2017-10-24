@@ -85,4 +85,6 @@ public interface StockMainMapper {
 	List<String> selectByDay(Date day);
 
 	List<CurStock> selectCurStock(List<String> days);
+
+	void createTable(Map<String, String> map);
 }

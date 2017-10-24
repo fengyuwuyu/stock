@@ -16,28 +16,15 @@ YiYa.searcher = function(){
 							{field : 'lastIncrease',title:'累计涨幅',align:'center',width:200,sortable : true}
 						]],
 						onDblClickRow : function(index,row){
-//					var config = YiYa.searcher.getQueryTime();
 					var begin = $('#begin').datebox('getValue'),
 					end = $('#end').datebox('getValue');
 					window.open(urls['msUrl']+'view/stockChart.jsp?symbol='+row.symbol+'&begin='+begin+'&end='+end);
-//					$('#stock-win').window({
-//						title : '个股详情',
-//						width : 1200,
-//						height : 500,
-//						href : urls['msUrl']+'view/stockChart.jsp?symbol='+row.symbol+'&begin='+begin+'&end='+end,
-//						draggable : false,
-//						minimizable : false,
-//						maximizable : false,
-//						closable : true,
-//						modal : true
-//					});
-//					$('#stock-win').window('show');
 				}
 			}
 		},
 		initDateBox : function(){
-			$('#begin').datebox('setValue','2000-01-05');
-			$('#end').datebox('setValue','2000-02-26');
+//			$('#begin').datebox('setValue','2000-01-05');
+//			$('#end').datebox('setValue','2000-02-26');
 		},
 		getQueryTime : function(){
 			return {"begin" : $('#begin').datebox('getValue'),"end":$('#end').datebox('getValue')};
@@ -52,7 +39,7 @@ YiYa.searcher = function(){
 		init : function(){
 			_box = new YDataGrid(this.config);
 			_box.init();
-			$('#begin').datebox('setValue','2000-01-28');
+//			$('#begin').datebox('setValue','2000-01-28');
 		}
 	};
 	return _this;

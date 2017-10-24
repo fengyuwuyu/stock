@@ -215,7 +215,7 @@ public class CommonsUtil {
 		return false;
 	}
 	
-	private static boolean isHoliday(Date now,HolidayMapper holidayMapper) {
+	public static boolean isHoliday(Date now,HolidayMapper holidayMapper) {
 		String day = holidayMapper.queryByDay(new java.sql.Date(now.getTime()));
 		if (day == null || "".equals(day)) {
 			return false;

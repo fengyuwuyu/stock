@@ -371,7 +371,7 @@
   </select>
   
   <insert id="insertStockBuySell" parameterType="map">
-  	insert into stock_buy_sell_test(code,symbol,percent,high,price,open,low,updown,volume,yestclose,time,
+  	insert into ${tableName}(code,symbol,percent,high,price,open,low,updown,volume,yestclose,time,
   	turnover,ask1,ask2,ask3,ask4,ask5,askvol1,askvol2,askvol3,askvol4,askvol5,
   	bid1,bid2,bid3,bid4,bid5,bidvol1,bidvol2,bidvol3,bidvol4,bidvol5,day) values
   	<foreach collection="list" item="item" separator=",">
@@ -401,5 +401,9 @@
   	<foreach collection="days" open="(" close=")" separator="," item="item">
   		#{item}
   	</foreach>
+  </select>
+  
+  <select id="createTable" parameterType="java.util.Map">
+  	create table ${tableName} like stock_buy_sell_2
   </select>
 </mapper>

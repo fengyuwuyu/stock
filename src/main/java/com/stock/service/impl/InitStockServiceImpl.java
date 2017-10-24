@@ -2,7 +2,6 @@ package com.stock.service.impl;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
@@ -15,10 +14,8 @@ import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
-import org.apache.http.ParseException;
 import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
-import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.stereotype.Service;
@@ -189,8 +186,7 @@ public class InitStockServiceImpl implements InitStockServiceI {
 							}
 							if (inserts.size() > 0) {
 								this.stockMainMapper.insert(MapUtils.createMap("list", inserts, "symbol", symbol));
-								// log.info("更新数据成功！插入的数据时 ： " +
-								// inserts.size());
+								 log.info("更新数据成功！插入的数据时 ： " + inserts.size());
 							}
 						} else {
 							// log.info("发现新的股票数据，开始插入， " + list.size());
@@ -203,7 +199,7 @@ public class InitStockServiceImpl implements InitStockServiceI {
 		return MapUtils.createSuccessMap();
 	}
 
-	public Map<String, Object> initBuyAndSell(String day) {
+	public Map<String, Object> initBuyAndSell(String day, String tableName) {
 		List<String> codes = this.stockMainMapper.selectAllCodes();
 		int length = codes.size();
 		int count = 500;
@@ -211,40 +207,39 @@ public class InitStockServiceImpl implements InitStockServiceI {
 		List<String> subList = null;
 		while (end <= length) {
 			subList = codes.subList(begin, end);
-			downloadBuyAndSell(subList, day);
+			downloadBuyAndSell(subList, day, tableName);
 			begin = end;
 			end += count;
 		}
 		if (end > length && begin < length) {
 			subList = codes.subList(begin, length);
-			downloadBuyAndSell(subList, day);
+			downloadBuyAndSell(subList, day, tableName);
 		}
 		return MapUtils.createSuccessMap();
 	}
 
 	// http://api.money.126.net/data/feed/0000001,0600137,1002485,1002291,1002763,1002486,money.api?callback=_ntes_quote_callback50000858
 	// http://api.money.126.net/data/feed/0000001,1000573,0600275,1000553,0603777,0603313,0603816,0600321,0603006,0603887,0603016,1200413,1000755,1000002,0600589,0600137,1002485,1002291,1002763,1002486,money.api?callback=_ntes_quote_callback95430716
-	private void downloadBuyAndSell(List<String> subList, String day) {
+	private Integer count = 0;
+	private void downloadBuyAndSell(List<String> subList, String day, String tableName) {
 		String url = "http://api.money.126.net/data/feed/" + CommonsUtil.listToString(subList) + ",money.api";
-		int count = 0;
 		try {
-			getData(url, subList, day);
+			count++;
+			getData(url, subList, day, tableName);
+			count = 0;
 		} catch (Exception e) {
-			log.error("第 " + (++count) + "次尝试", e);
+			log.error("第 " + count + "次尝试", e);
 			if(count < 4){
-				try {
-					getData(url, subList, day);
-				} catch (Exception e1) {
-					e1.printStackTrace();
-					log.error("第 " + (count+1) + "次尝试又失败了", e);
-				}
+				downloadBuyAndSell(subList, day, tableName);
+			}else{
+				log.error("第 " + count + "次尝试依然失败了  ", e);
 			}
 		}
 			
 	}
 
 	@SuppressWarnings("unchecked")
-	private void getData(String url, List<String> subList, String day) throws Exception {
+	private void getData(String url, List<String> subList, String day, String tableName) throws Exception {
 		HttpEntity entity = HttpClientUtil.get(url);
 		String temp = null;
 		temp = EntityUtils.toString(entity, "utf-8");
@@ -265,7 +260,7 @@ public class InitStockServiceImpl implements InitStockServiceI {
 					}
 				}
 				if(list.size() > 0){
-					this.stockMainMapper.insertStockBuySell(MapUtils.createMap("list", list, "day", day));
+					this.stockMainMapper.insertStockBuySell(MapUtils.createMap("list", list, "day", day, "tableName", tableName));
 					log.info("插入委买委卖数据的数量是 ： " + list.size());
 				}
 			}
@@ -287,7 +282,6 @@ public class InitStockServiceImpl implements InitStockServiceI {
 	}
 
 	// quotes.money.163.com/cjmx/2016/20161031/1002486.xls
-	@Test
 	public void downloadCJMX() throws Exception {
 		String url = "http://quotes.money.163.com/cjmx/2016/20161031/1002486.xls";
 		HttpEntity entity = HttpClientUtil.get(url);
