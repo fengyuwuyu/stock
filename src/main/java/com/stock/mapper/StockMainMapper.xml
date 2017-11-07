@@ -404,6 +404,6 @@
   </select>
   
   <select id="createTable" parameterType="java.util.Map">
-  	create table ${tableName} like stock_buy_sell_2
+  	create table ${tableName} like stock_2017_11_02
   </select>
 </mapper>

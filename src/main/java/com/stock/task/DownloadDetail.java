@@ -45,18 +45,23 @@ public class DownloadDetail {
 	}
 
 	public void execute() {
+		log.info("开始下载委卖委买数据，每30s一次");
 		Date now = new Date();
 		if(CommonsUtil.isHoliday(now, holidayMapper)){
+			log.info("休市。。。");
 			return;
 		}
 		long time = 30000;
-		log.info("开始下载委卖委买数据，每30s一次");
 		// 根据当天时间创建表
 		String day = CommonsUtil.formatDateToString1(now);
 		String tableName = "stock_" + day.replaceAll("-", "_");
 		Map<String, String> map = new HashMap<>(1);
 		map.put("tableName", tableName);
-		stockMainMapper.createTable(map);
+		try {
+			stockMainMapper.createTable(map);
+		} catch (Exception e) {
+			log.warn("创建表失败", e);
+		}
 		StockTableInfo info = new StockTableInfo();
 		info.setTableName(tableName);
 		stockTableInfoMapper.insert(info);
