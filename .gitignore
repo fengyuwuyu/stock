@@ -3,3 +3,4 @@
 /target
 /.settings
 /RemoteSystemsTempFiles
+/src/main/resources/config.properties
