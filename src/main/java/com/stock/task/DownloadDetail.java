@@ -15,7 +15,6 @@ import com.stock.model.ExceptionLog;
 import com.stock.model.StockTableInfo;
 import com.stock.service.InitStockServiceI;
 import com.stock.util.CommonsUtil;
-import com.stock.util.MapUtils;
 
 public class DownloadDetail {
 
@@ -59,12 +58,12 @@ public class DownloadDetail {
 		map.put("tableName", tableName);
 		try {
 			stockMainMapper.createTable(map);
+			StockTableInfo info = new StockTableInfo();
+			info.setTableName(tableName);
+			stockTableInfoMapper.insert(info);
 		} catch (Exception e) {
 			log.warn("创建表失败", e);
 		}
-		StockTableInfo info = new StockTableInfo();
-		info.setTableName(tableName);
-		stockTableInfoMapper.insert(info);
 
 		while (CommonsUtil.checkTime(holidayMapper)) {
 			long begin = System.currentTimeMillis();

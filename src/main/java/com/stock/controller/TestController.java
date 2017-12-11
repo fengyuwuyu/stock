@@ -1,6 +1,7 @@
 package com.stock.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -12,7 +13,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.stock.dao.StockBuySellMapper;
 import com.stock.dao.StockMainMapper;
+import com.stock.dao.StockTableInfoMapper;
 import com.stock.model.StockBuySell;
+import com.stock.model.StockTableInfo;
 import com.stock.service.InitStockServiceI;
 import com.stock.service.SearchMachineI;
 import com.stock.service.StockAnalyseJobI;
@@ -71,14 +74,51 @@ public class TestController {
 	
 	@Autowired
 	private DownloadDetail downloadDetail;
+	@Autowired
+	StockTableInfoMapper stockTableInfoMapper;
 
 	@RequestMapping("test.do")
 	@ResponseBody
 	public Map<String, Object> test() throws Exception {
-//		log.info("test");
-//		initStockServiceI.initStockEveryDay();
-		downloadDetail.execute();
+		//查询第一条记录的day
+		String day = buySellMapper.selectFirstStockDay();
+		String tableName = createTable(day);
+		int total = 0;
+		while(day != null) {
+			List<StockBuySell> list = buySellMapper.datalist(day);
+			if(list == null || list.size() == 0){
+				log.info("表 "+ tableName + " 插入总数据 total = " + total);
+				day = buySellMapper.selectFirstStockDay();
+				tableName = createTable(day);
+				total = 0;
+			} else {
+				stockMainMapper.insertStockBuySell(MapUtils.createMap("list", list, "day", day, "tableName", tableName));
+				int size = list.size();
+				Integer id = list.get(size - 1).getId();
+				buySellMapper.deleteByIdLower(id);
+				total += size;
+				log.info("表 "+ tableName + " 插入数据size = " + size);
+			}
+		}
+		
+		
 		return MapUtils.createSuccessMap();
+	}
+	
+	private String createTable(String day){
+		String tableName = "stock_" + day.replaceAll("-", "_");
+		log.info("创建表 ： " + tableName);
+		Map<String, String> map = new HashMap<>(1);
+		map.put("tableName", tableName);
+		try {
+			stockMainMapper.createTable(map);
+			StockTableInfo info = new StockTableInfo();
+			info.setTableName(tableName);
+			stockTableInfoMapper.insert(info);
+		} catch (Exception e) {
+			log.warn("该表已存在 " + tableName);
+		}
+		return tableName;
 	}
 
 	@RequestMapping("test1.do")

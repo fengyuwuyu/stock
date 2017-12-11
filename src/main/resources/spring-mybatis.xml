@@ -46,12 +46,12 @@
 	</bean>
 
 	<!-- 配置事务管理器 -->
-	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+	<!-- <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource" />
-	</bean>
+	</bean> -->
 
 	<!-- 拦截器方式配置事物 -->
-	<tx:advice id="transactionAdvice" transaction-manager="transactionManager">
+	<!-- <tx:advice id="transactionAdvice" transaction-manager="transactionManager">
 		<tx:attributes>
 			<tx:method name="get*" read-only="true" />  
             <tx:method name="query*" read-only="true" />  
@@ -64,6 +64,6 @@
 	
 	<aop:config>
 		<aop:advisor advice-ref="transactionAdvice" pointcut="execution(* com.stock.service..*Impl.*(..))"  />
-	</aop:config>
+	</aop:config> -->
 	
 </beans>

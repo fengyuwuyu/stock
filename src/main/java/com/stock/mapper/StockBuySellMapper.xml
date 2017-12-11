@@ -42,6 +42,19 @@
     volume, ask1, ask2, ask3, ask4, ask5, askvol1, askvol2, askvol3, askvol4, askvol5, 
     bid1, bid2, bid3, bid4, bid5, bidvol1, bidvol2, bidvol3, bidvol4, bidvol5, day
   </sql>
+  
+  <select id="selectFirstStockDay" resultType="String">
+  	select day from stock_buy_sell_1 limit 1
+  </select>
+  
+  <select id="datalist" parameterType="String" resultMap="BaseResultMap" >
+  	select <include refid="Base_Column_List" /> from stock_buy_sell_1 where day = #{day} limit 0,10000 
+  </select>
+  
+  <delete id="deleteByIdLower" parameterType="Integer">
+  	delete from stock_buy_sell_1 where id &lt;= #{id}
+  </delete>
+  
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 'true' as QUERYID,
     <include refid="Base_Column_List" />

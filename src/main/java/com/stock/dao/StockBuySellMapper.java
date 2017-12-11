@@ -7,6 +7,13 @@ import com.stock.model.StockBuySell;
 import com.stock.model.StockBuySellGroup;
 
 public interface StockBuySellMapper {
+	
+	String selectFirstStockDay();
+	
+	List<StockBuySell> datalist(String day);
+	
+	int deleteByIdLower(Integer id);
+	
     int deleteByPrimaryKey(Integer id);
 
     int insert(StockBuySell record);

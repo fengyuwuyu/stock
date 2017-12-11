@@ -30,20 +30,40 @@ public class SearchMachineImpl implements SearchMachineI {
 	}
 
 	public Map<String, Object> find(StockQuery query) {
-		if (query.getBegin() == null) {
-			return MapUtils.createFailedMap("msg", "请选择起始时间。。。");
-		}
+//		if (query.getBegin() == null) {
+//			return MapUtils.createFailedMap("msg", "请选择起始时间。。。");
+//		}
 		String begin = CommonsUtil.formatDateToString1(query.getBegin());
 		List<StockMainAnalyse> list = this.stockMainMapper.selectAnalyse(MapUtils.createMap("begin",begin,"remainDays",10));
 		List<StockMainAnalyse> inserts = new ArrayList<StockMainAnalyse>();
-		if (list != null && list.size() > 0) {
-			for (StockMainAnalyse analyse : list) {
-				boolean insert = analyse.analyse(begin, 0);
-				if (insert && analyse.getLastIncrease() >= 15) {
-					inserts.add(analyse);
-				}
-			}
-		}
+		
+		
+		// 1、股价处在150和200日均线之上
+		
+		//2、150日均线在200日均线之上
+		
+		// 3、200日均线至少涨了1个月
+		
+		// 4、50日移动平均值高于150及200日移动平均值
+		
+		// 5、当前价格高于50日移动平均值
+		
+		// 6、当前股价比最近一年最低股价至少高30%
+		
+		// 7、当前价格处在最近一年最高股价的70%以内，举例最高价越近越好
+		
+		
+		
+		
+		
+//		if (list != null && list.size() > 0) {
+//			for (StockMainAnalyse analyse : list) {
+//				boolean insert = analyse.analyse(begin, 0);
+//				if (insert && analyse.getLastIncrease() >= 15) {
+//					inserts.add(analyse);
+//				}
+//			}
+//		}
 		// Collections.sort(list, new Comparator<StockMainAnalyse>() {
 		//
 		// 
@@ -56,9 +76,13 @@ public class SearchMachineImpl implements SearchMachineI {
 		// return 0;
 		// }
 		// });
+		
+		
 		return MapUtils.createSuccessMap("rows", inserts, "total",
 				inserts.size());
 	}
+	
+	
 
 	/**
 	 * 根据查询条件返回股票 1、找到股价处于相对低点、成交量较大且存在或接近黄金交叉点
