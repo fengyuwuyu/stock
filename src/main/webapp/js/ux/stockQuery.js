@@ -11,9 +11,12 @@ YiYa.searcher = function(){
 				columns:[[
 							{field:'ck',checkbox:true},
 							{field : 'symbol',title:'股票编号',align:'center',width:200},
-							{field : 'nowIncrease',title:'增长比',align:'center',width:200,sortable : true},
-							{field : 'type',title:'类型',align:'center',width:200,sortable : true},
-							{field : 'lastIncrease',title:'累计涨幅',align:'center',width:200,sortable : true}
+							{field : 'increase',title:'增长比',align:'center',width:200,sortable : true},
+							{field : 'maxPrice',title:'近两周最大增长比',align:'center',width:200,sortable : true},
+							{field : 'open',title:'开盘',align:'center',width:200,sortable : true},
+							{field : 'close',title:'收盘',align:'center',width:200,sortable : true},
+							{field : 'max',title:'最高',align:'center',width:200,sortable : true},
+							{field : 'min',title:'最低',align:'center',width:200,sortable : true},
 						]],
 						onDblClickRow : function(index,row){
 					var begin = $('#begin').datebox('getValue'),

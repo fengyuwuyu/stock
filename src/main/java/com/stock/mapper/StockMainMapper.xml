@@ -182,7 +182,9 @@
   <select id="dataList" parameterType="com.stock.model.StockQuery" resultMap="BaseResultMap">
   	select * from stock_main 
   	<where>
-  		day=#{begin}
+  		<if test="begin != null">
+	  		day=#{begin}
+  		</if>
   		<if test="symbol!=null">
 			and symbol=#{symbol}  		
   		</if>
@@ -197,7 +199,6 @@
   		<if test="type==2">volume desc</if>
   		limit 100
   	</where>
-		
   </select>
   
   <select id="getTotal" parameterType="com.stock.model.StockQuery" resultType="int">
@@ -271,7 +272,7 @@
   </insert>
   
   <select id="selectAll" resultType="java.lang.String">
-  	select distinct symbol from stock
+  	select symbol from stock_code 
   </select>
   
   
@@ -405,5 +406,21 @@
   
   <select id="createTable" parameterType="java.util.Map">
   	create table ${tableName} like stock_2017_11_02
+  </select>
+  
+  <select id="selectBySymbol" parameterType="com.stock.model.StockQuery" resultMap="BaseResultMap">
+  	select `close`, day from stock_main where symbol = #{symbol} and `close` &lt; 500 order by `day`
+  </select>
+  
+  <select id="selectStockDetail" resultType="com.stock.model.StockInfo">
+  	select * from stock
+  </select>
+  
+  <select id="findByDay" parameterType="com.stock.model.StockQuery" resultMap="BaseResultMap">
+  	select * from stock_main where day = #{begin}
+  </select>
+  
+  <select id="findBySymbolAndDay" parameterType="com.stock.model.StockQuery" resultMap="BaseResultMap">
+  	select * from stock_main where day > #{begin} and symbol = #{symbol} limit 10
   </select>
 </mapper>

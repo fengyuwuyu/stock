@@ -1,6 +1,8 @@
 package com.stock.controller;
 
 import java.sql.Date;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,14 +10,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.stock.dao.StockFirstSelectMapper;
 import com.stock.model.StockQuery;
 import com.stock.service.SearchMachineI;
+import com.stock.util.MapUtils;
 
 @RequestMapping("searcher")
 @Controller
 public class SearchMachineController {
 
 	private SearchMachineI searchMachineI;
+	@Autowired
+	StockFirstSelectMapper firstSelectMapper;
 
 	@Autowired
 	public void setSearchMachineI(SearchMachineI searchMachineI) {
@@ -25,6 +31,9 @@ public class SearchMachineController {
 	@RequestMapping("find.do")
 	@ResponseBody
 	public Map<String,Object> find(StockQuery query){
+		if(query == null || query.getBegin() == null) {
+			return MapUtils.createSuccessMap("rows", Collections.emptyList(), "total", 0);
+		}
 		return searchMachineI.find(query);
 	}
 	
@@ -34,6 +43,21 @@ public class SearchMachineController {
 		return searchMachineI.query(query);
 	}
 	
+	@RequestMapping("initData.do")
+	@ResponseBody
+	public Map<String,Object> initData(StockQuery query){
+		List<Date> days = firstSelectMapper.selectWorkerDay();
+		for (Date date : days) {
+			searchMachineI.initData(date);
+		}
+		return MapUtils.createSuccessMap();
+	}
+	
+	private List<Date> getWorkDays(Date begin) {
+		
+		return null;
+	}
+
 	@RequestMapping("queryCur.do")
 	@ResponseBody
 	public Map<String,Object> queryCur(Date end){

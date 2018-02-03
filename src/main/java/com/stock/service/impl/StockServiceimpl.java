@@ -19,7 +19,7 @@ import com.stock.config.Configuration;
 import com.stock.connection.HttpClientUtil;
 import com.stock.dao.StockDetailMapper;
 import com.stock.dao.StockMainMapper;
-import com.stock.dao.StockShortMapper;
+import com.stock.dao.StockInfoMapper;
 import com.stock.model.StockBuySell;
 import com.stock.model.StockMain;
 import com.stock.model.StockQuery;
@@ -38,7 +38,7 @@ import com.stock.util.MapUtils;
 public class StockServiceimpl implements StockServiceI {
 
 	private static ObjectMapper mapper = new ObjectMapper();
-	private StockShortMapper shortMapper;
+	private StockInfoMapper shortMapper;
 	private StockDetailMapper detailMapper;
 	private StockMainMapper mainMapper;
 	private Integer[] years = {/*1990,1991,1992,1993,1994,1995,1996,1997,1998,1999,*/2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016};
@@ -50,7 +50,7 @@ public class StockServiceimpl implements StockServiceI {
 	}
 
 	@Autowired
-	public void setShortMapper(StockShortMapper shortMapper) {
+	public void setShortMapper(StockInfoMapper shortMapper) {
 		this.shortMapper = shortMapper;
 	}
 

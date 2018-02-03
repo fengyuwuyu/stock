@@ -1,9 +1,11 @@
 package com.stock.model;
 
-public class StockShort {
+public class StockInfo {
 	private Integer id;
 
-	private Integer code;
+	private String code;
+
+	private String symbol;
 
 	private String sname;
 
@@ -25,12 +27,20 @@ public class StockShort {
 		this.id = id;
 	}
 
-	public Integer getCode() {
+	public String getCode() {
 		return code;
 	}
 
-	public void setCode(Integer code) {
+	public void setCode(String code) {
 		this.code = code;
+	}
+
+	public String getSymbol() {
+		return symbol;
+	}
+
+	public void setSymbol(String symbol) {
+		this.symbol = symbol;
 	}
 
 	public String getSname() {
@@ -43,8 +53,7 @@ public class StockShort {
 
 	@Override
 	public String toString() {
-		return "StockShort [id=" + id + ", code=" + code + ", sname=" + sname
-				+ ", type=" + type + "]";
+		return "StockInfo [id=" + id + ", code=" + code + ", sname=" + sname + ", type=" + type + "]";
 	}
 
 }

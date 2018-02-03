@@ -17,12 +17,14 @@ import com.stock.dao.StockTableInfoMapper;
 import com.stock.model.StockBuySell;
 import com.stock.model.StockTableInfo;
 import com.stock.service.InitStockServiceI;
+import com.stock.service.JunXianServiceI;
 import com.stock.service.SearchMachineI;
 import com.stock.service.StockAnalyseJobI;
 import com.stock.service.StockMainServiceI;
 import com.stock.service.StockServiceI;
 import com.stock.service.TestServiceI;
 import com.stock.task.DownloadDetail;
+import com.stock.task.DownloadPerDay;
 import com.stock.util.MapUtils;
 
 @Controller
@@ -76,32 +78,42 @@ public class TestController {
 	private DownloadDetail downloadDetail;
 	@Autowired
 	StockTableInfoMapper stockTableInfoMapper;
+	
+	@Autowired
+	JunXianServiceI junXianServiceI;
+	
+	@Autowired
+	DownloadPerDay downloadPerDay;
 
 	@RequestMapping("test.do")
 	@ResponseBody
 	public Map<String, Object> test() throws Exception {
 		//查询第一条记录的day
-		String day = buySellMapper.selectFirstStockDay();
-		String tableName = createTable(day);
-		int total = 0;
-		while(day != null) {
-			List<StockBuySell> list = buySellMapper.datalist(day);
-			if(list == null || list.size() == 0){
-				log.info("表 "+ tableName + " 插入总数据 total = " + total);
-				day = buySellMapper.selectFirstStockDay();
-				tableName = createTable(day);
-				total = 0;
-			} else {
-				stockMainMapper.insertStockBuySell(MapUtils.createMap("list", list, "day", day, "tableName", tableName));
-				int size = list.size();
-				Integer id = list.get(size - 1).getId();
-				buySellMapper.deleteByIdLower(id);
-				total += size;
-				log.info("表 "+ tableName + " 插入数据size = " + size);
-			}
+//		String day = buySellMapper.selectFirstStockDay();
+//		String tableName = createTable(day);
+//		int total = 0;
+//		while(day != null) {
+//			List<StockBuySell> list = buySellMapper.datalist(day);
+//			if(list == null || list.size() == 0){
+//				log.info("表 "+ tableName + " 插入总数据 total = " + total);
+//				day = buySellMapper.selectFirstStockDay();
+//				tableName = createTable(day);
+//				total = 0;
+//			} else {
+//				stockMainMapper.insertStockBuySell(MapUtils.createMap("list", list, "day", day, "tableName", tableName));
+//				int size = list.size();
+//				Integer id = list.get(size - 1).getId();
+//				buySellMapper.deleteByIdLower(id);
+//				total += size;
+//				log.info("表 "+ tableName + " 插入数据size = " + size);
+//			}
+//		}
+		
+		List<String> symbols = stockMainMapper.selectAll();
+		for (String symbol : symbols) {
+			junXianServiceI.createLine(symbol, 4, 9, 13, 20, 37, 49, 87, 150, 200);
 		}
-		
-		
+//		downloadPerDay.execute();
 		return MapUtils.createSuccessMap();
 	}
 	

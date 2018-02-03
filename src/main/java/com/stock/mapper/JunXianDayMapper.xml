@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.stock.dao.JunXianDayMapper" >
+  <resultMap id="BaseResultMap" type="com.stock.model.JunXianDay" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="symbol" property="symbol" jdbcType="CHAR" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="price" property="price" jdbcType="REAL" />
+    <result column="day" property="day" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, symbol, type, price, day
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from jun_xian_day
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from jun_xian_day
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.stock.model.JunXianDay" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="BEFORE" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into jun_xian_day (id, symbol, type, 
+      price, day)
+    values (#{id,jdbcType=INTEGER}, #{symbol,jdbcType=CHAR}, #{type,jdbcType=INTEGER}, 
+      #{price,jdbcType=REAL}, #{day,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.stock.model.JunXianDay" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="BEFORE" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into jun_xian_day
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      id,
+      <if test="symbol != null" >
+        symbol,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="day != null" >
+        day,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{id,jdbcType=INTEGER},
+      <if test="symbol != null" >
+        #{symbol,jdbcType=CHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=REAL},
+      </if>
+      <if test="day != null" >
+        #{day,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.stock.model.JunXianDay" >
+    update jun_xian_day
+    <set >
+      <if test="symbol != null" >
+        symbol = #{symbol,jdbcType=CHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=REAL},
+      </if>
+      <if test="day != null" >
+        day = #{day,jdbcType=CHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.stock.model.JunXianDay" >
+    update jun_xian_day
+    set symbol = #{symbol,jdbcType=CHAR},
+      type = #{type,jdbcType=INTEGER},
+      price = #{price,jdbcType=REAL},
+      day = #{day,jdbcType=CHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <insert id="insertByMap" parameterType="Map">
+  	insert into jun_xian_day(symbol, `type`, price, day) values
+  	<foreach collection="prices" item="item" separator=",">
+  		(#{symbol}, #{type}, #{item.price}, #{item.day})
+  	</foreach>
+  </insert>
+  
+  <select id="findBySumbolAndTypeAndDay" parameterType="Map" resultMap="BaseResultMap">
+  	select <include refid="Base_Column_List"></include> from jun_xian_day where symbol=#{symbol} and type=#{type} and day=#{day}
+  </select>
+</mapper>

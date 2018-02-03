@@ -40,6 +40,8 @@ public interface SearchMachineI {
 
 	Map<String, Object> queryCur(Date end);
 	
+	void initData(Date day);
+	
 	
 	
 }

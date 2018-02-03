@@ -1,13 +1,12 @@
 package com.stock.model;
 
-import java.sql.Date;
+import java.util.Date;
 
-public class StockMain implements Comparable<StockMain> {
+public class StockFirstSelect {
 	private Integer id;
 
 	private String symbol;
 
-	// @JsonFormat(pattern="yyyy-MM-dd", timezone = "GMT+8")
 	private Date day;
 
 	private Float open;
@@ -22,30 +21,7 @@ public class StockMain implements Comparable<StockMain> {
 
 	private Float increase;
 
-	private Float maxIncrease;
-
-	public StockMain() {
-	}
-
-	public StockMain(String symbol, Float open, Float close, Long volume, Float increase) {
-		this.symbol = symbol;
-		this.open = open;
-		this.close = close;
-		this.volume = volume;
-		this.increase = increase;
-	}
-
-	public StockMain(String symbol, Date day, Float open, Float close, Float max, Float min, Long volume,
-			Float increase) {
-		this.symbol = symbol;
-		this.day = day;
-		this.open = open;
-		this.close = close;
-		this.max = max;
-		this.min = min;
-		this.volume = volume;
-		this.increase = increase;
-	}
+	private Float maxPrice;
 
 	public Integer getId() {
 		return id;
@@ -119,23 +95,19 @@ public class StockMain implements Comparable<StockMain> {
 		this.increase = increase;
 	}
 
-	public Float getMaxIncrease() {
-		return maxIncrease;
+	public Float getMaxPrice() {
+		return maxPrice;
 	}
 
-	public void setMaxIncrease(Float maxIncrease) {
-		this.maxIncrease = maxIncrease;
+	public void setMaxPrice(Float maxPrice) {
+		this.maxPrice = maxPrice;
 	}
 
 	@Override
 	public String toString() {
-		return "StockMain [id=" + id + ", symbol=" + symbol + ", day=" + day + ", open=" + open + ", close=" + close
-				+ ", max=" + max + ", min=" + min + ", volume=" + volume + ", increase=" + increase + ", maxIncrease="
-				+ maxIncrease + "]";
-	}
-
-	public int compareTo(StockMain o) {
-		return (int) (this.getIncrease() - o.getIncrease());
+		return "StockFirstSelect [id=" + id + ", symbol=" + symbol + ", day=" + day + ", open=" + open + ", close="
+				+ close + ", max=" + max + ", min=" + min + ", volume=" + volume + ", increase=" + increase
+				+ ", maxPrice=" + maxPrice + "]";
 	}
 
 }

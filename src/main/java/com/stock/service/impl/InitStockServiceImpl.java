@@ -47,12 +47,12 @@ public class InitStockServiceImpl implements InitStockServiceI {
 	private HolidayMapper holidayMapper;
 	private String timeBak = "";
 	private Logger log = Logger.getLogger(InitStockServiceImpl.class);
-	private DataSourceTransactionManager transactionManager;
+//	private DataSourceTransactionManager transactionManager;
 
-	@Autowired
-	public void setTransactionManager(DataSourceTransactionManager transactionManager) {
-		this.transactionManager = transactionManager;
-	}
+//	@Autowired
+//	public void setTransactionManager(DataSourceTransactionManager transactionManager) {
+//		this.transactionManager = transactionManager;
+//	}
 
 	@Autowired
 	public void setStockDetailMapper(StockDetailMapper stockDetailMapper) {
@@ -484,9 +484,9 @@ public class InitStockServiceImpl implements InitStockServiceI {
 			if (analyseBase.junxians.size() > 0) {
 				DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 				def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
-				TransactionStatus status = transactionManager.getTransaction(def);
+//				TransactionStatus status = transactionManager.getTransaction(def);
 				stockMainMapper.insertJunXian(analyseBase);
-				transactionManager.commit(status);
+//				transactionManager.commit(status);
 				// log.info("insert----------"+symbol+"---------------------size------"+analyseBase.junxians.size());
 			}
 			log.info("insert----------" + symbol + "---------------------size------" + analyseBase.junxians.size());

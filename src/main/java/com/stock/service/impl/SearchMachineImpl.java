@@ -2,17 +2,25 @@ package com.stock.service.impl;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.stock.dao.JunXianDayMapper;
+import com.stock.dao.StockFirstSelectMapper;
 import com.stock.dao.StockMainMapper;
 import com.stock.model.CurStock;
 import com.stock.model.CurStock.Stock;
+import com.stock.model.JunXianDay;
 import com.stock.model.StockAnalyseBase;
 import com.stock.model.StockFilterBean;
+import com.stock.model.StockFirstSelect;
+import com.stock.model.StockMain;
 import com.stock.model.StockMainAnalyse;
 import com.stock.model.StockQuery;
 import com.stock.service.SearchMachineI;
@@ -22,67 +30,128 @@ import com.stock.util.MapUtils;
 @Service
 public class SearchMachineImpl implements SearchMachineI {
 
+	Logger log = Logger.getLogger(getClass());
 	private StockMainMapper stockMainMapper;
+	
+	@Autowired
+	private JunXianDayMapper junXianDayMapper;
+	
+	@Autowired
+	private StockFirstSelectMapper firstSelectMapper;
 
 	@Autowired
 	public void setStockMainMapper(StockMainMapper stockMainMapper) {
 		this.stockMainMapper = stockMainMapper;
 	}
+	
+	public void initData(Date day) {
+		StockQuery query = new StockQuery();
+		query.setBegin(day);
+		
+		find(query);
+	}
 
 	public Map<String, Object> find(StockQuery query) {
-//		if (query.getBegin() == null) {
-//			return MapUtils.createFailedMap("msg", "请选择起始时间。。。");
-//		}
-		String begin = CommonsUtil.formatDateToString1(query.getBegin());
-		List<StockMainAnalyse> list = this.stockMainMapper.selectAnalyse(MapUtils.createMap("begin",begin,"remainDays",10));
-		List<StockMainAnalyse> inserts = new ArrayList<StockMainAnalyse>();
+		Date begin = query.getBegin() == null ? new Date(System.currentTimeMillis()) : query.getBegin();
 		
+		List<StockFirstSelect> selectList = findFirstSelectByDay(begin);
+		if(selectList != null && selectList.size() > 0) {
+			return MapUtils.createSuccessMap("rows", selectList, "total", selectList.size());
+		}
+		List<StockMain> row = new ArrayList<>();
+		query.setBegin(begin);
+		List<StockMain> stockInfos = stockMainMapper.findByDay(query);
+		row = new ArrayList<>();
 		
-		// 1、股价处在150和200日均线之上
-		
-		//2、150日均线在200日均线之上
-		
-		// 3、200日均线至少涨了1个月
-		
-		// 4、50日移动平均值高于150及200日移动平均值
-		
-		// 5、当前价格高于50日移动平均值
-		
-		// 6、当前股价比最近一年最低股价至少高30%
-		
-		// 7、当前价格处在最近一年最高股价的70%以内，举例最高价越近越好
-		
-		
-		
-		
-		
-//		if (list != null && list.size() > 0) {
-//			for (StockMainAnalyse analyse : list) {
-//				boolean insert = analyse.analyse(begin, 0);
-//				if (insert && analyse.getLastIncrease() >= 15) {
-//					inserts.add(analyse);
-//				}
+		for (StockMain stockMain : stockInfos) {
+			// 1、股价处在150和200日均线之上
+			JunXianDay junXianDay4 = junXianDayMapper.findBySumbolAndTypeAndDay(MapUtils.createMap("symbol", stockMain.getSymbol(), "type", 4, "day", begin));
+			JunXianDay junXianDay9 = junXianDayMapper.findBySumbolAndTypeAndDay(MapUtils.createMap("symbol", stockMain.getSymbol(), "type", 9, "day", begin));
+			JunXianDay junXianDay13 = junXianDayMapper.findBySumbolAndTypeAndDay(MapUtils.createMap("symbol", stockMain.getSymbol(), "type", 13, "day", begin));
+			JunXianDay junXianDay20 = junXianDayMapper.findBySumbolAndTypeAndDay(MapUtils.createMap("symbol", stockMain.getSymbol(), "type", 20, "day", begin));
+			JunXianDay junXianDay37 = junXianDayMapper.findBySumbolAndTypeAndDay(MapUtils.createMap("symbol", stockMain.getSymbol(), "type", 37, "day", begin));
+			JunXianDay junXianDay49 = junXianDayMapper.findBySumbolAndTypeAndDay(MapUtils.createMap("symbol", stockMain.getSymbol(), "type", 49, "day", begin));
+			JunXianDay junXianDay87 = junXianDayMapper.findBySumbolAndTypeAndDay(MapUtils.createMap("symbol", stockMain.getSymbol(), "type", 87, "day", begin));
+			
+			String symbol = stockMain.getSymbol();
+			
+			
+			//2、150日均线在200日均线之上
+//			if(junXianDay4 == null || stockMain.getClose() < junXianDay4.getPrice()) {
+////				log.info("symbol = " + symbol + ", 当前价格小于4日均线！");
+//				continue;
 //			}
-//		}
-		// Collections.sort(list, new Comparator<StockMainAnalyse>() {
-		//
-		// 
-		// public int compare(StockMainAnalyse o1, StockMainAnalyse o2) {
-		// if(o1.getLastIncrease()-o2.getLastIncrease()>0){
-		// return 1;
-		// }else if(o1.getLastIncrease()-o2.getLastIncrease()<0){
-		// return -1;
-		// }
-		// return 0;
-		// }
-		// });
+			
+			if(junXianDay9 == null || junXianDay4.getPrice() < junXianDay9.getPrice()) {
+//				log.info("symbol = " + symbol + ", 4日均线小于9日均线！");
+				continue;
+			}
+			
+			if(junXianDay13 == null || junXianDay9.getPrice() < junXianDay13.getPrice()) {
+//				log.info("symbol = " + symbol + ", 9日均线小于13日均线！");
+				continue;
+			}
+			
+			if(junXianDay20 == null || junXianDay13.getPrice() < junXianDay20.getPrice()) {
+//				log.info("symbol = " + symbol + ", 13日均线小于20日均线！");
+				continue;
+			}
+			
+			if(junXianDay37 == null || junXianDay20.getPrice() < junXianDay37.getPrice()) {
+//				log.info("symbol = " + symbol + ", 20日均线小于37日均线！");
+				continue;
+			}
+			
+			if(junXianDay49 == null || junXianDay37.getPrice() < junXianDay49.getPrice()) {
+//				log.info("symbol = " + symbol + ", 37日均线小于49日均线！");
+				continue;
+			}
+			
+			if(junXianDay87 == null || junXianDay49.getPrice() < junXianDay87.getPrice()) {
+//				log.info("symbol = " + symbol + ", 49日均线小于87日均线！");
+				continue;
+			}
+			
+			
+			// 3、200日均线至少涨了1个月
+			
+			// 4、49日移动平均值高于150及200日移动平均值
+			
+			query.setSymbol(symbol);
+			List<StockMain> stockList = stockMainMapper.findBySymbolAndDay(query);
+			if(stockList != null && stockList.size() > 0) {
+				float maxPrice = 0f;
+				for (StockMain stockMain2 : stockList) {
+					if(stockMain2.getClose() > maxPrice) {
+						maxPrice = stockMain2.getClose();
+					}
+				}
+				stockMain.setMaxIncrease((maxPrice - stockMain.getClose()) * 100 / stockMain.getClose() ); 
+			}
+			
+			row.add(stockMain);
+			// 5、当前价格高于50日移动平均值
+			
+			// 6、当前股价比最近一年最低股价至少高30%
+			
+			// 7、当前价格处在最近一年最高股价的70%以内，距离最高价越近越好
+			
+		}
+		try {
+			this.firstSelectMapper.insertList(MapUtils.createMap("list", row));
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println(e.getMessage());
+		}
 		
-		
-		return MapUtils.createSuccessMap("rows", inserts, "total",
-				inserts.size());
+		return MapUtils.createSuccessMap("rows", row, "total", row.size());
 	}
 	
 	
+
+	private List<StockFirstSelect> findFirstSelectByDay(Date begin) {
+		return this.firstSelectMapper.selectByDay(begin);
+	}
 
 	/**
 	 * 根据查询条件返回股票 1、找到股价处于相对低点、成交量较大且存在或接近黄金交叉点

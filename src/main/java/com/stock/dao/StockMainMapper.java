@@ -12,6 +12,7 @@ import com.stock.model.StockFilterBean;
 import com.stock.model.StockMain;
 import com.stock.model.StockMainAnalyse;
 import com.stock.model.StockQuery;
+import com.stock.model.StockInfo;
 import com.stock.model.StockTop100;
 import com.stock.util.CodesArrayList;
 
@@ -87,4 +88,12 @@ public interface StockMainMapper {
 	List<CurStock> selectCurStock(List<String> days);
 
 	void createTable(Map<String, String> map);
+	
+	List<StockMain> selectBySymbol(StockQuery query);
+	
+	List<StockInfo> selectStockDetail();
+
+	List<StockMain> findByDay(StockQuery query);
+
+	List<StockMain> findBySymbolAndDay(StockQuery query);
 }

@@ -24,7 +24,7 @@
         <javaClientGenerator type="XMLMAPPER" targetPackage="com.stock.dao" targetProject="D:/soft/develop/workspace/stock/stock/src/main/java">  
             <property name="enableSubPackages" value="false" />  
         </javaClientGenerator>  
-	   	<table tableName="stock_table_info" domainObjectName="StockTableInfo" 
+	   	<table tableName="stock_first_select" domainObjectName="StockFirstSelect" 
 	   		enableCountByExample="false" 
 	   		enableUpdateByExample="false" enableDeleteByExample="false" 
 	   		enableSelectByExample="false" selectByExampleQueryId="false" 
