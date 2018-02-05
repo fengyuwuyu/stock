@@ -509,4 +509,11 @@ public class DateUtil {
 			//System.out.println(DateUtil.millisToStr(1497447232134L));
 	}
 
+	public static boolean isAfterDate(Date computeDay, Date lastDay) {
+		if(lastDay == null) {
+			return true;
+		}
+		return (computeDay.getTime() - lastDay.getTime()) > 0L;
+	}
+
 }

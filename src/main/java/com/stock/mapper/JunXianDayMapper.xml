@@ -103,4 +103,8 @@
   <select id="findBySumbolAndTypeAndDay" parameterType="Map" resultMap="BaseResultMap">
   	select <include refid="Base_Column_List"></include> from jun_xian_day where symbol=#{symbol} and type=#{type} and day=#{day}
   </select>
+  
+  <select id="findLastDay" resultType="java.sql.Date">
+  	select max(`day`) from jun_xian_day
+  </select>
 </mapper>

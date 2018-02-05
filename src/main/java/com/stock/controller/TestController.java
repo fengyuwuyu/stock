@@ -1,5 +1,6 @@
 package com.stock.controller;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -110,8 +111,9 @@ public class TestController {
 //		}
 		
 		List<String> symbols = stockMainMapper.selectAll();
+		Date lastDay = junXianServiceI.findLastDay();
 		for (String symbol : symbols) {
-			junXianServiceI.createLine(null, symbol, 4, 9, 13, 20, 37, 49, 87, 150, 200);
+			junXianServiceI.createLine(lastDay, null, symbol, 4, 9, 13, 20, 37, 49, 87, 150, 200);
 		}
 //		downloadPerDay.execute();
 		return MapUtils.createSuccessMap();
