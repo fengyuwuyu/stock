@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.stock.dao.StockMaxIncreaseMapper" >
+  <resultMap id="BaseResultMap" type="com.stock.model.StockMaxIncrease" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="symbol" property="symbol" jdbcType="CHAR" />
+    <result column="day" property="day" jdbcType="DATE" />
+    <result column="open" property="open" jdbcType="REAL" />
+    <result column="close" property="close" jdbcType="REAL" />
+    <result column="max" property="max" jdbcType="REAL" />
+    <result column="min" property="min" jdbcType="REAL" />
+    <result column="volume" property="volume" jdbcType="BIGINT" />
+    <result column="max_increase" property="maxIncrease" jdbcType="REAL" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, symbol, day, open, close, max, min, volume, max_increase
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from stock_max_increase
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from stock_max_increase
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.stock.model.StockMaxIncrease" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="BEFORE" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into stock_max_increase (id, symbol, day, open, 
+      close, max, min, volume, 
+      max_increase)
+    values (#{id,jdbcType=INTEGER}, #{symbol,jdbcType=CHAR}, #{day,jdbcType=DATE}, #{open,jdbcType=REAL}, 
+      #{close,jdbcType=REAL}, #{max,jdbcType=REAL}, #{min,jdbcType=REAL}, #{volume,jdbcType=BIGINT}, 
+      #{maxIncrease,jdbcType=REAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.stock.model.StockMaxIncrease" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="BEFORE" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into stock_max_increase
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      id,
+      <if test="symbol != null" >
+        symbol,
+      </if>
+      <if test="day != null" >
+        day,
+      </if>
+      <if test="open != null" >
+        open,
+      </if>
+      <if test="close != null" >
+        close,
+      </if>
+      <if test="max != null" >
+        max,
+      </if>
+      <if test="min != null" >
+        min,
+      </if>
+      <if test="volume != null" >
+        volume,
+      </if>
+      <if test="maxIncrease != null" >
+        max_increase,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{id,jdbcType=INTEGER},
+      <if test="symbol != null" >
+        #{symbol,jdbcType=CHAR},
+      </if>
+      <if test="day != null" >
+        #{day,jdbcType=DATE},
+      </if>
+      <if test="open != null" >
+        #{open,jdbcType=REAL},
+      </if>
+      <if test="close != null" >
+        #{close,jdbcType=REAL},
+      </if>
+      <if test="max != null" >
+        #{max,jdbcType=REAL},
+      </if>
+      <if test="min != null" >
+        #{min,jdbcType=REAL},
+      </if>
+      <if test="volume != null" >
+        #{volume,jdbcType=BIGINT},
+      </if>
+      <if test="maxIncrease != null" >
+        #{maxIncrease,jdbcType=REAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.stock.model.StockMaxIncrease" >
+    update stock_max_increase
+    <set >
+      <if test="symbol != null" >
+        symbol = #{symbol,jdbcType=CHAR},
+      </if>
+      <if test="day != null" >
+        day = #{day,jdbcType=DATE},
+      </if>
+      <if test="open != null" >
+        open = #{open,jdbcType=REAL},
+      </if>
+      <if test="close != null" >
+        close = #{close,jdbcType=REAL},
+      </if>
+      <if test="max != null" >
+        max = #{max,jdbcType=REAL},
+      </if>
+      <if test="min != null" >
+        min = #{min,jdbcType=REAL},
+      </if>
+      <if test="volume != null" >
+        volume = #{volume,jdbcType=BIGINT},
+      </if>
+      <if test="maxIncrease != null" >
+        max_increase = #{maxIncrease,jdbcType=REAL},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.stock.model.StockMaxIncrease" >
+    update stock_max_increase
+    set symbol = #{symbol,jdbcType=CHAR},
+      day = #{day,jdbcType=DATE},
+      open = #{open,jdbcType=REAL},
+      close = #{close,jdbcType=REAL},
+      max = #{max,jdbcType=REAL},
+      min = #{min,jdbcType=REAL},
+      volume = #{volume,jdbcType=BIGINT},
+      max_increase = #{maxIncrease,jdbcType=REAL}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
