@@ -8,4 +8,6 @@ public interface JunXianServiceI {
 	Map<String, Object> createLine(Date lastDay, Date begin, String stockId, int... days);
 
 	Date findLastDay();
+
+	void createMaxIncrease(Date lastDay);
 }
