@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -101,6 +102,74 @@ public class JunXianServiceImpl implements JunXianServiceI {
 	@Override
 	public Date findLastDay() {
 		return junXianDayMapper.findLastDay();
+	}
+
+	@Override
+	public void createMaxIncrease(Date lastDay) {
+		StockQuery query = new StockQuery();
+		query.setBegin(lastDay);
+		query.setRemainDays(-1);
+		List<StockMain> stocks = stockMainMapper.findBySymbolAndDay(query);
+		Map<String, List<StockMain>> stockMap = getStockMap(stocks);
+		
+		Map<Date, List<StockMain>> matchConditionMap = new HashMap<>();
+		
+		for (Entry<String, List<StockMain>> entry : stockMap.entrySet()) {
+			List<StockMain> stockList = entry.getValue();
+			for (int i = 1; i < stockList.size(); i++) {
+				if(matchCondition(stockList, i)) {
+					putMaxIncrease(matchConditionMap, stockList.get(i - 1));
+				}
+			}
+			
+		}
+		
+		for (Entry<Date, List<StockMain>> entry : matchConditionMap.entrySet()) {
+			Date day = entry.getKey();
+			List<StockMain> stockList = entry.getValue();
+			
+			
+		}
+		
+	}
+	
+	private boolean matchCondition(List<StockMain> stockList, int index) {
+		float maxIncrease = stockList.get(index).getClose();
+		for (int i = index; i < index + 10; i++) {
+			if(stockList.get(i).getClose() > maxIncrease) {
+				maxIncrease = stockList.get(i).getClose();
+			}
+		}
+		
+		float increase = (maxIncrease - stockList.get(index - 1).getClose()) / stockList.get(index - 1).getClose();
+		if(increase >= 0.15) {
+			stockList.get(index - 1).setMaxIncrease(increase);
+			return true;
+		}
+		return false;
+	}
+
+	private void putMaxIncrease(Map<Date, List<StockMain>> matchConditionMap, StockMain stock) {
+		List<StockMain> stockMainList = matchConditionMap.get(stock.getDay());
+		if(stockMainList == null) {
+			stockMainList = new ArrayList<>();
+			matchConditionMap.put(stock.getDay(), stockMainList);
+		}
+		
+		stockMainList.add(stock);
+	}
+
+	private Map<String, List<StockMain>> getStockMap(List<StockMain> stocks) {
+		Map<String, List<StockMain>> map = new HashMap<>();
+		for (StockMain stockMain : stocks) {
+			List<StockMain> list = map.get(stockMain.getSymbol());
+			if(list == null) {
+				list = new ArrayList<>();
+				map.put(stockMain.getSymbol(), list);
+			}
+			list.add(stockMain);
+		}
+		return map;
 	}
 
 }

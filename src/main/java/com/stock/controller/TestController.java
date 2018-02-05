@@ -119,6 +119,14 @@ public class TestController {
 		return MapUtils.createSuccessMap();
 	}
 	
+	@RequestMapping("test2.do")
+	@ResponseBody
+	public Map<String, Object> test2() throws Exception {
+		Date lastDay = junXianServiceI.findLastDay();
+		junXianServiceI.createMaxIncrease(lastDay);
+		return MapUtils.createSuccessMap();
+	}
+	
 	private String createTable(String day){
 		String tableName = "stock_" + day.replaceAll("-", "_");
 		log.info("创建表 ： " + tableName);
