@@ -409,7 +409,11 @@
   </select>
   
   <select id="selectBySymbol" parameterType="com.stock.model.StockQuery" resultMap="BaseResultMap">
-  	select `close`, day from stock_main where symbol = #{symbol} and `close` &lt; 500 order by `day`
+  	select `close`, day from stock_main where symbol = #{symbol} 
+	  	<if test="begin != null">
+	  		and `day` &gt; '2017-01-01'
+	  	</if>
+  	 and `close` &lt; 500 order by `day`
   </select>
   
   <select id="selectStockDetail" resultType="com.stock.model.StockInfo">

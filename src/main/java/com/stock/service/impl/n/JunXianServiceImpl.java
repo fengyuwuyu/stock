@@ -1,5 +1,6 @@
 package com.stock.service.impl.n;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,12 +31,13 @@ public class JunXianServiceImpl implements JunXianServiceI {
 	Logger log = LoggerFactory.getLogger(getClass());
 
 	@Override
-	public Map<String, Object> createLine(String symbol, int... days) {
+	public Map<String, Object> createLine(Date begin, String symbol, int... days) {
 		if(StringUtil.isNullEmpty(symbol) || days == null || days.length == 0) {
 			return MapUtils.createSuccessMap("This action seems to unnecessary");
 		}
 		StockQuery query = new StockQuery();
 		query.setSymbol(symbol);
+		query.setBegin(begin);
 		List<StockMain> stocks = this.stockMainMapper.selectBySymbol(query);
 		
 		float total = 0.0f;

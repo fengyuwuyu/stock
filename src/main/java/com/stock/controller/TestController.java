@@ -111,7 +111,7 @@ public class TestController {
 		
 		List<String> symbols = stockMainMapper.selectAll();
 		for (String symbol : symbols) {
-			junXianServiceI.createLine(symbol, 4, 9, 13, 20, 37, 49, 87, 150, 200);
+			junXianServiceI.createLine(null, symbol, 4, 9, 13, 20, 37, 49, 87, 150, 200);
 		}
 //		downloadPerDay.execute();
 		return MapUtils.createSuccessMap();
