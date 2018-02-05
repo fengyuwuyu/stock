@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import com.stock.dao.JunXianDayMapper;
 import com.stock.dao.StockMainMapper;
+import com.stock.dao.StockMaxIncreaseMapper;
 import com.stock.model.StockMain;
 import com.stock.model.StockQuery;
 import com.stock.service.JunXianServiceI;
@@ -26,6 +27,9 @@ public class JunXianServiceImpl implements JunXianServiceI {
 
 	@Autowired
 	StockMainMapper stockMainMapper;
+	
+	@Autowired
+	StockMaxIncreaseMapper maxIncreaseMapper;
 
 	@Autowired
 	JunXianDayMapper junXianDayMapper;
@@ -125,9 +129,8 @@ public class JunXianServiceImpl implements JunXianServiceI {
 		}
 		
 		for (Entry<Date, List<StockMain>> entry : matchConditionMap.entrySet()) {
-			Date day = entry.getKey();
 			List<StockMain> stockList = entry.getValue();
-			
+			maxIncreaseMapper.insertList(stockList);			
 			
 		}
 		
