@@ -19,6 +19,8 @@ public class StockMaxIncrease {
 
     private Long volume;
 
+    private Float increase;
+
     private Float maxIncrease;
 
     public Integer getId() {
@@ -83,6 +85,14 @@ public class StockMaxIncrease {
 
     public void setVolume(Long volume) {
         this.volume = volume;
+    }
+
+    public Float getIncrease() {
+        return increase;
+    }
+
+    public void setIncrease(Float increase) {
+        this.increase = increase;
     }
 
     public Float getMaxIncrease() {
