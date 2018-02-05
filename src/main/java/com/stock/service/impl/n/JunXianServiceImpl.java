@@ -2,6 +2,7 @@ package com.stock.service.impl.n;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -111,13 +112,21 @@ public class JunXianServiceImpl implements JunXianServiceI {
 	@Override
 	public void createMaxIncrease(Date lastDay) {
 		StockQuery query = new StockQuery();
+		if(lastDay == null) {
+			Calendar calendar = Calendar.getInstance();
+			calendar.set(2017, 0, 1);
+			lastDay = new Date(calendar.getTimeInMillis());
+		}
 		query.setBegin(lastDay);
 		query.setRemainDays(-1);
 		List<StockMain> stocks = stockMainMapper.findBySymbolAndDay(query);
 		Map<String, List<StockMain>> stockMap = getStockMap(stocks);
 		
+		stocks = null;
+		
 		Map<Date, List<StockMain>> matchConditionMap = new HashMap<>();
 		
+		log.info("compute start");
 		for (Entry<String, List<StockMain>> entry : stockMap.entrySet()) {
 			List<StockMain> stockList = entry.getValue();
 			for (int i = 1; i < stockList.size(); i++) {
@@ -125,20 +134,22 @@ public class JunXianServiceImpl implements JunXianServiceI {
 					putMaxIncrease(matchConditionMap, stockList.get(i - 1));
 				}
 			}
-			
 		}
 		
 		for (Entry<Date, List<StockMain>> entry : matchConditionMap.entrySet()) {
 			List<StockMain> stockList = entry.getValue();
-			maxIncreaseMapper.insertList(stockList);			
-			
+			if(stockList != null && stockList.size() > 0) {
+				Map<String, List<StockMain>> paramMap = new HashMap<>();
+				paramMap.put("stockList", stockList);
+				maxIncreaseMapper.insertList(paramMap);			
+			}
 		}
 		
 	}
 	
 	private boolean matchCondition(List<StockMain> stockList, int index) {
 		float maxIncrease = stockList.get(index).getClose();
-		for (int i = index; i < index + 10; i++) {
+		for (int i = index; i < stockList.size() && i < index + 10; i++) {
 			if(stockList.get(i).getClose() > maxIncrease) {
 				maxIncrease = stockList.get(i).getClose();
 			}

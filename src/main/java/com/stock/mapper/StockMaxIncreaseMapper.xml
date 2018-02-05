@@ -149,4 +149,20 @@
       max_increase = #{maxIncrease,jdbcType=REAL}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  
+  <insert id="insertList" parameterType="com.stock.model.StockMain">
+  	 insert into stock_max_increase (symbol, day, open, 
+      close, max, min, volume, 
+      increase, max_increase)
+    values 
+    <foreach collection="stockList" item="item" separator="," >
+    	(#{item.symbol,jdbcType=CHAR}, #{item.day,jdbcType=DATE}, #{item.open,jdbcType=REAL}, 
+      #{item.close,jdbcType=REAL}, #{item.max,jdbcType=REAL}, #{item.min,jdbcType=REAL}, #{item.volume,jdbcType=BIGINT}, 
+      #{item.increase,jdbcType=REAL}, #{item.maxIncrease,jdbcType=REAL})
+    </foreach>
+  </insert>
+  
+  <select id="findLastDay" resultType="java.sql.Date">
+  	select max(`day`) from stock_max_increase
+  </select>
 </mapper>

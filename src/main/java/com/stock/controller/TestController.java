@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.stock.dao.StockBuySellMapper;
 import com.stock.dao.StockMainMapper;
+import com.stock.dao.StockMaxIncreaseMapper;
 import com.stock.dao.StockTableInfoMapper;
 import com.stock.model.StockBuySell;
 import com.stock.model.StockTableInfo;
@@ -84,6 +85,9 @@ public class TestController {
 	JunXianServiceI junXianServiceI;
 	
 	@Autowired
+	StockMaxIncreaseMapper maxIncreaseMapper;
+	
+	@Autowired
 	DownloadPerDay downloadPerDay;
 
 	@RequestMapping("test.do")
@@ -122,7 +126,7 @@ public class TestController {
 	@RequestMapping("test2.do")
 	@ResponseBody
 	public Map<String, Object> test2() throws Exception {
-		Date lastDay = junXianServiceI.findLastDay();
+		Date lastDay = maxIncreaseMapper.findLastDay();
 		junXianServiceI.createMaxIncrease(lastDay);
 		return MapUtils.createSuccessMap();
 	}
