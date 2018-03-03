@@ -149,7 +149,7 @@ public class JunXianServiceImpl implements JunXianServiceI {
 	
 	private boolean matchCondition(List<StockMain> stockList, int index) {
 		float maxIncrease = stockList.get(index).getClose();
-		for (int i = index; i < stockList.size() && i < index + 10; i++) {
+		for (int i = index; i < stockList.size() && i < index + 20; i++) {
 			if(stockList.get(i).getClose() > maxIncrease) {
 				maxIncrease = stockList.get(i).getClose();
 			}

@@ -165,4 +165,28 @@
   <select id="findLastDay" resultType="java.sql.Date">
   	select max(`day`) from stock_max_increase
   </select>
+  
+  <select id="findByQuery" parameterType="com.stock.model.StockQuery" resultMap="BaseResultMap">
+  	select * from stock_max_increase
+  	<where>
+  		<trim suffixOverrides="and">
+  			<if test="begin != null">
+  				`day` = #{begin}
+  			</if>
+  		</trim>
+  	</where>
+  	
+  </select>
+  
+  <select id="countByQuery" parameterType="com.stock.model.StockQuery" resultType="Long">
+  	select count(*) from stock_max_increase
+  	<where>
+  		<trim suffixOverrides="and">
+  			<if test="begin != null">
+  				`day` = #{begin}
+  			</if>
+  		</trim>
+  	</where>
+  	
+  </select>
 </mapper>

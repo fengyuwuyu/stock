@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.stock.model.StockMain;
 import com.stock.model.StockMaxIncrease;
+import com.stock.model.StockQuery;
 
 public interface StockMaxIncreaseMapper {
     int deleteByPrimaryKey(Integer id);
@@ -23,4 +24,8 @@ public interface StockMaxIncreaseMapper {
 	void insertList(Map<String, List<StockMain>> stockList);
 
 	Date findLastDay();
+
+	long countByQuery(StockQuery query);
+
+	List<StockMaxIncrease> findByQuery(StockQuery query);
 }
