@@ -138,10 +138,10 @@ public class SearchMachineImpl implements SearchMachineI {
 			
 		}
 		try {
-			this.firstSelectMapper.insertList(MapUtils.createMap("list", row));
+			if(row.size() > 0)
+				this.firstSelectMapper.insertList(MapUtils.createMap("list", row));
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println(e.getMessage());
 		}
 		
 		return MapUtils.createSuccessMap("rows", row, "total", row.size());

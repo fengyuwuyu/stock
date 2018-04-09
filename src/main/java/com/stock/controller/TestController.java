@@ -2,6 +2,7 @@ package com.stock.controller;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -117,17 +118,32 @@ public class TestController {
 		List<String> symbols = stockMainMapper.selectAll();
 		Date lastDay = junXianServiceI.findLastDay();
 		for (String symbol : symbols) {
-			junXianServiceI.createLine(lastDay, null, symbol, 4, 9, 13, 20, 37, 49, 87, 150, 200);
+			junXianServiceI.createLine(lastDay, null, symbol, range(2, 30));
 		}
 //		downloadPerDay.execute();
 		return MapUtils.createSuccessMap();
 	}
 	
+	private int[] range(int begin, int end) {
+		int[] result = new int[end + 1 -begin];
+		for (int i = 0; i <= end -begin; i++) {
+			result[i] = begin + i;
+		}
+		return result;
+	}
+	
+	public static void main(String[] args) {
+		TestController t = new TestController();
+		int[] a = t.range(2, 30);
+		System.out.println(Arrays.toString(a));
+	}
+	
 	@RequestMapping("test2.do")
 	@ResponseBody
 	public Map<String, Object> test2() throws Exception {
-		Date lastDay = maxIncreaseMapper.findLastDay();
-		junXianServiceI.createMaxIncrease(lastDay);
+//		Date lastDay = maxIncreaseMapper.findLastDay();
+//		junXianServiceI.createMaxIncrease(lastDay);
+		downloadPerDay.execute();
 		return MapUtils.createSuccessMap();
 	}
 	
@@ -164,47 +180,47 @@ public class TestController {
 		// this.detailSaveServiceI.volBigIncrease();
 	}
 	
-	public static void main(String[] args) {
-		for (int i = 2016; i <= 2018; i++) {
-			for(int j = 1; j <= 12; j++){
-				for(int k = 1; k <= 31; k++){
-					int t = 0;
-					int v = 0;
-					if(j == 2){
-						if(k > 28){
-							continue;
-						}
-					}
-					if(!nums.contains(j)){
-						if(k > 30){
-							continue;
-						}else if(k == 30){
-							t = i * 10000 + j *100 + k;
-							if(j == 12){
-								v = (i + 1) * 10000 + 1 *100 + 1;
-							}else{
-								v = i * 10000 + (j + 1) *100 + 1;
-							}
-							System.out.println("PARTITION t"+ t +" VALUES LESS THAN ("+ v +"),");
-							continue;
-						}
-					}else if(k == 31){
-						t = i * 10000 + j *100 + k;
-						if(j == 12){
-							v = (i + 1) * 10000 + 1 *100 + 1;
-						}else{
-							v = i * 10000 + (j + 1) *100 + 1;
-						}
-						System.out.println("PARTITION t"+ t +" VALUES LESS THAN ("+ v +"),");
-						continue;
-					}
-					t = i * 10000 + j *100 + k;
-					v = t + 1;
-					System.out.println("PARTITION t"+ t +" VALUES LESS THAN ("+ v +"),");
-				}
-			}
-		}
-	}
+//	public static void main(String[] args) {
+//		for (int i = 2016; i <= 2018; i++) {
+//			for(int j = 1; j <= 12; j++){
+//				for(int k = 1; k <= 31; k++){
+//					int t = 0;
+//					int v = 0;
+//					if(j == 2){
+//						if(k > 28){
+//							continue;
+//						}
+//					}
+//					if(!nums.contains(j)){
+//						if(k > 30){
+//							continue;
+//						}else if(k == 30){
+//							t = i * 10000 + j *100 + k;
+//							if(j == 12){
+//								v = (i + 1) * 10000 + 1 *100 + 1;
+//							}else{
+//								v = i * 10000 + (j + 1) *100 + 1;
+//							}
+//							System.out.println("PARTITION t"+ t +" VALUES LESS THAN ("+ v +"),");
+//							continue;
+//						}
+//					}else if(k == 31){
+//						t = i * 10000 + j *100 + k;
+//						if(j == 12){
+//							v = (i + 1) * 10000 + 1 *100 + 1;
+//						}else{
+//							v = i * 10000 + (j + 1) *100 + 1;
+//						}
+//						System.out.println("PARTITION t"+ t +" VALUES LESS THAN ("+ v +"),");
+//						continue;
+//					}
+//					t = i * 10000 + j *100 + k;
+//					v = t + 1;
+//					System.out.println("PARTITION t"+ t +" VALUES LESS THAN ("+ v +"),");
+//				}
+//			}
+//		}
+//	}
 	
 	private static List<Integer> nums = new ArrayList<>();
 	static {
