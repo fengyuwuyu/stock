@@ -96,4 +96,8 @@ public interface StockMainMapper {
 	List<StockMain> findByDay(StockQuery query);
 
 	List<StockMain> findBySymbolAndDay(StockQuery query);
+    
+    List<StockMain> findAll(Date begin);
+
+	int count();
 }

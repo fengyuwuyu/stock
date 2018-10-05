@@ -1,5 +1,6 @@
 package com.stock.service.impl.n;
 
+import java.sql.Date;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -26,10 +27,20 @@ public class MaxIncreaseSericeImpl implements MaxIncreaseSericeI {
 		}
 		long total = maxIncreaseMapper.countByQuery(query);
 		if(total == 0) {
-			return MapUtils.createSuccessMap("total", 0L, "rows", Collections.emptyList());
+			return findMaxIncrease(query);
 		}
 		List<StockMaxIncrease> list = maxIncreaseMapper.findByQuery(query);
 		return MapUtils.createSuccessMap("total", total, "rows", list);
+	}
+
+	public Map<String, Object> findMaxIncrease(StockQuery query) {
+		Date begin = query.getBegin();
+		if(begin == null) {
+			return MapUtils.createSuccessMap("total", 0L, "rows", Collections.emptyList());
+		}
+		
+		
+		return null;
 	}
 
 }

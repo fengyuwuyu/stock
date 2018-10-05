@@ -32,8 +32,22 @@
 	<script type="text/javascript" src="${pageContext.request.contextPath }/js/commons/jquery-1.11.0-min.js"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-easyui-1.4.0/jquery.easyui.min.js"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-easyui-1.4.0/locale/easyui-lang-zh_CN.js"></script>	
+	 
+ 		<!-- 
+ 		<script src="https://img.hcharts.cn/highstock/highstock.js"></script>
+        <script src="https://img.hcharts.cn/highcharts/modules/exporting.js"></script>
+        <script src="https://img.hcharts.cn/highcharts-plugins/highcharts-zh_CN.js"></script>
+        <script src="https://img.hcharts.cn/highcharts/modules/drag-panes.js"></script>
+        <script src="https://img.hcharts.cn/highstock/indicators/indicators.js"></script>
+        <script src="https://img.hcharts.cn/highstock/indicators/volume-by-price.js"></script> 
+        
+        -->
+
+
 	<script type="text/javascript" src="${pageContext.request.contextPath }/js/commons/highstock.js"></script>
-	<!-- <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+	<!-- 
+	
+	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 	<script src="https://code.highcharts.com/stock/highstock.js"></script>
 	<script src="https://code.highcharts.com/stock/modules/drag-panes.js"></script>
 	<script src="https://code.highcharts.com/stock/modules/exporting.js"></script> -->

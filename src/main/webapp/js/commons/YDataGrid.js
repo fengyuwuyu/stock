@@ -252,7 +252,7 @@ var YDataGrid = function(config){
 			var dataconfig = {
 				title:dataGrid.showGridTitle?dataGrid.title || '数据表格':null,
 				iconCls:dataGrid.iconCls || 'icon-grid',
-				height:dataGrid.height || YiYa.fixWidth(1)/2,
+				height:dataGrid.height || YiYa.fixWidth(0.8)/2,
 				width:dataGrid.width || YiYa.fixWidth(1),
 				fitColumns:fitColumns,
 				fit : dataGrid.fit||false,

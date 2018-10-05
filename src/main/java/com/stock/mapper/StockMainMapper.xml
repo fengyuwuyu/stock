@@ -248,8 +248,8 @@
 					day between #{begin} and #{end}
 				</if>
 				<if test="end==null">
-					day between DATE_ADD(#{begin},INTERVAL -42 day) and
-					DATE_ADD(#{begin},INTERVAL 28 day)
+					day between DATE_ADD(#{begin},INTERVAL -120 day) and 
+					#{begin}<!-- DATE_ADD(#{begin},INTERVAL 10 day) -->
 				</if>
 			</if>
 			<if test="begin==null">
@@ -493,4 +493,12 @@
 			limit 10
 		</if>
 	</select>
+	  
+  <select id="findAll" resultMap="BaseResultMap" parameterType="java.sql.Date">
+  	select * from stock_main where `day` >= #{begin} order by `day`
+  </select>
+  
+  <select id="count" resultType="Integer">
+  	select count(distinct symbol) from stock_main
+  </select>
 </mapper>

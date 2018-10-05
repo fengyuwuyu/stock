@@ -1,19 +1,22 @@
 package com.stock.util;
 
+import java.io.File;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
+import com.ll.stock.model.StockAnalysisResult;
 import com.stock.dao.HolidayMapper;
 
 public class CommonsUtil {
 	
 	/** yyyy-MM-dd*/
 	private static SimpleDateFormat dateFormat1 = new SimpleDateFormat(
-			"yyyy-MM-dd");
-	/** yyyy-MM-dd*/
-	private static SimpleDateFormat dateFormat4 = new SimpleDateFormat(
 			"yyyy-MM-dd");
 	/** yyyy-MM-dd HH:mm:ss*/
 	private static SimpleDateFormat dateFormat2 = new SimpleDateFormat(
@@ -27,6 +30,25 @@ public class CommonsUtil {
 			"yyyy");
 	private static SimpleDateFormat dateFormatYYYYMMDD = new SimpleDateFormat(
 			"yyyyMMdd");
+	private static DecimalFormat decimalFormat = new DecimalFormat("0.00");
+	
+	public static String formatDecimal(double num) {
+		return decimalFormat.format(num);
+	}
+	
+	public static void intersaction(List<StockAnalysisResult> list1, List<StockAnalysisResult> list2) {
+		Iterator<StockAnalysisResult> it = list1.iterator();
+		while (it.hasNext()) {
+			StockAnalysisResult result = it.next();
+			for (StockAnalysisResult stockAnalysisResult : list2) {
+				if (result.getSymbol().equals(stockAnalysisResult.getSymbol())) {
+					it.remove();
+					break;
+				}
+			}
+		}
+		
+	}
 	
 	public static String formatYYYY(Date date){
 		return dateFormatYYYY.format(date);
@@ -34,6 +56,36 @@ public class CommonsUtil {
 	
 	public static String formatYYYYMMDD(Date date){
 		return dateFormatYYYYMMDD.format(date);
+	}
+	
+	public static void deleteEmptyDir(String path) {
+		File file = new File(path);
+		if (!file.exists() || !file.isDirectory()) {
+			return;
+		}
+		
+		File[] fileList = file.listFiles();
+		if (fileList == null || fileList.length == 0) {
+			boolean success = file.delete();
+			System.out.println(String.format("delete file [%s], filename = %s", success, path));
+			return ;
+		}
+		
+		for (File file2 : fileList) {
+			deleteEmptyDir(file2.getAbsolutePath());
+		}
+		
+		fileList = file.listFiles();
+		if (fileList == null || fileList.length == 0) {
+			boolean success = file.delete();
+			System.out.println(String.format("delete file [%s], filename = %s", success, path));
+			return ;
+		}
+		
+	}
+	
+	public static void main(String[] args) {
+		deleteEmptyDir("F:/");
 	}
 	
 	/**
@@ -114,7 +166,7 @@ public class CommonsUtil {
 	}
 	
 	public static Date formatStringToDate1(String time) throws ParseException{
-		return dateFormat4.parse(time);
+		return dateFormat1.parse(time);
 	}
 
 	/**

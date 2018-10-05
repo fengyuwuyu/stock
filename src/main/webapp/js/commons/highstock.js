@@ -21467,9 +21467,9 @@
                     topBox = 3*topBox - bottomBox*2;
                     bottomBox+=300-increase*3;
                     topBox+=300-increase*3;
-                    console.log('topBox--'+topBox);
-                    console.log('bottomBox--'+bottomBox);
-                    console.log('---------------------------------------------------');
+//                    console.log('topBox--'+topBox);
+//                    console.log('bottomBox--'+bottomBox);
+//                    console.log('---------------------------------------------------');
                     // Create the path. Due to a bug in Chrome 49, the path is first instanciated
                     // with no values, then the values pushed. For unknown reasons, instanciated
                     // the path array with all the values would lead to a crash when updating

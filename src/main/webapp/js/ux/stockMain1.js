@@ -5,18 +5,26 @@ YiYa.stockMain = function(){
 	_this = {
 		config : {
 			dataGrid : {
-				url : urls['msUrl']+'stockMain/dataList1.do',
+				url : urls['msUrl']+'searcher/findIncreaseTopn.do',
 				idField : 'symbol',
 				columns:[[
 							{field:'ck',checkbox:true},
-							{field : 'symbol',title:'股票编号',align:'center',width:200},
-							{field : 'increase',title:'增长比',align:'center',width:200}
+							{field : 'symbol',title:'股票编号',align:'center',width:80},
+							{field : 'hasIncrease',title:'已增长',align:'center',width:80,sortable : true},
+							{field : 'maxIncrease',title:'累计增长',align:'center',width:80,sortable : true},
+							{field : 'volumeRate',title:'成交量比率',align:'center',width:80,sortable : true},
+							{field : 'increase',title:'增长比',align:'center',width:80,sortable : true},
+							/*{field : 'open',title:'开盘价',align:'center',width:80},
+							{field : 'close',title:'收盘价',align:'center',width:80},
+							{field : 'volume',title:'成交量',align:'center',width:80},*/
+							{field : 'increases',title:'历史增长比',align:'center',width:200},
+							{field : 'volumes',title:'历史成交量',align:'center',width:200}/*,
+							{field : 'closes',title:'历史收盘价',align:'center',width:200}*/
 						]],
 						onDblClickRow : function(index,row){
 //					var config = YiYa.stockMain.getQueryTime();
-					var begin = $('#begin').datebox('getValue'),
-					end = $('#end').datebox('getValue');
-					window.open(urls['msUrl']+'view/stockChart.jsp?symbol='+row.symbol+'&begin='+begin+'&end='+end);
+					var begin = $('#begin').datebox('getValue');
+					window.open(urls['msUrl']+'view/stockChart.jsp?symbol='+row.symbol+'&begin='+begin);
 //					$('#stock-win').window({
 //						title : '个股详情',
 //						width : 1200,
@@ -33,8 +41,6 @@ YiYa.stockMain = function(){
 			}
 		},
 		initDateBox : function(){
-			$('#begin').datebox('setValue','2000-01-05');
-			$('#end').datebox('setValue','2000-02-26');
 		},
 		getQueryTime : function(){
 			return {"begin" : $('#begin').datebox('getValue'),"end":$('#end').datebox('getValue')};
@@ -49,7 +55,6 @@ YiYa.stockMain = function(){
 		init : function(){
 			_box = new YDataGrid(this.config);
 			_box.init();
-			$('#begin').datebox('setValue','2000-01-28');
 		}
 	};
 	return _this;
