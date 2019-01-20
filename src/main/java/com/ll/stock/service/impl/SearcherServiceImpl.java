@@ -92,6 +92,9 @@ public class SearcherServiceImpl implements SearcherServiceI {
 			case SERIAL_INCREASE_AND_LOW_VOLUME:
 				serialIncreaseAndLowVolumeStrategy.analysis(stockMains, index, increaseTopn, maxIndex, begin, limit);
 				break;
+			case NEARLY_TEN_DAY:
+				
+				break;
 			default:
 				break;
 			}
