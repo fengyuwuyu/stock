@@ -73,9 +73,6 @@ public class SearcherServiceImpl implements SearcherServiceI {
 				}
 				count++;
 			}
-			if (stockMains.get(0).getSymbol().equals("000860")) {
-				System.out.println();
-			}
 			
 			switch (type) {
 			case MAX_INCREASE:
