@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +16,7 @@ import com.ll.stock.model.type.SearchTypeEnum;
 import com.ll.stock.service.SearcherServiceI;
 import com.ll.stock.strategy.impl.DecreaseAndSerialLowVolumeStrategy;
 import com.ll.stock.strategy.impl.MaxIncreaseStrategy;
+import com.ll.stock.strategy.impl.NearlyTenDayStrategy;
 import com.ll.stock.strategy.impl.SerialIncreaseAndLowVolumeStrategy;
 import com.ll.stock.strategy.impl.SerialIncreaseStrategy;
 import com.ll.stock.strategy.impl.SerialLowVolumeStrategy;
@@ -23,7 +26,10 @@ import com.stock.util.MapUtils;
 
 @Service
 public class SearcherServiceImpl implements SearcherServiceI {
+	
+	private Logger log = LoggerFactory.getLogger(getClass());
 
+//	private Logger log = Logger.getLogger(getClass());
 	@Autowired
 	private StockMainMapper stockMainMapper;
 	@Autowired
@@ -36,19 +42,20 @@ public class SearcherServiceImpl implements SearcherServiceI {
 	DecreaseAndSerialLowVolumeStrategy decreaseAndSerialLowVolumeStrategy;
 	@Autowired
 	SerialIncreaseAndLowVolumeStrategy serialIncreaseAndLowVolumeStrategy;
+	@Autowired
+	NearlyTenDayStrategy nearlyTenDayStrategy;
 
 	@Override
 	public Map<String, Object> findIncreaseTopn(Date begin, float limit, Integer searchType) {
-		Date query = new Date(begin.getTime() - 86400 * 1000L * 40);
-		List<StockMain> stockMainList = stockMainMapper.findAll(query);
-		Map<String, List<StockMain>> stockMainMap = stockMainList.stream()
-				.collect(Collectors.groupingBy(StockMain::getSymbol));
-		List<StockAnalysisResult> increaseTopn = new ArrayList<>(50);
-//		List<StockAnalysisResult> list = new ArrayList<>();
 		SearchTypeEnum type = SearchTypeEnum.valueOf(searchType);
 		if (type == null) {
 			return MapUtils.createFailedMap("msg", "illegal searchType [%s]", searchType);
 		}
+		List<StockMain> stockMainList = stockMainMapper.findAll(begin);
+		Map<String, List<StockMain>> stockMainMap = stockMainList.stream()
+				.collect(Collectors.groupingBy(StockMain::getSymbol));
+		List<StockAnalysisResult> result = new ArrayList<>(50);
+//		List<StockAnalysisResult> list = new ArrayList<>();
 		for (List<StockMain> stockMains : stockMainMap.values()) {
 			float max = 0;
 			int maxIndex = stockMains.size() - 1;
@@ -74,35 +81,37 @@ public class SearcherServiceImpl implements SearcherServiceI {
 				count++;
 			}
 			
-			switch (type) {
-			case MAX_INCREASE:
-				maxIncreaseStrategy.analysis(stockMains, index, increaseTopn, maxIndex, begin, limit);
-				break;
-			case SERIAL_LOW_VOLUME:
-				serialLowVolumeStrategy.analysis(stockMains, index, increaseTopn, maxIndex, begin, limit);
-				break;
-			case SERIAL_INCREASE:
-//				MaxIncreaseStrategy.getInstance().analysis(stockMains, index, increaseTopn, max, begin, limit);
-//				SerialIncreaseStrategy.getInstance().analysis(stockMains, index, list, max, begin, limit);
-				serialIncreaseStrategy.analysis(stockMains, index, increaseTopn, maxIndex, begin, limit);
-				break;
-			case DECREASE_AND_SERIAL_LOW_VOLUME:
-				decreaseAndSerialLowVolumeStrategy.analysis(stockMains, index, increaseTopn, maxIndex, begin, limit);
-				break;
-			case SERIAL_INCREASE_AND_LOW_VOLUME:
-				serialIncreaseAndLowVolumeStrategy.analysis(stockMains, index, increaseTopn, maxIndex, begin, limit);
-				break;
-			case NEARLY_TEN_DAY:
-				
-				break;
-			default:
-				break;
+			try {
+				switch (type) {
+				case MAX_INCREASE:
+					maxIncreaseStrategy.analysis(stockMains, index, result, maxIndex, begin, limit);
+					break;
+				case SERIAL_LOW_VOLUME:
+					serialLowVolumeStrategy.analysis(stockMains, index, result, maxIndex, begin, limit);
+					break;
+				case SERIAL_INCREASE:
+					serialIncreaseStrategy.analysis(stockMains, index, result, maxIndex, begin, limit);
+					break;
+				case DECREASE_AND_SERIAL_LOW_VOLUME:
+					decreaseAndSerialLowVolumeStrategy.analysis(stockMains, index, result, maxIndex, begin, limit);
+					break;
+				case SERIAL_INCREASE_AND_LOW_VOLUME:
+					serialIncreaseAndLowVolumeStrategy.analysis(stockMains, index, result, maxIndex, begin, limit);
+					break;
+				case NEARLY_TEN_DAY:
+					nearlyTenDayStrategy.analysis(stockMains, index, result, maxIndex, begin, limit);
+					break;
+				default:
+					break;
+				}
+			} catch (Exception e) {
+				log.warn(String.format("symbol = %s, maxIndex = %d, maxLen = %d",  stockMains.get(0).getSymbol(), maxIndex, stockMains.size()));
 			}
 		}
 //		if (type == SearchTypeEnum.SERIAL_INCREASE) {
 //			CommonsUtil.intersaction(increaseTopn, list);
 //		}
-		return MapUtils.createSuccessMap("rows", increaseTopn, "total", increaseTopn.size());
+		return MapUtils.createSuccessMap("rows", result, "total", result.size());
 	}
 
 }

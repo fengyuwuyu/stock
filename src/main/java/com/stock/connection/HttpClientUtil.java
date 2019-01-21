@@ -11,8 +11,6 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.log4j.Logger;
 
-import com.stock.util.CommonsUtil;
-
 public class HttpClientUtil {
 	
 	private static Logger log = Logger.getLogger(HttpClientUtil.class);

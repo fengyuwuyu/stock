@@ -10,10 +10,11 @@ YiYa.stockMain = function(){
 				columns:[[
 							{field:'ck',checkbox:true},
 							{field : 'symbol',title:'股票编号',align:'center',width:80},
-							{field : 'hasIncrease',title:'已增长',align:'center',width:80,sortable : true},
-							{field : 'maxIncrease',title:'累计增长',align:'center',width:80,sortable : true},
-							{field : 'volumeRate',title:'成交量比率',align:'center',width:80,sortable : true},
+							{field : 'hasIncrease',title:'过去十天增长',align:'center',width:80,sortable : true},
+							{field : 'maxIncrease',title:'最大增长',align:'center',width:80,sortable : true, hidden: true},
+							{field : 'futureIncrease',title:'未來十天增长',align:'center',width:80,sortable : true},
 							{field : 'increase',title:'增长比',align:'center',width:80,sortable : true},
+							{field : 'volumeRatio',title:'成交量比率',align:'center',width:80,sortable : true},
 							/*{field : 'open',title:'开盘价',align:'center',width:80},
 							{field : 'close',title:'收盘价',align:'center',width:80},
 							{field : 'volume',title:'成交量',align:'center',width:80},*/

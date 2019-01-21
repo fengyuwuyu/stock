@@ -19,9 +19,11 @@ public class StockAnalysisResult {
 	private Float min;
 
 	private Long volume;
+	private Float volumeRatio;
 
 	private Float increase;
 	private Float maxIncrease;
+	private Float futureIncrease;
 
 	private String increases;
 	private String volumes;
@@ -33,8 +35,8 @@ public class StockAnalysisResult {
 		super();
 	}
 
-	public StockAnalysisResult(StockMain stockMain, Float maxIncrease, String increases, String volumes,
-			String closes) {
+	public StockAnalysisResult(StockMain stockMain, Float maxIncrease, String increases, String volumes, String closes,
+			Float volumeRatio, Float futureIncrease, Float hasIncrease) {
 		this.symbol = stockMain.getSymbol();
 		this.day = stockMain.getDay();
 		this.open = stockMain.getOpen();
@@ -47,6 +49,9 @@ public class StockAnalysisResult {
 		this.volumes = volumes;
 		this.closes = closes;
 		this.maxIncrease = maxIncrease;
+		this.volumeRatio = volumeRatio;
+		this.futureIncrease = futureIncrease;
+		this.hasIncrease= hasIncrease;
 	}
 
 	public StockAnalysisResult(String symbol, Date day, Float open, Float close, Float max, Float min, Long volume,
@@ -63,6 +68,14 @@ public class StockAnalysisResult {
 		this.increases = increases;
 		this.volumes = volumes;
 		this.closes = closes;
+	}
+
+	public Float getFutureIncrease() {
+		return futureIncrease;
+	}
+
+	public void setFutureIncrease(Float futureIncrease) {
+		this.futureIncrease = futureIncrease;
 	}
 
 	public float getHasIncrease() {
@@ -177,12 +190,21 @@ public class StockAnalysisResult {
 		this.volumeRate = volumeRate;
 	}
 
+	public Float getVolumeRatio() {
+		return volumeRatio;
+	}
+
+	public void setVolumeRatio(Float volumeRatio) {
+		this.volumeRatio = volumeRatio;
+	}
+
 	@Override
 	public String toString() {
 		return "StockAnalysisResult [symbol=" + symbol + ", day=" + day + ", open=" + open + ", close=" + close
-				+ ", max=" + max + ", min=" + min + ", volume=" + volume + ", increase=" + increase + ", maxIncrease="
-				+ maxIncrease + ", increases=" + increases + ", volumes=" + volumes + ", closes=" + closes
-				+ ", volumeRate=" + volumeRate + ", hasIncrease=" + hasIncrease + "]";
+				+ ", max=" + max + ", min=" + min + ", volume=" + volume + ", volumeRatio=" + volumeRatio
+				+ ", increase=" + increase + ", maxIncrease=" + maxIncrease + ", futureIncrease=" + futureIncrease
+				+ ", increases=" + increases + ", volumes=" + volumes + ", closes=" + closes + ", volumeRate="
+				+ volumeRate + ", hasIncrease=" + hasIncrease + "]";
 	}
 
 }

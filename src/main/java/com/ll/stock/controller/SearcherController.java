@@ -2,6 +2,7 @@ package com.ll.stock.controller;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,7 +27,7 @@ public class SearcherController {
 	@ResponseBody
 	public Map<String, Object> findIncreaseTopn(Date begin, Float limit, Integer searchType) {
 		if (begin == null) {
-			return MapUtils.createSuccessMap();
+			return MapUtils.createSuccessMap("rows", Collections.emptyList(), "total", 0);
 		}
 		begin = begin == null ? new Date(System.currentTimeMillis()) : begin;
 		limit = limit == null ? 10F : limit;

@@ -8,5 +8,5 @@ import com.stock.model.StockMain;
 
 public interface IAnalysisStrategy {
 
-	void analysis(List<StockMain> stockMains, int index, List<StockAnalysisResult> result, int maxIndex, Date begin, float limit);
+	void analysis(List<StockMain> stockMains, int index, List<StockAnalysisResult> result, int maxIndex, Date begin, float limit) throws Exception;
 }
