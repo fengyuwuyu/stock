@@ -28,7 +28,7 @@ public abstract class BaseAnalysisStrategy implements IAnalysisStrategy {
 		}
 		Float volumeRatio = stockMains.get(index).getVolume().floatValue() / stockMains.get(index - 1).getVolume().floatValue();
 		
-		float max = curr.getClose();
+		float max = 0;
 		int futureIndex = (index + futureCount) > stockMains.size() ? stockMains.size() : index + futureCount;
 		for (int i = index + 1; i < futureIndex; i++) {
 			if (stockMains.get(i).getClose() > max) {
@@ -39,10 +39,9 @@ public abstract class BaseAnalysisStrategy implements IAnalysisStrategy {
 		StockMiddleEntity entity = StockUtils.findMaxIncrease(stockMains, index - computeDay, index);
 		float hasIncrease = entity.getMaxIncrease();
 		
-		Float futureIncrease = 0F;
-		if (max > curr.getClose()) {
-			futureIncrease = (max - curr.getClose()) * 100 / curr.getClose();
-		}
+		Float futureIncrease = (max - curr.getClose()) * 100 / curr.getClose();
+//		if (max > curr.getClose()) {
+//		}
 		return new StockAnalysisResult(curr, maxIncrease, increases.toString(),
 				volumes.toString(), closes.toString(), volumeRatio, futureIncrease, hasIncrease);
 	}

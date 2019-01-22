@@ -6,8 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,11 +14,13 @@ import com.ll.stock.model.StockAnalysisResult;
 import com.ll.stock.model.type.SearchTypeEnum;
 import com.ll.stock.service.SearcherServiceI;
 import com.ll.stock.strategy.impl.DecreaseAndSerialLowVolumeStrategy;
+import com.ll.stock.strategy.impl.MakeMoneyStrategy;
 import com.ll.stock.strategy.impl.MaxIncreaseStrategy;
 import com.ll.stock.strategy.impl.NearlyTenDayStrategy;
 import com.ll.stock.strategy.impl.SerialIncreaseAndLowVolumeStrategy;
 import com.ll.stock.strategy.impl.SerialIncreaseStrategy;
 import com.ll.stock.strategy.impl.SerialLowVolumeStrategy;
+import com.ll.stock.util.StockUtils;
 import com.stock.dao.StockMainMapper;
 import com.stock.model.StockMain;
 import com.stock.util.MapUtils;
@@ -27,9 +28,7 @@ import com.stock.util.MapUtils;
 @Service
 public class SearcherServiceImpl implements SearcherServiceI {
 	
-	private Logger log = LoggerFactory.getLogger(getClass());
-
-//	private Logger log = Logger.getLogger(getClass());
+	private Logger log = Logger.getLogger(getClass());
 	@Autowired
 	private StockMainMapper stockMainMapper;
 	@Autowired
@@ -44,6 +43,8 @@ public class SearcherServiceImpl implements SearcherServiceI {
 	SerialIncreaseAndLowVolumeStrategy serialIncreaseAndLowVolumeStrategy;
 	@Autowired
 	NearlyTenDayStrategy nearlyTenDayStrategy;
+	@Autowired
+	MakeMoneyStrategy makeMoneyStrategy;
 
 	@Override
 	public Map<String, Object> findIncreaseTopn(Date begin, float limit, Integer searchType) {
@@ -101,16 +102,19 @@ public class SearcherServiceImpl implements SearcherServiceI {
 				case NEARLY_TEN_DAY:
 					nearlyTenDayStrategy.analysis(stockMains, index, result, maxIndex, begin, limit);
 					break;
+				case MAKE_MONEY:
+					makeMoneyStrategy.analysis(stockMains, index, result, maxIndex, begin, limit);
+					break;
 				default:
 					break;
 				}
 			} catch (Exception e) {
-				log.warn(String.format("symbol = %s, maxIndex = %d, maxLen = %d",  stockMains.get(0).getSymbol(), maxIndex, stockMains.size()));
+				log.warn(String.format("symbol = %s, maxIndex = %d, maxLen = %d, error = %s",  stockMains.get(0).getSymbol(), maxIndex, stockMains.size(), e.getMessage()));
 			}
 		}
-//		if (type == SearchTypeEnum.SERIAL_INCREASE) {
-//			CommonsUtil.intersaction(increaseTopn, list);
-//		}
+		if (type == SearchTypeEnum.MAKE_MONEY) {
+//			StockUtils.statistics(result);
+		}
 		return MapUtils.createSuccessMap("rows", result, "total", result.size());
 	}
 

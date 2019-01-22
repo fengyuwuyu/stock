@@ -17,7 +17,25 @@ public class DateUtil {
 	private static final DateFormat LINUX_DATE_FORMAT = new SimpleDateFormat("yyyyMMdd HH:mm:ss");
 	// 一天的毫秒数
 	public static final long ONE_DAY_MS = 24 * 60 * 60 * 1000;
-
+	
+	/**
+	 * 返回给定年月日的Date类型
+	 * @param year
+	 * @param month 从0开始
+	 * @param date
+	 * @return
+	 */
+	public static Date getDate(int year, int month, int date) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTimeInMillis(System.currentTimeMillis());
+		calendar.set(year, month, date);
+		calendar.set(Calendar.HOUR_OF_DAY, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
+		return calendar.getTime();
+	}
+	
 	/**
 	 * 
 	 * 描述：将毫秒数的时间转为字符串时间：yyyy-mm-dd hh:mm:ss
@@ -503,12 +521,6 @@ public class DateUtil {
 
 	}
 	
-	 public static void main(String[] args) {
-		 long endTime = System.currentTimeMillis() + 50000 * 60 * 1000L;
-		 System.out.println(DateUtil.millisToStr(endTime));
-			//System.out.println(DateUtil.millisToStr(1497447232134L));
-	}
-
 	public static boolean isAfterDate(Date computeDay, Date lastDay) {
 		if(lastDay == null) {
 			return true;

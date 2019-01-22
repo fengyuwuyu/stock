@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.stock.dao.ResultCompareMapper" >
+  <resultMap id="BaseResultMap" type="com.stock.model.ResultCompare" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="check_day" property="checkDay" jdbcType="INTEGER" />
+    <result column="increase_day" property="increaseDay" jdbcType="INTEGER" />
+    <result column="min_increase" property="minIncrease" jdbcType="REAL" />
+    <result column="min_total_increase" property="minTotalIncrease" jdbcType="REAL" />
+    <result column="increase_count" property="increaseCount" jdbcType="INTEGER" />
+    <result column="decrease_count" property="decreaseCount" jdbcType="INTEGER" />
+    <result column="average" property="average" jdbcType="REAL" />
+    <result column="max" property="max" jdbcType="REAL" />
+    <result column="min" property="min" jdbcType="REAL" />
+	<result column="day" property="day" jdbcType="DATE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, check_day, increase_day, min_increase, min_total_increase, increase_count, decrease_count, 
+    average, max, min, `day`
+  </sql>
+  
+  <select id="statisticsCount" parameterType="map" resultType="int">
+  	select count(*) from result_compare where check_day=#{checkDay} and increase_day = #{increaseDay} 
+  	and min_increase = #{minIncrease} and min_total_increase=#{minTotalIncrease}
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from result_compare
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from result_compare
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.stock.model.ResultCompare" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into result_compare (check_day, increase_day, 
+      min_increase, min_total_increase, increase_count, 
+      decrease_count, average, max, 
+      min, `day`)
+    values (#{checkDay,jdbcType=INTEGER}, #{increaseDay,jdbcType=INTEGER}, 
+      #{minIncrease,jdbcType=REAL}, #{minTotalIncrease,jdbcType=REAL}, #{increaseCount,jdbcType=INTEGER}, 
+      #{decreaseCount,jdbcType=INTEGER}, #{average,jdbcType=REAL}, #{max,jdbcType=REAL}, 
+      #{min,jdbcType=REAL}, #{day})
+  </insert>
+  <insert id="insertSelective" parameterType="com.stock.model.ResultCompare" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into result_compare
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="checkDay != null" >
+        check_day,
+      </if>
+      <if test="increaseDay != null" >
+        increase_day,
+      </if>
+      <if test="minIncrease != null" >
+        min_increase,
+      </if>
+      <if test="minTotalIncrease != null" >
+        min_total_increase,
+      </if>
+      <if test="increaseCount != null" >
+        increase_count,
+      </if>
+      <if test="decreaseCount != null" >
+        decrease_count,
+      </if>
+      <if test="average != null" >
+        average,
+      </if>
+      <if test="max != null" >
+        max,
+      </if>
+      <if test="min != null" >
+        min,
+      </if>
+      <if test="day != null" >
+        `day`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="checkDay != null" >
+        #{checkDay,jdbcType=INTEGER},
+      </if>
+      <if test="increaseDay != null" >
+        #{increaseDay,jdbcType=INTEGER},
+      </if>
+      <if test="minIncrease != null" >
+        #{minIncrease,jdbcType=REAL},
+      </if>
+      <if test="minTotalIncrease != null" >
+        #{minTotalIncrease,jdbcType=REAL},
+      </if>
+      <if test="increaseCount != null" >
+        #{increaseCount,jdbcType=INTEGER},
+      </if>
+      <if test="decreaseCount != null" >
+        #{decreaseCount,jdbcType=INTEGER},
+      </if>
+      <if test="average != null" >
+        #{average,jdbcType=REAL},
+      </if>
+      <if test="max != null" >
+        #{max,jdbcType=REAL},
+      </if>
+      <if test="min != null" >
+        #{min,jdbcType=REAL},
+      </if>
+      <if test="day != null" >
+        #{day}
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.stock.model.ResultCompare" >
+    update result_compare
+    <set >
+      <if test="checkDay != null" >
+        check_day = #{checkDay,jdbcType=INTEGER},
+      </if>
+      <if test="increaseDay != null" >
+        increase_day = #{increaseDay,jdbcType=INTEGER},
+      </if>
+      <if test="minIncrease != null" >
+        min_increase = #{minIncrease,jdbcType=REAL},
+      </if>
+      <if test="minTotalIncrease != null" >
+        min_total_increase = #{minTotalIncrease,jdbcType=REAL},
+      </if>
+      <if test="increaseCount != null" >
+        increase_count = #{increaseCount,jdbcType=INTEGER},
+      </if>
+      <if test="decreaseCount != null" >
+        decrease_count = #{decreaseCount,jdbcType=INTEGER},
+      </if>
+      <if test="average != null" >
+        average = #{average,jdbcType=REAL},
+      </if>
+      <if test="max != null" >
+        max = #{max,jdbcType=REAL},
+      </if>
+      <if test="min != null" >
+        min = #{min,jdbcType=REAL},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.stock.model.ResultCompare" >
+    update result_compare
+    set check_day = #{checkDay,jdbcType=INTEGER},
+      increase_day = #{increaseDay,jdbcType=INTEGER},
+      min_increase = #{minIncrease,jdbcType=REAL},
+      min_total_increase = #{minTotalIncrease,jdbcType=REAL},
+      increase_count = #{increaseCount,jdbcType=INTEGER},
+      decrease_count = #{decreaseCount,jdbcType=INTEGER},
+      average = #{average,jdbcType=REAL},
+      max = #{max,jdbcType=REAL},
+      min = #{min,jdbcType=REAL}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

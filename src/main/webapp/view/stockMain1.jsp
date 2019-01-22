@@ -29,7 +29,7 @@
 					type="text" class="easyui-textbox">&nbsp;&nbsp;&nbsp; <label
 					class="ui-label">搜索类型：</label> <input name="searchType" type="text"
 					class="easyui-combobox"
-					data-options="valueField:'id',textField:'text',panelHeight:'auto',editable:false, url:'${pageContext.request.contextPath}/searcher/searchTypes.do',value:1">&nbsp;&nbsp;&nbsp;
+					data-options="valueField:'id',textField:'text',panelHeight:'auto',editable:false, url:'${pageContext.request.contextPath}/searcher/searchTypes.do',value:-1">&nbsp;&nbsp;&nbsp;
 			</p>
 			<a id="btn-search" href="#" class="easyui-splitbutton"
 				iconCls="icon-search" menu="#menu-reset" plain="false">查询</a>

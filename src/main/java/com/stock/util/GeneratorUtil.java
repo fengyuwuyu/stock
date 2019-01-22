@@ -20,7 +20,7 @@ public class GeneratorUtil {
         //覆盖已有的重名文件
         boolean overwrite = true;
         //准备 配置文件
-        File configFile = new File("D:/soft/develop/workspace/stock/stock/target/classes/generatorConfig.xml");
+        File configFile = new File("D:/workspace/ll/Stock/project/stock/target/classes/generatorConfig.xml");
         //创建 配置解析器
         ConfigurationParser parser = new ConfigurationParser(warnings);
         //获取 配置信息
