@@ -24,8 +24,25 @@ public class ResultCompare {
     private Float min;
 
     private Date day;
+    
+    public ResultCompare() {
+	}
 
-    public Long getId() {
+	public ResultCompare(Integer checkDay, Integer increaseDay, Float minIncrease, Float minTotalIncrease,
+			Integer increaseCount, Integer decreaseCount, Float average, Float max, Float min, Date day) {
+		this.checkDay = checkDay;
+		this.increaseDay = increaseDay;
+		this.minIncrease = minIncrease;
+		this.minTotalIncrease = minTotalIncrease;
+		this.increaseCount = increaseCount;
+		this.decreaseCount = decreaseCount;
+		this.average = average;
+		this.max = max;
+		this.min = min;
+		this.day = day;
+	}
+
+	public Long getId() {
         return id;
     }
 
@@ -111,5 +128,13 @@ public class ResultCompare {
 
     public void setDay(Date day) {
         this.day = day;
-    }
+	}
+
+	@Override
+	public String toString() {
+		return "ResultCompare [id=" + id + ", checkDay=" + checkDay + ", increaseDay=" + increaseDay + ", minIncrease="
+				+ minIncrease + ", minTotalIncrease=" + minTotalIncrease + ", increaseCount=" + increaseCount
+				+ ", decreaseCount=" + decreaseCount + ", average=" + average + ", max=" + max + ", min=" + min
+				+ ", day=" + day + "]";
+	}
 }

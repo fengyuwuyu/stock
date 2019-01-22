@@ -19,6 +19,19 @@
     average, max, min, `day`
   </sql>
   
+  <insert id="insertList" parameterType="java.util.List">
+  	insert into result_compare (check_day, increase_day, 
+      min_increase, min_total_increase, increase_count, 
+      decrease_count, average, max, 
+      min, `day`)
+    values <foreach collection="list" item="item" separator=",">
+    	(#{item.checkDay,jdbcType=INTEGER}, #{item.increaseDay,jdbcType=INTEGER}, 
+      #{item.minIncrease,jdbcType=REAL}, #{item.minTotalIncrease,jdbcType=REAL}, #{item.increaseCount,jdbcType=INTEGER}, 
+      #{item.decreaseCount,jdbcType=INTEGER}, #{item.average,jdbcType=REAL}, #{item.max,jdbcType=REAL}, 
+      #{item.min,jdbcType=REAL}, #{item.day}) 
+    </foreach>
+  </insert>
+  
   <select id="statisticsCount" parameterType="map" resultType="int">
   	select count(*) from result_compare where check_day=#{checkDay} and increase_day = #{increaseDay} 
   	and min_increase = #{minIncrease} and min_total_increase=#{minTotalIncrease}

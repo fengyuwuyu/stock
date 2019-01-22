@@ -26,6 +26,7 @@ import com.stock.util.MapUtils;
 @Controller
 public class StaticticsController {
 	
+	private static final int MAX_INSERT_SIZE = 10000;
 	private Logger log = Logger.getLogger(getClass());
 	private int[] checkDays = {8, 9, 10};
 	private int[] increaseDays = {5, 6, 7, 8};
@@ -39,7 +40,7 @@ public class StaticticsController {
 	@Autowired
 	MakeMoneyStrategy makeMoneyStrategy;
 
-	@RequestMapping("create")
+	@RequestMapping("/create.do")
 	@ResponseBody
 	public Map<String, Object> create() {
 		float limit = 10F;
@@ -51,6 +52,7 @@ public class StaticticsController {
 
 		int maxIndex = 0;
 
+		List<ResultCompare> list = new ArrayList<>(10000);
 		for (int i = 0; i < checkDays.length; i++) {
 			MakeMoneyStrategy.CHECK_DAY = checkDays[i];
 			for (int j = 0; j < increaseDays.length; j++) {
@@ -64,10 +66,10 @@ public class StaticticsController {
 							continue;
 						}
 
-						List<StockAnalysisResult> result = new ArrayList<>(100);
 						List<Date>  days = stockMainMap.get("300555").stream().map(StockMain::getDay).collect(Collectors.toList());
 						for (int l = 10; l < days.size() - 1; l++) {
 							Date date = days.get(l);
+							List<StockAnalysisResult> result = new ArrayList<>(100);
 							for (List<StockMain> stockMains : stockMainMap.values()) {
 								int index = StockUtils.getIndex(stockMains, date);
 								if (index == -1) {
@@ -81,14 +83,35 @@ public class StaticticsController {
 							}
 							ResultCompare compare = StockUtils.createResultCompare(result, date);
 							if (compare != null) {
-								this.resultCompareMapper.insert(compare);
+								list.add(compare);
 							}
 						}
 					}
 				}
 			}
 		}
-		
+
+		int size = list.size();
+		if (size > 0) {
+			if (size <= MAX_INSERT_SIZE) {
+				this.resultCompareMapper.insertList(list);
+			} else {
+				int fromIndex = 0;
+				int toIndex = MAX_INSERT_SIZE;
+				List<ResultCompare> insertList = null;
+				while (toIndex <= size) {
+					insertList = list.subList(fromIndex, toIndex);
+					this.resultCompareMapper.insertList(insertList);
+					if (toIndex == size) {
+						break;
+					}
+					fromIndex += MAX_INSERT_SIZE;
+					toIndex += MAX_INSERT_SIZE;
+					toIndex = toIndex > size ? size : toIndex;
+				} 
+				
+			}
+		}
 		return MapUtils.createSuccessMap();
 	}
 	
