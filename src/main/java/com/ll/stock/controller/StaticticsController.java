@@ -28,8 +28,8 @@ public class StaticticsController {
 	
 	private static final int MAX_INSERT_SIZE = 10000;
 	private Logger log = Logger.getLogger(getClass());
-	private int[] checkDays = {8, 9, 10};
-	private int[] increaseDays = {5, 6, 7, 8};
+	private int[] checkDays = {7};
+	private int[] increaseDays = {5, 6, 7};
 	private float[] minIncreases = {-5F, -4F, -3F};
 	private float[] increases = {10F, 11F, 12F, 13F};
 	
@@ -52,7 +52,7 @@ public class StaticticsController {
 
 		int maxIndex = 0;
 
-		List<ResultCompare> list = new ArrayList<>(10000);
+		List<ResultCompare> list = new ArrayList<>(MAX_INSERT_SIZE);
 		for (int i = 0; i < checkDays.length; i++) {
 			MakeMoneyStrategy.CHECK_DAY = checkDays[i];
 			for (int j = 0; j < increaseDays.length; j++) {

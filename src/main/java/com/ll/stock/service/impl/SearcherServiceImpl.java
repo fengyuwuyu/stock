@@ -85,6 +85,10 @@ public class SearcherServiceImpl implements SearcherServiceI {
 				count++;
 			}
 			
+			if (index == -1) {
+				index = maxIndex;
+			}
+			
 			try {
 				switch (type) {
 				case MAX_INCREASE:
