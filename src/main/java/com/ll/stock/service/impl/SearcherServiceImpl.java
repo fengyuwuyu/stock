@@ -15,6 +15,7 @@ import com.ll.stock.model.type.SearchTypeEnum;
 import com.ll.stock.service.SearcherServiceI;
 import com.ll.stock.strategy.impl.DecreaseAndSerialLowVolumeStrategy;
 import com.ll.stock.strategy.impl.MakeMoneyStrategy;
+import com.ll.stock.strategy.impl.MakeMoneyStrategy2;
 import com.ll.stock.strategy.impl.MaxIncreaseStrategy;
 import com.ll.stock.strategy.impl.NearlyTenDayStrategy;
 import com.ll.stock.strategy.impl.SerialIncreaseAndLowVolumeStrategy;
@@ -45,6 +46,8 @@ public class SearcherServiceImpl implements SearcherServiceI {
 	NearlyTenDayStrategy nearlyTenDayStrategy;
 	@Autowired
 	MakeMoneyStrategy makeMoneyStrategy;
+	@Autowired
+	MakeMoneyStrategy2 makeMoneyStrategy2;
 
 	@Override
 	public Map<String, Object> findIncreaseTopn(Date begin, float limit, Integer searchType) {
@@ -104,6 +107,9 @@ public class SearcherServiceImpl implements SearcherServiceI {
 					break;
 				case MAKE_MONEY:
 					makeMoneyStrategy.analysis(stockMains, index, result, maxIndex, begin, limit);
+					break;
+				case MAKE_MONEY1:
+					makeMoneyStrategy2.analysis(stockMains, index, result, maxIndex, begin, limit);
 					break;
 				default:
 					break;
