@@ -23,6 +23,10 @@ public class MakeMoneyStrategy extends BaseAnalysisStrategy {
 	@Override
 	public void analysis(List<StockMain> stockMains, int index, List<StockAnalysisResult> result,
 			int maxIndex, Date begin, float limit) throws Exception {
+		if (INCREASE_DAY > CHECK_DAY) {
+			return ;
+		}
+		
 		StockMain curr = stockMains.get(index);
 		float maxIncrease = Float.valueOf(CommonsUtil.formatDecimal((stockMains.get(maxIndex).getClose() - curr.getClose()) * 100 / curr.getClose()));
 		
