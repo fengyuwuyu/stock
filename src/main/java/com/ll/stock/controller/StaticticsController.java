@@ -12,12 +12,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.ll.stock.model.StockAnalysisResult;
 import com.ll.stock.strategy.impl.MakeMoneyStrategy;
 import com.ll.stock.util.StockUtils;
 import com.stock.dao.ResultCompareMapper;
 import com.stock.dao.StockMainMapper;
 import com.stock.model.ResultCompare;
+import com.stock.model.ResultDetail;
 import com.stock.model.StockMain;
 import com.stock.util.DateUtil;
 import com.stock.util.MapUtils;
@@ -69,7 +69,7 @@ public class StaticticsController {
 						List<Date>  days = stockMainMap.get("300555").stream().map(StockMain::getDay).collect(Collectors.toList());
 						for (int l = 10; l < days.size() - 1; l++) {
 							Date date = days.get(l);
-							List<StockAnalysisResult> result = new ArrayList<>(100);
+							List<ResultDetail> result = new ArrayList<>(100);
 							for (List<StockMain> stockMains : stockMainMap.values()) {
 								int index = StockUtils.getIndex(stockMains, date);
 								if (index == -1) {

@@ -2,9 +2,9 @@ package com.ll.stock.strategy;
 
 import java.util.List;
 
-import com.ll.stock.model.StockAnalysisResult;
 import com.ll.stock.strategy.model.StockMiddleEntity;
 import com.ll.stock.util.StockUtils;
+import com.stock.model.ResultDetail;
 import com.stock.model.StockMain;
 import com.stock.util.CommonsUtil;
 
@@ -13,7 +13,7 @@ public abstract class BaseAnalysisStrategy implements IAnalysisStrategy {
 	private int count = 10;
 	protected int computeDay = 10;
 	
-	public StockAnalysisResult createStockAnalysisResult(StockMain curr, Float maxIncrease, int index, List<StockMain> stockMains) {
+	public ResultDetail createResultDetail(StockMain curr, Float maxIncrease, int index, List<StockMain> stockMains) {
 		int futureCount = 20;
 		StringBuilder increases = new StringBuilder();
 		StringBuilder volumes = new StringBuilder();
@@ -45,7 +45,7 @@ public abstract class BaseAnalysisStrategy implements IAnalysisStrategy {
 		
 //		if (max > curr.getClose()) {
 //		}
-		return new StockAnalysisResult(curr, maxIncrease, increases.toString(),
+		return new ResultDetail(curr, maxIncrease, increases.toString(),
 				volumes.toString(), closes.toString(), volumeRatio, futureIncrease, hasIncrease);
 	}
 }

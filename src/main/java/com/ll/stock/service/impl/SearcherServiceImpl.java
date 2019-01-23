@@ -10,7 +10,6 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ll.stock.model.StockAnalysisResult;
 import com.ll.stock.model.type.SearchTypeEnum;
 import com.ll.stock.service.SearcherServiceI;
 import com.ll.stock.strategy.impl.DecreaseAndSerialLowVolumeStrategy;
@@ -21,8 +20,8 @@ import com.ll.stock.strategy.impl.NearlyTenDayStrategy;
 import com.ll.stock.strategy.impl.SerialIncreaseAndLowVolumeStrategy;
 import com.ll.stock.strategy.impl.SerialIncreaseStrategy;
 import com.ll.stock.strategy.impl.SerialLowVolumeStrategy;
-import com.ll.stock.util.StockUtils;
 import com.stock.dao.StockMainMapper;
+import com.stock.model.ResultDetail;
 import com.stock.model.StockMain;
 import com.stock.util.MapUtils;
 
@@ -58,8 +57,8 @@ public class SearcherServiceImpl implements SearcherServiceI {
 		List<StockMain> stockMainList = stockMainMapper.findAll(begin);
 		Map<String, List<StockMain>> stockMainMap = stockMainList.stream()
 				.collect(Collectors.groupingBy(StockMain::getSymbol));
-		List<StockAnalysisResult> result = new ArrayList<>(50);
-//		List<StockAnalysisResult> list = new ArrayList<>();
+		List<ResultDetail> result = new ArrayList<>(50);
+//		List<ResultDetail> list = new ArrayList<>();
 		for (List<StockMain> stockMains : stockMainMap.values()) {
 			float max = 0;
 			int maxIndex = stockMains.size() - 1;

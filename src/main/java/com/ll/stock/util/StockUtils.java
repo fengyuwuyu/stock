@@ -3,10 +3,10 @@ package com.ll.stock.util;
 import java.sql.Date;
 import java.util.List;
 
-import com.ll.stock.model.StockAnalysisResult;
 import com.ll.stock.strategy.impl.MakeMoneyStrategy;
 import com.ll.stock.strategy.model.StockMiddleEntity;
 import com.stock.model.ResultCompare;
+import com.stock.model.ResultDetail;
 import com.stock.model.StockMain;
 
 public class StockUtils {
@@ -56,7 +56,7 @@ public class StockUtils {
 		return new StockMiddleEntity(minIndex, maxIndex, max, min, maxIncrease);
 	}
 
-	public static ResultCompare createResultCompare(List<StockAnalysisResult> result, Date day) {
+	public static ResultCompare createResultCompare(List<ResultDetail> result, Date day) {
 		if (result == null || result.size() == 0) {
 			return null;
 		}
@@ -71,7 +71,7 @@ public class StockUtils {
 		Float max = Float.MIN_VALUE;
 		Float min = Float.MAX_VALUE;
 		float total = 0;
-		for (StockAnalysisResult s : result) {
+		for (ResultDetail s : result) {
 			float tmp = s.getFutureIncrease();
 			if (tmp > 0) {
 				increaseCount++;

@@ -5,8 +5,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.ll.stock.model.StockAnalysisResult;
 import com.ll.stock.strategy.BaseAnalysisStrategy;
+import com.stock.model.ResultDetail;
 import com.stock.model.StockMain;
 import com.stock.util.CommonsUtil;
 
@@ -14,7 +14,7 @@ import com.stock.util.CommonsUtil;
 public class SerialIncreaseAndLowVolumeStrategy extends BaseAnalysisStrategy {
 
 	@Override
-	public void analysis(List<StockMain> stockMains, int index, List<StockAnalysisResult> result, int maxIndex,
+	public void analysis(List<StockMain> stockMains, int index, List<ResultDetail> result, int maxIndex,
 			Date begin, float limit) throws Exception {
 		StockMain curr = stockMains.get(index);
 		float maxIncrease = Float.valueOf(CommonsUtil.formatDecimal((stockMains.get(maxIndex).getClose() - curr.getClose()) * 100 / curr.getClose()));
@@ -69,7 +69,7 @@ public class SerialIncreaseAndLowVolumeStrategy extends BaseAnalysisStrategy {
 		}
 //		if (hasIncrease >= 10 && hasIncrease < 15) {
 		if (/*found &&*/ maxIndex > minIndex && hasIncrease > 9 && isLowVolume /*&& hasIncrease < 15*/) {
-			StockAnalysisResult analysisResult = createStockAnalysisResult(curr, maxIncrease, index, stockMains);
+			ResultDetail analysisResult = createResultDetail(curr, maxIncrease, index, stockMains);
 			analysisResult.setHasIncrease(hasIncrease);
 			result.add(analysisResult);
 		}

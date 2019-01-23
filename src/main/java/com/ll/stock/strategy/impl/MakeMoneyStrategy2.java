@@ -5,10 +5,10 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.ll.stock.model.StockAnalysisResult;
 import com.ll.stock.strategy.BaseAnalysisStrategy;
 import com.ll.stock.strategy.model.StockMiddleEntity;
 import com.ll.stock.util.StockUtils;
+import com.stock.model.ResultDetail;
 import com.stock.model.StockMain;
 import com.stock.util.CommonsUtil;
 
@@ -21,7 +21,7 @@ public class MakeMoneyStrategy2 extends BaseAnalysisStrategy {
 	public static float INCREASE = 10F;
 	
 	@Override
-	public void analysis(List<StockMain> stockMains, int index, List<StockAnalysisResult> result,
+	public void analysis(List<StockMain> stockMains, int index, List<ResultDetail> result,
 			int maxIndex, Date begin, float limit) throws Exception {
 		StockMain curr = stockMains.get(index);
 		float maxIncrease = Float.valueOf(CommonsUtil.formatDecimal((stockMains.get(maxIndex).getClose() - curr.getClose()) * 100 / curr.getClose()));
@@ -52,7 +52,7 @@ public class MakeMoneyStrategy2 extends BaseAnalysisStrategy {
 			} 
 		}
 		
-		StockAnalysisResult analysisResult = createStockAnalysisResult(curr, maxIncrease, index, stockMains);
+		ResultDetail analysisResult = createResultDetail(curr, maxIncrease, index, stockMains);
 		result.add(analysisResult);
 	}
 

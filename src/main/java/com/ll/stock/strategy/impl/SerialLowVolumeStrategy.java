@@ -5,8 +5,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.ll.stock.model.StockAnalysisResult;
 import com.ll.stock.strategy.BaseAnalysisStrategy;
+import com.stock.model.ResultDetail;
 import com.stock.model.StockMain;
 import com.stock.util.CommonsUtil;
 
@@ -16,7 +16,7 @@ public class SerialLowVolumeStrategy extends BaseAnalysisStrategy {
 	private int dayCount = 10;
 
 	@Override
-	public void analysis(List<StockMain> stockMains, int index, List<StockAnalysisResult> result, int maxIndex,
+	public void analysis(List<StockMain> stockMains, int index, List<ResultDetail> result, int maxIndex,
 			Date begin, float limit) throws Exception {
 		dayCount = 5;
 		StockMain curr = stockMains.get(index);
@@ -33,7 +33,7 @@ public class SerialLowVolumeStrategy extends BaseAnalysisStrategy {
 		}
 		
 		if (found && totalVolume / dayCount < curr.getVolume() / 3) {
-			StockAnalysisResult analysisResult = createStockAnalysisResult(curr, maxIncrease, maxIndex, stockMains);
+			ResultDetail analysisResult = createResultDetail(curr, maxIncrease, maxIndex, stockMains);
 			analysisResult.setVolumeRate(curr.getVolume().doubleValue() / (totalVolume.doubleValue() / dayCount));
 			result.add(analysisResult);
 		}

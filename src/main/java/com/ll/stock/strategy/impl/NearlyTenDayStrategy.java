@@ -5,10 +5,10 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.ll.stock.model.StockAnalysisResult;
 import com.ll.stock.strategy.BaseAnalysisStrategy;
 import com.ll.stock.strategy.model.StockMiddleEntity;
 import com.ll.stock.util.StockUtils;
+import com.stock.model.ResultDetail;
 import com.stock.model.StockMain;
 import com.stock.util.CommonsUtil;
 
@@ -16,7 +16,7 @@ import com.stock.util.CommonsUtil;
 public class NearlyTenDayStrategy extends BaseAnalysisStrategy {
 
 	@Override
-	public void analysis(List<StockMain> stockMains, int index, List<StockAnalysisResult> result, int maxIndex,
+	public void analysis(List<StockMain> stockMains, int index, List<ResultDetail> result, int maxIndex,
 			Date begin, float limit) throws Exception {
 		if (stockMains.get(0).getSymbol().equals("000055")) {
 			System.out.println();
@@ -31,7 +31,7 @@ public class NearlyTenDayStrategy extends BaseAnalysisStrategy {
 		
 		
 		if (hasIncrease >= minValue && hasIncrease <= maxValue) {
-			StockAnalysisResult analysisResult = createStockAnalysisResult(curr, maxIncrease, index, stockMains);
+			ResultDetail analysisResult = createResultDetail(curr, maxIncrease, index, stockMains);
 			analysisResult.setHasIncrease(hasIncrease);
 			result.add(analysisResult);
 		}

@@ -5,13 +5,11 @@ import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
-import com.ll.stock.model.StockAnalysisResult;
 import com.stock.dao.HolidayMapper;
+import com.stock.model.ResultDetail;
 
 public class CommonsUtil {
 	
@@ -36,12 +34,12 @@ public class CommonsUtil {
 		return decimalFormat.format(num);
 	}
 	
-	public static void intersaction(List<StockAnalysisResult> list1, List<StockAnalysisResult> list2) {
-		Iterator<StockAnalysisResult> it = list1.iterator();
+	public static void intersaction(List<ResultDetail> list1, List<ResultDetail> list2) {
+		Iterator<ResultDetail> it = list1.iterator();
 		while (it.hasNext()) {
-			StockAnalysisResult result = it.next();
-			for (StockAnalysisResult stockAnalysisResult : list2) {
-				if (result.getSymbol().equals(stockAnalysisResult.getSymbol())) {
+			ResultDetail result = it.next();
+			for (ResultDetail ResultDetail : list2) {
+				if (result.getSymbol().equals(ResultDetail.getSymbol())) {
 					it.remove();
 					break;
 				}
