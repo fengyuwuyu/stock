@@ -4,6 +4,12 @@ $package('YiYa');
 /*封装变量（利用JSONP）*/
 var YiYa={
 			//JSON方法一
+			formatDate: function(date) {
+				if (!date) {
+					date = new Date();
+				}
+				return date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+			},
 			isJson:function(str){
 				var obj = null; 
 				try{

@@ -47,13 +47,12 @@ public class MakeMoneyStrategy2 extends BaseAnalysisStrategy {
 		}
 		
 		if (stockMains.size() > 0) {
-			if (stockMains.get(index - 1).getIncrease() > 0 && stockMains.get(index).getIncrease() < 0) {
-				return ;
+			if (stockMains.get(index - 1).getIncrease() <= 0 && stockMains.get(index).getIncrease() >= 5) {
+				ResultDetail analysisResult = createResultDetail(curr, maxIncrease, index, stockMains);
+				result.add(analysisResult);
 			} 
 		}
 		
-		ResultDetail analysisResult = createResultDetail(curr, maxIncrease, index, stockMains);
-		result.add(analysisResult);
 	}
 
 }

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.ll.stock.strategy.impl.MakeMoneyStrategy;
 import com.ll.stock.util.StockUtils;
 import com.stock.dao.ResultCompareMapper;
+import com.stock.dao.ResultDetailMapper;
 import com.stock.dao.StockMainMapper;
 import com.stock.model.ResultCompare;
 import com.stock.model.ResultDetail;
@@ -37,6 +38,8 @@ public class StaticticsController {
 	private StockMainMapper stockMainMapper;
 	@Autowired
 	private ResultCompareMapper resultCompareMapper;
+	@Autowired
+	private ResultDetailMapper resultDetailMapper;
 	@Autowired
 	MakeMoneyStrategy makeMoneyStrategy;
 
@@ -110,6 +113,90 @@ public class StaticticsController {
 					toIndex = toIndex > size ? size : toIndex;
 				} 
 				
+			}
+		}
+		return MapUtils.createSuccessMap();
+	}
+	
+	@RequestMapping("detail.do")
+	@ResponseBody
+	public Map<String, Object> detail() {
+		float limit = 10F;
+		Date begin = new Date(DateUtil.getDate(2018, 0, 1).getTime());
+		
+		List<StockMain> stockMainList = stockMainMapper.findAll(begin);
+		Map<String, List<StockMain>> stockMainMap = stockMainList.stream()
+				.collect(Collectors.groupingBy(StockMain::getSymbol));
+
+		int maxIndex = 0;
+		float minFutureIncrease = 15F;
+		float maxFutureIncrease = -10F;
+		
+		List<Date>  days = stockMainMap.get("300555").stream().map(StockMain::getDay).collect(Collectors.toList());
+		List<ResultDetail> list = new ArrayList<>(MAX_INSERT_SIZE);
+		List<ResultDetail> list1 = new ArrayList<>(MAX_INSERT_SIZE);
+		for (int l = 10; l < days.size() - 5; l++) {
+			Date date = days.get(l);
+			List<ResultDetail> result = new ArrayList<>(100);
+			for (List<StockMain> stockMains : stockMainMap.values()) {
+				int index = StockUtils.getIndex(stockMains, date);
+				if (index == -1) {
+					continue;
+				}
+				try {
+					makeMoneyStrategy.analysis(stockMains, index, result, maxIndex, begin, limit);
+				} catch (Exception e) {
+					log.warn(String.format("symbol = %s, maxIndex = %d, maxLen = %d, error = %s",  stockMains.get(0).getSymbol(), maxIndex, stockMains.size(), e.getMessage()));
+				}
+			}
+			result.forEach((item) -> {
+				if (item.getFutureIncrease() >= minFutureIncrease) {
+					list.add(item);	
+				} else if (item.getFutureIncrease() <= maxFutureIncrease) {
+					list1.add(item);
+				}
+			});
+		}
+		
+		int size = list.size();
+		if (size > 0) {
+			if (size <= MAX_INSERT_SIZE) {
+				this.resultDetailMapper.insertList(list);
+			} else {
+				int fromIndex = 0;
+				int toIndex = MAX_INSERT_SIZE;
+				List<ResultDetail> insertList = null;
+				while (toIndex <= size) {
+					insertList = list.subList(fromIndex, toIndex);
+					this.resultDetailMapper.insertList(insertList);
+					if (toIndex == size) {
+						break;
+					}
+					fromIndex += MAX_INSERT_SIZE;
+					toIndex += MAX_INSERT_SIZE;
+					toIndex = toIndex > size ? size : toIndex;
+				} 
+			}
+		}
+		
+		size = list1.size();
+		if (size > 0) {
+			if (size <= MAX_INSERT_SIZE) {
+				this.resultDetailMapper.insertList1(list1);
+			} else {
+				int fromIndex = 0;
+				int toIndex = MAX_INSERT_SIZE;
+				List<ResultDetail> insertList = null;
+				while (toIndex <= size) {
+					insertList = list1.subList(fromIndex, toIndex);
+					this.resultDetailMapper.insertList1(insertList);
+					if (toIndex == size) {
+						break;
+					}
+					fromIndex += MAX_INSERT_SIZE;
+					toIndex += MAX_INSERT_SIZE;
+					toIndex = toIndex > size ? size : toIndex;
+				} 
 			}
 		}
 		return MapUtils.createSuccessMap();

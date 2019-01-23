@@ -54,7 +54,7 @@ public class SearcherServiceImpl implements SearcherServiceI {
 		if (type == null) {
 			return MapUtils.createFailedMap("msg", "illegal searchType [%s]", searchType);
 		}
-		List<StockMain> stockMainList = stockMainMapper.findAll(begin);
+		List<StockMain> stockMainList = stockMainMapper.findAll1(begin);
 		Map<String, List<StockMain>> stockMainMap = stockMainList.stream()
 				.collect(Collectors.groupingBy(StockMain::getSymbol));
 		List<ResultDetail> result = new ArrayList<>(50);

@@ -18,7 +18,8 @@ YiYa.stockMain = function(){
 							/*{field : 'open',title:'开盘价',align:'center',width:80},
 							{field : 'close',title:'收盘价',align:'center',width:80},
 							{field : 'volume',title:'成交量',align:'center',width:80},*/
-							{field : 'increases',title:'历史增长比',align:'center',width:200},
+							{field : 'increases',title:'历史涨幅',align:'center',width:200},
+							{field : 'futureIncreases',title:'未来涨幅',align:'center',width:200},
 							{field : 'volumes',title:'历史成交量',align:'center',width:200}/*,
 							{field : 'closes',title:'历史收盘价',align:'center',width:200}*/
 						]],

@@ -19,11 +19,83 @@
     <result column="volume_rate" property="volumeRate" jdbcType="DOUBLE" />
     <result column="has_increase" property="hasIncrease" jdbcType="REAL" />
     <result column="closes" property="closes" jdbcType="VARCHAR" />
+    <result column="future_increases" property="futureIncreases" jdbcType="VARCHAR" />
+    <result column="future_volumes" property="futureVolumes" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, symbol, day, open, close, max, min, volume, volume_ratio, increase, max_increase, 
-    future_increase, increases, volumes, volume_rate, has_increase, closes
+    id, symbol, day, open, close, max, min, volume, volume_ratio volumeRatio, increase, max_increase maxIncrease, 
+    future_increase futureIncrease, increases, volumes, volume_rate volumeRate, has_increase hasIncrease, closes, 
+    future_increases futureIncreases, future_volumes futureVolumes
   </sql>
+  
+  <select id="countIncrease" resultType="int" parameterType="map">
+  	select count(1) from result_detail 
+  	<where>
+  		<if test="begin != null">
+  			`day` = #{begin}
+  		</if>
+  	</where>
+  </select>
+  
+  <select id="countDecrease" resultType="int" parameterType="map">
+  	select count(1) from result_detail1 
+  	<where>
+  		<if test="begin != null">
+  			`day` = #{begin}
+  		</if>
+  	</where>
+  </select>
+  
+  <select id="findIncrease" resultType="com.stock.model.ResultDetail" parameterType="map">
+  	select <include refid="Base_Column_List"></include> from result_detail 
+  	<where>
+  		<if test="begin != null">
+  			`day` = #{begin}
+  		</if>
+  	</where>
+  	<if test="page != null and rows != null">
+  		limit #{page}, #{rows}
+  	</if>
+  </select>
+  
+  <select id="findDecrease" resultType="com.stock.model.ResultDetail" parameterType="map">
+  	select <include refid="Base_Column_List"></include> from result_detail1
+  	<where>
+  		<if test="begin != null">
+  			`day` = #{begin}
+  		</if>
+  	</where>
+  	<if test="page != null and rows != null">
+  		limit #{page}, #{rows}
+  	</if>
+  </select>
+  
+  <insert id="insertList" parameterType="com.stock.model.ResultDetail">
+  	insert into result_detail(symbol, day, open, close, max, min, volume, volume_ratio, increase, max_increase, future_increase, 
+  	increases, volumes, volume_rate, has_increase, closes, future_increases, future_volumes)
+  	values <foreach collection="list" item="item" separator=",">
+  		(#{item.symbol,jdbcType=VARCHAR}, #{item.day,jdbcType=DATE}, 
+      #{item.open,jdbcType=REAL}, #{item.close,jdbcType=REAL}, #{item.max,jdbcType=REAL}, #{item.min,jdbcType=REAL}, 
+      #{item.volume,jdbcType=BIGINT}, #{item.volumeRatio,jdbcType=REAL}, #{item.increase,jdbcType=REAL}, 
+      #{item.maxIncrease,jdbcType=REAL}, #{item.futureIncrease,jdbcType=REAL}, #{item.increases,jdbcType=VARCHAR}, 
+      #{item.volumes,jdbcType=VARCHAR}, #{item.volumeRate,jdbcType=DOUBLE}, #{item.hasIncrease,jdbcType=REAL}, 
+      #{item.closes,jdbcType=VARCHAR}, #{item.futureIncreases}, #{item.futureVolumes})
+  	</foreach>
+  </insert>
+  
+  <insert id="insertList1" parameterType="com.stock.model.ResultDetail">
+  	insert into result_detail1(symbol, day, open, close, max, min, volume, volume_ratio, increase, max_increase, future_increase, 
+  	increases, volumes, volume_rate, has_increase, closes, future_increases, future_volumes)
+  	values <foreach collection="list" item="item" separator=",">
+  		(#{item.symbol,jdbcType=VARCHAR}, #{item.day,jdbcType=DATE}, 
+      #{item.open,jdbcType=REAL}, #{item.close,jdbcType=REAL}, #{item.max,jdbcType=REAL}, #{item.min,jdbcType=REAL}, 
+      #{item.volume,jdbcType=BIGINT}, #{item.volumeRatio,jdbcType=REAL}, #{item.increase,jdbcType=REAL}, 
+      #{item.maxIncrease,jdbcType=REAL}, #{item.futureIncrease,jdbcType=REAL}, #{item.increases,jdbcType=VARCHAR}, 
+      #{item.volumes,jdbcType=VARCHAR}, #{item.volumeRate,jdbcType=DOUBLE}, #{item.hasIncrease,jdbcType=REAL}, 
+      #{item.closes,jdbcType=VARCHAR}, #{item.futureIncreases}, #{item.futureVolumes})
+  	</foreach>
+  </insert>
+  
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 'true' as QUERYID,
     <include refid="Base_Column_List" />

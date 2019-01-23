@@ -14,9 +14,11 @@ public abstract class BaseAnalysisStrategy implements IAnalysisStrategy {
 	protected int computeDay = 10;
 	
 	public ResultDetail createResultDetail(StockMain curr, Float maxIncrease, int index, List<StockMain> stockMains) {
-		int futureCount = 20;
+		int futureCount = 5;
 		StringBuilder increases = new StringBuilder();
 		StringBuilder volumes = new StringBuilder();
+		StringBuilder futureIncreases = new StringBuilder();
+		StringBuilder futureVolumes = new StringBuilder();
 		StringBuilder closes = new StringBuilder();
 		int tmp = index - count;
 		tmp = tmp >= 0 ? tmp : 0;
@@ -26,6 +28,16 @@ public abstract class BaseAnalysisStrategy implements IAnalysisStrategy {
 			volumes.append(CommonsUtil.formatDecimal(main.getVolume().floatValue() / curr.getVolume().floatValue()) + ", ");
 			closes.append(main.getClose() + ", ");
 		}
+
+		if (index + 1 < stockMains.size()) {
+			int a = index + 5 >= stockMains.size() ? stockMains.size() - 1 : index + 5;
+			for (int i = index + 1; i <= a; i++) {
+				StockMain main = stockMains.get(i);
+				futureIncreases.append(main.getIncrease() + ", ");
+				futureVolumes.append(CommonsUtil.formatDecimal(main.getVolume().floatValue() / curr.getVolume().floatValue()) + ", ");
+			}
+		}
+		
 		Float volumeRatio = stockMains.get(index).getVolume().floatValue() / stockMains.get(index - 1).getVolume().floatValue();
 		
 		float max = 0;
@@ -46,6 +58,6 @@ public abstract class BaseAnalysisStrategy implements IAnalysisStrategy {
 //		if (max > curr.getClose()) {
 //		}
 		return new ResultDetail(curr, maxIncrease, increases.toString(),
-				volumes.toString(), closes.toString(), volumeRatio, futureIncrease, hasIncrease);
+				volumes.toString(), closes.toString(), volumeRatio, futureIncrease, hasIncrease, futureIncreases.toString(), futureVolumes.toString());
 	}
 }
